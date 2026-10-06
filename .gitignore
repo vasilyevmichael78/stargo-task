@@ -43,3 +43,6 @@ test-results/
 .DS_Store
 .idea/
 .vscode/
+
+# Local real-inference reports can contain source content
+/evaluations/reports/

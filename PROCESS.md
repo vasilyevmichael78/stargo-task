@@ -40,3 +40,22 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Limitations / skipped checks / remaining work:**
 - **Outcome:** completed, partial, or blocked with evidence.
 - **Commit:** intended message before commit; actual reference in a subsequent entry after it exists.
+
+## Application implementation — 2026-10-06
+
+- **Goal:** implement the mandatory MVP with actual provider adapters, persisted evidence, responsive UI, and deterministic verification.
+- **User instruction:** begin implementation; subagents are authorized for frontend/backend/database; a local Llama/Ollama model is not installed.
+- **Start:** 09:25:27 UTC (12:25:27 Asia/Jerusalem), observed clock reading shortly after delegation.
+- **Delegation:** backend agent owns backend configuration, domain contracts, SQLite, ingestion, providers, prompts, orchestration, API, and tests. Frontend agent owns React/Vite UI, integration, and frontend tests. Root agent owns cross-component contracts, review, evaluation artifacts, documentation, and commits. No nested agents requested.
+- **Prompt summaries:** both agents received the approved plan and common HTTP/result shapes; instructed to keep changes within owned directories, run meaningful checks, avoid mock application results, and leave Git commits to the root agent.
+- **Acceptance:** supported ingestion and UI flows work; absent inference is visible; no silent provider switching; tests pass; limitations and live evaluation status are explicit.
+- **Initial environment:** uv and npm available; ollama executable not found. No model installation or paid access is assumed.
+- **Validation/outcome:** implementation in progress.
+
+### Evaluation baseline and collector
+
+- **Goal:** define reviewable expectations and collect real analysis outputs without implying validated model quality.
+- **Work:** root agent authored ten seed cases, manual review dimensions, adversarial follow-up cases, and an API collector that submits runs and stores provenance/results for human review. Local reports are excluded from Git because they contain source content.
+- **Checks:** `python3 evaluations/run.py --help`, `python3 -m py_compile evaluations/run.py`, seed/case ID equality, and `git diff --check` passed. No actual model calls were made; local inference is unavailable.
+- **Outcome:** evaluation tooling baseline complete; live quality evaluation pending installation/configuration. Keyword/risk-level screens are not treated as semantic correctness.
+- **Commit:** `test: add seed evaluation protocol and real-run collector`.

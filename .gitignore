@@ -1,0 +1,45 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# JavaScript dependencies and generated output
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+playwright-report/
+test-results/
+
+# Runtime data and uploads
+*.sqlite
+*.sqlite3
+*.db
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm
+*.db-wal
+*.db-shm
+/backend/data/
+/backend/uploads/
+*.log
+
+# Local editor/OS artifacts
+.DS_Store
+.idea/
+.vscode/

@@ -10,7 +10,7 @@ The [Groq GPT-OSS baseline comparison](GROQ_BASELINE_2026-10-06.md) completed 9/
 
 ## Review protocol
 
-Use `cases.json` as a small human-authored regression specification, not a calibrated ground truth benchmark. The accepted levels express triage expectations and may be refined through documented review. Judge facts semantically, preserving currencies, amounts, partial accounts, and allegation status rather than comparing rationale strings.
+Use `cases.json` as a small development regression specification, not a calibrated ground truth benchmark. The accepted levels express triage expectations and may be refined through documented review. Judge facts semantically, preserving currencies, amounts, partial accounts, and allegation status rather than comparing rationale strings.
 
 For each real run, record provider/model, prompt hashes, schema/policy versions, timestamps, latency, stage errors, and actual outputs in a local report. Review:
 
@@ -62,3 +62,19 @@ The current application per-call timeout is 180 seconds. Two stages with one add
 ## Evidence formatting alignment
 
 Orchestration version 4 aligns an otherwise-invalid quote only when its unchanged words/punctuation have a unique match with whitespace variation in the referenced source. It replaces the quote with the exact original substring, then runs the existing validators. Per-attempt evidence_alignments records sanitized paths/methods; no raw invalid response is persisted. Measure deterministic alignments separately from model repair and semantic correctness. Unknown sources, changed values and ambiguous matches remain failures.
+
+## Expanded comparison runner
+
+`cases.json` version 2 retains the original E001–E010 expectations and adds five Codex-authored synthetic inline emails (X001–X005): benign urgency, payment concealment with prompt injection, unverified accounting allegations, distinct same-name people, and changed account suffixes. These are development regressions, not held-out evidence of accuracy. The API collector accepts both kinds; inline cases are ingested through the text endpoint.
+
+To compare configurations without restarting the API for every provider, use the real application service directly. The same ingestion, worker, provider adapters, validation, repair, persistence, and selected-run logic execute; HTTP/UI delivery is not exercised by this runner. Stop any API using the destination database first. Use separate databases to preserve provider histories and the same catalog snapshot across comparisons.
+
+```sh
+uv run --project backend python evaluations/compare.py --provider groq --model openai/gpt-oss-120b --database evaluations/reports/groq.sqlite3 --output evaluations/reports/groq.json --pause 65
+uv run --project backend python evaluations/compare.py --provider ollama --model llama3.2:3b --database evaluations/reports/llama.sqlite3 --output evaluations/reports/llama.json
+uv run --project backend python evaluations/compare.py --provider ollama --model qwen3.5:4b --database evaluations/reports/qwen.sqlite3 --output evaluations/reports/qwen.json
+```
+
+The runner reads credentials from ignored backend/.env without modifying provider defaults. Groq pacing is an external evaluation condition; rate-limit failures remain recorded and are not silently rerun until successful. It does not download models. Select an installed Ollama model explicitly; Mistral is supported through the same adapter if separately installed. Local reports include source text, prompt snapshots and output: keep them ignored and do not share them unredacted. Accepted risk levels are automatic screens; semantic review remains a separate step.
+
+The [expanded comparison](EXPANDED_COMPARISON_2026-10-06.md) records a clean-main-database Groq run and isolated local Llama/Qwen runs. Mistral was downloaded on request, then cancelled and excluded on the user's subsequent instruction. The comparison runner records cancellation/failure status and interrupts unfinished database runs when stopping.

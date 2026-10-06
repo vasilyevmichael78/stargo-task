@@ -49,7 +49,7 @@ ollama pull llama3.2:3b
 ollama pull qwen3.5:4b
 ```
 
-The example selects `OLLAMA_MODEL=llama3.2:3b`; it also includes the alternative `qwen3.5:4b`. Set exactly one active model line in your private environment. The local model is installed. `OLLAMA_NUM_CTX=8192` reserves context for sources, schemas, and the risk catalog; it is not a guarantee that every accepted long document fits. `OLLAMA_THINK=false` disables optional thinking; unset omits that parameter. The per-call timeout is now 180 seconds. The historical reports below used 60 seconds; they do not evaluate this larger time budget. A [Llama/catalog development smoke](evaluations/LLAMA_RISK_CATALOG_2026-10-06.md) completed 2/3 cases, matched no accepted risk levels, and exposed unsupported signals. The catalog is experimental guidance, not a quality-approved policy. The [historical Qwen smoke](evaluations/QWEN_REPAIR_SMOKE_2026-10-06.md) remains available. Preserve existing private environment values, change the model explicitly, and restart the backend.
+The example selects `OLLAMA_MODEL=llama3.2:3b`; it also includes the alternative `qwen3.5:4b`. Set exactly one active model line in your private environment. The local model is installed. `OLLAMA_NUM_CTX=8192` reserves context for sources, schemas, and the risk catalog; it is not a guarantee that every accepted long document fits. `OLLAMA_THINK=false` disables optional thinking; unset omits that parameter. The per-call timeout is now 180 seconds. The initial historical baselines used 60 seconds; the [expanded comparison](evaluations/EXPANDED_COMPARISON_2026-10-06.md) uses the current 180-second budget. A [Llama/catalog development smoke](evaluations/LLAMA_RISK_CATALOG_2026-10-06.md) completed 2/3 cases, matched no accepted risk levels, and exposed unsupported signals. The catalog is experimental guidance, not a quality-approved policy. The [historical Qwen smoke](evaluations/QWEN_REPAIR_SMOKE_2026-10-06.md) remains available. Preserve existing private environment values, change the model explicitly, and restart the backend.
 
 ### Groq alternative
 
@@ -175,9 +175,11 @@ npm run build
 npm run format:check
 ```
 
-Verification result: **46 backend tests and eight frontend tests passed**, with successful type checking/build and formatting checks. One upstream Starlette TestClient deprecation warning remains.
+Verification result: **48 backend tests and 13 frontend tests passed**, with successful type checking/build and formatting checks. One upstream Starlette TestClient deprecation warning remains.
 
 The deterministic suite covers ingestion and valid text PDF/EML attachments, queue behavior, restart/idempotency, bounded retries/timeouts, partial results, provider mappings/errors, selected graph contribution, and UI ingestion/error handling. Browser smoke checks covered desktop/mobile, paste and TXT upload, original text, and unavailable-provider retry. Successful model output is covered with explicit test doubles, not fabricated application data.
+
+The [expanded comparison](evaluations/EXPANDED_COMPARISON_2026-10-06.md) covers fifteen JSON cases with Groq GPT-OSS, Ollama Llama and Qwen. Mistral was cancelled by the user and excluded. New synthetic cases cover benign urgency, prompt injection, allegations, ambiguous identities and changed payment suffixes. Use the isolated comparison runner documented in the evaluation guide; full local reports are ignored because they contain source data.
 
 See [evaluation protocol and collector](evaluations/README.md). Historical Llama and Groq evaluations are linked above. The Llama/catalog development smoke is linked above and is not a full baseline or held-out evaluation. Manually review facts, risk signals, evidence, and unsupported claims. The ten seed emails are a small regression set, not general accuracy evidence.
 
@@ -193,6 +195,8 @@ Structured analysis logs include message/run IDs, stage, attempt, outcome, provi
 | Ollama default | Local operation without API keys | Hardware/download requirements and unvalidated candidate model |
 | In-process queue | Small operational surface | Single process, no durable execution |
 | Conservative entity matching | Avoids unsupported identity merges | Duplicate entities may remain |
+
+After the expanded evaluation, prioritize evidence-backed signal extraction, separately evaluated risk policy, explicit graph entity typing, and output/token budgets before claiming model-quality improvements.
 
 With more time: introduce durable jobs with restart-safe claims/idempotency; adopt PostgreSQL when deployment/contention justifies it; manage inference capacity independently of worker count; add server-side filtered graph/neighborhood queries and large-graph layout offloading; expand held-out evaluation and model comparison; add analyst corrections/audit/history; implement external-access auth, isolation, and retention. Add queue/stage percentiles, error rates, tracing, and actionable alerts as operational needs emerge. OCR and cross-email investigations follow explicit product requirements. Microservices and graph databases require measured resource, ownership, or query justification.
 

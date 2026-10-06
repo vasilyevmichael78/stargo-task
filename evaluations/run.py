@@ -9,8 +9,13 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 
-def request(base, path, method="GET"):
-    req = Request(base.rstrip("/") + path, method=method)
+def request(base, path, method="GET", body=None):
+    req = Request(
+        base.rstrip("/") + path,
+        method=method,
+        data=json.dumps(body).encode() if body is not None else None,
+        headers={"Content-Type": "application/json"} if body is not None else {},
+    )
     try:
         with urlopen(req, timeout=15) as response:
             return json.load(response)
@@ -36,14 +41,14 @@ def main():
         default=900,
         help="Per-case deadline in seconds; default 900.",
     )
-    parser.add_argument("--ids", nargs="*", help="Seed IDs; default all ten cases.")
+    parser.add_argument("--ids", nargs="*", help="Regression IDs; default all cases.")
     args = parser.parse_args()
     if args.timeout <= 0:
         parser.error("--timeout must be positive")
     cases = json.loads(Path(__file__).with_name("cases.json").read_text())["cases"]
     selected = set(args.ids) if args.ids else {case["id"] for case in cases}
     if selected - {case["id"] for case in cases}:
-        parser.error("Unknown seed ID")
+        parser.error("Unknown regression ID")
     report = {
         "started_at": datetime.now(timezone.utc).isoformat(),
         "health": request(args.base_url, "/health"),
@@ -55,7 +60,25 @@ def main():
         if case["id"] not in selected:
             continue
         started = time.monotonic()
-        submission = request(args.base_url, f"/emails/{case['id']}/analyses", "POST")
+        if "email" in case:
+            email = case["email"]
+            raw = (
+                "\n".join(
+                    [
+                        "From: " + email["from"],
+                        "To: " + ", ".join(email["to"]),
+                        "Date: " + email["date"],
+                        "Subject: " + email["subject"],
+                    ]
+                )
+                + "\n\n"
+                + email["body"]
+            )
+            submission = request(args.base_url, "/emails", "POST", {"raw_text": raw})
+        else:
+            submission = request(
+                args.base_url, f"/emails/{case['id']}/analyses", "POST"
+            )
         run_id = submission["analysis_run_id"]
         while True:
             run = request(args.base_url, f"/analyses/{run_id}")
@@ -69,7 +92,7 @@ def main():
                 }
                 break
             time.sleep(2)
-        detail = request(args.base_url, f"/emails/{case['id']}")
+        detail = request(args.base_url, f"/emails/{submission['message_id']}")
         risk = run.get("risk") or {}
         report["cases"].append(
             {

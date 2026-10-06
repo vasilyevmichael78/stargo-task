@@ -193,3 +193,14 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Evidence:** evaluations/LLAMA_RISK_CATALOG_2026-10-06.md; raw report ignored. Do not count prior selected successful results or mocked providers as current-model quality evidence.
 - **Corrections:** a combined patch failed to match API context and applied no changes; smaller patches completed it. First frontend-test append used a root-relative path while already in frontend, failed before adding tests, then was corrected and tests rerun. First browser lookup used the stale historical port 5174; inventory showed no tab, and process inspection identified this project's actual Vite port 5173. No unrelated processes stopped.
 - **Outcome:** Llama/catalog/SQLite/editor feature delivered; quality improvement is not demonstrated. Full ten-case, held-out, adversarial and repeatability evaluation not executed. No pushes/remotes/history rewrite.
+
+### Configurable model examples and 180-second inference budget
+
+- **Started:** 2026-10-06 12:30:08 UTC.
+- **User request:** add Qwen 3.5 4B to the environment example and change the timeout to 180 seconds; subsequent message supplied a failed extraction log.
+- **Inspection:** private configuration currently selects qwen3.5:4b with a 120-second timeout. Preserve that explicit model choice and credentials. The reported run failed both extraction attempts at facts[3].evidence[0].quote with quote_mismatch, taking roughly 28–29 seconds per call; it did not time out. Raw invalid outputs are not retained, so their exact problematic quote cannot be reconstructed.
+- **Scope:** align private/example/default per-call timeout to 180, document both installed model choices, and extend the evaluation collector deadline to accommodate the unchanged maximum of four calls. Preserve validators and one-retry budget.
+
+- **Completed:** 2026-10-06T12:35:50.830472+00:00. Private configuration retains Qwen and now loads timeout=180; example/default timeout=180 and a separate commented Qwen alternative are verified. Updated collector deadline to 900 seconds so it can cover four 180-second calls plus backoff. No validators or retry counts changed.
+- **Checks:** 35 backend tests passed; Ruff checks and diff whitespace passed; collector --help verified; Settings loaded private/example configurations as expected without printing credentials; /health confirms running backend with Qwen. Private .env remains ignored. No new real inference/semantic evaluation or frontend checks were performed for this configuration-only block. Existing Starlette warning remains.
+- **Diagnostic limitation:** reported failure is an exact-quote mismatch in extraction, not HTTP/provider failure or timeout; Agent B never ran. Larger time budget does not fix this error. Raw failed outputs are intentionally not persisted, so precise offending text is unavailable.

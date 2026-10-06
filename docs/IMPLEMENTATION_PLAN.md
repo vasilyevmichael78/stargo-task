@@ -75,7 +75,7 @@ Planned `backend/.env.example`:
 
 ```dotenv
 LLM_PROVIDER=ollama
-LLM_TIMEOUT_SECONDS=60
+LLM_TIMEOUT_SECONDS=180
 LLM_MAX_RETRIES=1
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=
@@ -103,7 +103,7 @@ Separate system instructions from untrusted email/attachment content. Require th
 
 Run analysis inside the backend process, with one concurrent run and persisted lifecycle state: `queued`, `extracting`, `assessing`, `completed`, `failed`, `interrupted`. Use a bounded pending queue; reject excess submissions with a visible retryable response rather than accumulating unlimited tasks. Set an initial cap of 20 pending runs. On startup, mark unfinished runs interrupted; do not claim durable execution or automatic recovery. Retry creates a new run and may reuse valid extraction only when its source, schema, and prompt metadata match.
 
-Use a 60-second per-call timeout and at most one additional provider call per stage. Retry only transient timeout/unavailable/rate-limit errors, respecting a bounded Retry-After delay. An invalid response may consume the additional call as a schema-repair attempt. Authentication/configuration errors fail immediately. Do not stack independent repair and retry budgets. Preserve valid A output if B fails.
+Use a configurable 180-second per-call timeout (the initial 60-second setting was increased at the user's request) and at most one additional provider call per stage. Retry only transient timeout/unavailable/rate-limit errors, respecting a bounded Retry-After delay. An invalid response may consume the additional call as a schema-repair attempt. Authentication/configuration errors fail immediately. Do not stack independent repair and retry budgets. Preserve valid A output if B fails.
 
 Normalize errors as configuration, authentication, rate_limit, timeout, unavailable, invalid_output, or invalid_input. Return safe error codes/messages and retryability. Mock results exist only in explicit tests.
 

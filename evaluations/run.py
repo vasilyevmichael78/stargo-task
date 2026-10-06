@@ -31,7 +31,10 @@ def main():
         "--output", required=True, help="Local report path; contains source data."
     )
     parser.add_argument(
-        "--timeout", type=int, default=300, help="Per-case deadline in seconds."
+        "--timeout",
+        type=int,
+        default=900,
+        help="Per-case deadline in seconds; default 900.",
     )
     parser.add_argument("--ids", nargs="*", help="Seed IDs; default all ten cases.")
     args = parser.parse_args()

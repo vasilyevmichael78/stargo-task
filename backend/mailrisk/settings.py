@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ROOT / ".env", extra="ignore")
     llm_provider: str = "ollama"
-    llm_timeout_seconds: float = Field(default=60, gt=0, le=300)
+    llm_timeout_seconds: float = Field(default=180, gt=0, le=300)
     llm_max_retries: int = Field(default=1, ge=0, le=1)
     ollama_base_url: str = "http://localhost:11434"
     ollama_model: str = "llama3.2:3b"

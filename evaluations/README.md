@@ -54,3 +54,7 @@ Runtime repair never receives benchmark expected answers. It receives only origi
 ## Editable catalog experiments
 
 The [Llama/catalog smoke](LLAMA_RISK_CATALOG_2026-10-06.md) used policy version 2, orchestration version 3, and 8192-token Ollama context. Record risk_context_revision_id and risk_context_hash for every run. Compare catalog changes on development cases, then independent held-out cases. Hypothetical catalog examples must never be accepted as source evidence, and missing threat/allegation signals must not automatically reduce unrelated risk. This is full-catalog context injection, not retrieval-based RAG. The complete catalog snapshot stays in local SQLite while API evaluation reports retain its revision/version/hash.
+
+## Timeout budgets
+
+The current application per-call timeout is 180 seconds. Two stages with one additional call each can consume approximately 720 seconds plus backoff, excluding queue wait. The collector now defaults to a 900-second per-case deadline; override --timeout for a different configuration or queue backlog. An evaluation deadline does not cancel server work. Historical reports retain their actual 60-second settings. More time can reduce timeout failures but cannot correct quote mismatches, schema errors, or unsupported risk conclusions.

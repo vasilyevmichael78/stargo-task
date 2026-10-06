@@ -45,9 +45,11 @@ Install Ollama using its [official instructions](https://docs.ollama.com/quickst
 ollama serve
 # In another terminal:
 ollama pull llama3.2:3b
+# Optional alternative:
+ollama pull qwen3.5:4b
 ```
 
-The current model is `OLLAMA_MODEL=llama3.2:3b`, selected explicitly after the Qwen experiment. The local model is installed. `OLLAMA_NUM_CTX=8192` reserves context for sources, schemas, and the risk catalog; it is not a guarantee that every accepted long document fits. `OLLAMA_THINK=false` disables optional thinking; unset omits that parameter. The per-call timeout remains 60 seconds. A [Llama/catalog development smoke](evaluations/LLAMA_RISK_CATALOG_2026-10-06.md) completed 2/3 cases, matched no accepted risk levels, and exposed unsupported signals. The catalog is experimental guidance, not a quality-approved policy. The [historical Qwen smoke](evaluations/QWEN_REPAIR_SMOKE_2026-10-06.md) remains available. Preserve existing private environment values, change the model explicitly, and restart the backend.
+The example selects `OLLAMA_MODEL=llama3.2:3b`; it also includes the alternative `qwen3.5:4b`. Set exactly one active model line in your private environment. The local model is installed. `OLLAMA_NUM_CTX=8192` reserves context for sources, schemas, and the risk catalog; it is not a guarantee that every accepted long document fits. `OLLAMA_THINK=false` disables optional thinking; unset omits that parameter. The per-call timeout is now 180 seconds. The historical reports below used 60 seconds; they do not evaluate this larger time budget. A [Llama/catalog development smoke](evaluations/LLAMA_RISK_CATALOG_2026-10-06.md) completed 2/3 cases, matched no accepted risk levels, and exposed unsupported signals. The catalog is experimental guidance, not a quality-approved policy. The [historical Qwen smoke](evaluations/QWEN_REPAIR_SMOKE_2026-10-06.md) remains available. Preserve existing private environment values, change the model explicitly, and restart the backend.
 
 ### Groq alternative
 
@@ -72,8 +74,8 @@ See [backend/.env.example](backend/.env.example). Environment variables override
 | Setting | Default / behavior |
 | --- | --- |
 | `LLM_PROVIDER` | `ollama`; alternatives: `groq` |
-| `LLM_TIMEOUT_SECONDS` | 60 seconds per call, including an outer timeout |
-| `OLLAMA_MODEL` | `llama3.2:3b`, experimental local model |
+| `LLM_TIMEOUT_SECONDS` | 180 seconds per call, including an outer timeout |
+| `OLLAMA_MODEL` | Example default `llama3.2:3b`; alternative `qwen3.5:4b` |
 | `OLLAMA_NUM_CTX` | 8192 tokens for Ollama; configurable 2048–32768 |
 | `RISK_CONTEXT_PATH` | `policies/risk_context.json`; first-run SQLite bootstrap only |
 | `OLLAMA_THINK` | `false` in the example environment; unset omits the optional provider parameter |
@@ -127,7 +129,7 @@ Graph data is persisted in SQLite; `/graph` aggregates only selected successful 
 
 - One active analysis, up to 20 pending runs, persisted processing states. Duplicate active submissions for a message reuse its run ID.
 - Restart marks unfinished runs `interrupted`; manual retry creates a new run. Retry currently reruns both stages; partial extraction remains in history.
-- Transient timeout/unavailable/rate-limit errors receive at most one retry; numeric Retry-After is capped at five seconds. Invalid output uses that same budget for repair: the next request carries the previous output (up to 8,000 characters) and up to 20 specific schema/evidence/reference errors as untrusted data. Repair returns a complete replacement object and reruns the same validators; it does not establish semantic correctness. Transient retries do not create repair feedback. Authentication/configuration errors do not retry.
+- Transient timeout/unavailable/rate-limit errors receive at most one retry; numeric Retry-After is capped at five seconds. Increasing the timeout does not repair invalid schema/evidence. Invalid output uses that same budget for repair: the next request carries the previous output (up to 8,000 characters) and up to 20 specific schema/evidence/reference errors as untrusted data. Repair returns a complete replacement object and reruns the same validators; it does not establish semantic correctness. Transient retries do not create repair feedback. Authentication/configuration errors do not retry.
 - Valid Agent A output is saved before Agent B. Failed processing never receives a `none` risk assessment.
 - Queue saturation returns the persisted message ID; the UI opens it and retains the submission error so retry does not create another email.
 - Inputs: UTF-8 `.txt`, MIME `.eml` with plain-text or HTML bodies and supported text/PDF attachments, and unencrypted text-layer `.pdf`. HTML is converted to inert text with link targets retained; script/style/head content is omitted. Image-only/encrypted PDFs are rejected. Unsupported attachments generate a visible note. No OCR.

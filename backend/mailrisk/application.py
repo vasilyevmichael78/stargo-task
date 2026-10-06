@@ -17,6 +17,9 @@ logger = logging.getLogger("mailrisk.analysis")
 class AnalysisService:
     def __init__(self, store, provider, settings):
         self.store, self.provider, self.settings = store, provider, settings
+        self.store.ensure_risk_context(
+            self.settings.path(self.settings.risk_context_path)
+        )
         self.queue = asyncio.Queue(maxsize=20)
         self.task = None
 
@@ -52,14 +55,22 @@ class AnalysisService:
                 self.settings.agent_repair_system_prompt_path,
             )
         ]
+        context_revision = self.store.active_risk_context()
+        risk_context = context_revision["catalog"]
         provenance = {
             "provider": self.settings.llm_provider,
             "model": self.settings.model,
             "schema_version": "1",
-            "policy_version": "1",
-            "orchestration_version": "2",
+            "policy_version": risk_context["version"],
+            "risk_context_snapshot": risk_context,
+            "risk_context_hash": context_revision["hash"],
+            "risk_context_revision_id": context_revision["revision_id"],
+            "orchestration_version": "3",
             "generation_settings": {
                 "temperature": 0,
+                "ollama_num_ctx": self.settings.ollama_num_ctx
+                if self.settings.llm_provider == "ollama"
+                else None,
                 "ollama_think": self.settings.ollama_think
                 if self.settings.llm_provider == "ollama"
                 else None,
@@ -176,6 +187,8 @@ class AnalysisService:
                         "error_code": error.code if error else None,
                         "provider": run["provider"],
                         "model": run["model"],
+                        "policy_version": run["policy_version"],
+                        "risk_context_hash": run["risk_context_hash"],
                         "repair_prompt_hash": run["prompt_hashes"][2]
                         if entry["mode"] == "repair"
                         else None,
@@ -219,7 +232,11 @@ class AnalysisService:
                 run,
                 "assessment",
                 Assessment,
-                {"extraction": extraction.model_dump(), "sources": message["sources"]},
+                {
+                    "extraction": extraction.model_dump(),
+                    "sources": message["sources"],
+                    "risk_policy_context": run["risk_context_snapshot"],
+                },
                 message["sources"],
                 run["prompt_snapshots"][1],
             )

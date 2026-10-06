@@ -257,3 +257,115 @@ test("file ingestion sends the chosen file as multipart data", async () => {
   expect(call[0]).toBe("/api/emails/upload");
   expect((call[1].body as FormData).get("file")).toBe(file);
 });
+
+test("risk catalog editor validates JSON and saves with the loaded revision", async () => {
+  const revision = {
+    revision_id: "revision-1",
+    version: "2",
+    hash: "hash-1",
+    created_at: "2026-10-06",
+    catalog: { version: "2", description: "Initial guidance" },
+  };
+  const fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
+    if (init?.method === "PUT")
+      return new Response(
+        JSON.stringify({
+          ...revision,
+          revision_id: "revision-2",
+          catalog: JSON.parse(init.body as string).catalog,
+        }),
+        { status: 200 },
+      );
+    return new Response(
+      JSON.stringify(
+        url.endsWith("/risk-context")
+          ? revision
+          : url.endsWith("/emails")
+            ? []
+            : { status: "ok", provider: "ollama", model: "llama3.2:3b" },
+      ),
+      { status: 200 },
+    );
+  });
+  vi.stubGlobal("fetch", fetchMock);
+  HTMLDialogElement.prototype.showModal = function () {
+    this.setAttribute("open", "");
+  };
+  render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Risk catalog" }));
+  const editor = await screen.findByLabelText("Risk catalog JSON");
+  await waitFor(() =>
+    expect(editor).toHaveValue(JSON.stringify(revision.catalog, null, 2)),
+  );
+  fireEvent.change(editor, { target: { value: "not JSON" } });
+  fireEvent.click(screen.getByRole("button", { name: "Save catalog" }));
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "Enter a valid JSON object",
+  );
+  expect(
+    fetchMock.mock.calls.filter(([, init]) => init?.method === "PUT"),
+  ).toHaveLength(0);
+  const changed = { ...revision.catalog, version: "3" };
+  fireEvent.change(editor, { target: { value: JSON.stringify(changed) } });
+  fireEvent.click(screen.getByRole("button", { name: "Save catalog" }));
+  expect(
+    await screen.findByText(
+      "Risk catalog saved. Existing analyses keep their original policy.",
+    ),
+  ).toBeInTheDocument();
+  const call = fetchMock.mock.calls.find(([, init]) => init?.method === "PUT");
+  expect(JSON.parse(call?.[1]?.body as string)).toEqual({
+    expected_revision_id: "revision-1",
+    catalog: changed,
+  });
+});
+
+test("risk catalog conflict preserves edits until explicit reload", async () => {
+  const { default: RiskContextDialog } = await import("./RiskContextDialog");
+  let loads = 0;
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (_url: string, init?: RequestInit) => {
+      if (init?.method === "PUT")
+        return new Response(
+          JSON.stringify({
+            error: {
+              message:
+                "Risk catalog changed. Reload the current revision before saving.",
+            },
+          }),
+          { status: 409 },
+        );
+      loads += 1;
+      return new Response(
+        JSON.stringify({
+          revision_id: `revision-${loads}`,
+          version: `${loads}`,
+          hash: "hash",
+          created_at: "2026-10-06",
+          catalog: { version: `${loads}` },
+        }),
+        { status: 200 },
+      );
+    }),
+  );
+  HTMLDialogElement.prototype.showModal = function () {
+    this.setAttribute("open", "");
+  };
+  render(<RiskContextDialog onClose={() => {}} />);
+  const editor = await screen.findByLabelText("Risk catalog JSON");
+  await waitFor(() => expect(editor).toBeEnabled());
+  const edits = '{"version":"my-edits"}';
+  fireEvent.change(editor, { target: { value: edits } });
+  fireEvent.click(screen.getByRole("button", { name: "Save catalog" }));
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "Risk catalog changed",
+  );
+  expect(editor).toHaveValue(edits);
+  expect(screen.getByRole("button", { name: "Save catalog" })).toBeDisabled();
+  fireEvent.click(screen.getByRole("button", { name: "Reload current" }));
+  await waitFor(() =>
+    expect(editor).toHaveValue(JSON.stringify({ version: "2" }, null, 2)),
+  );
+  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+});

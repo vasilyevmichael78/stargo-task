@@ -1,3 +1,10 @@
+export type RiskContextRevision = {
+  revision_id: string;
+  version: string;
+  hash: string;
+  catalog: Record<string, unknown>;
+  created_at: string;
+};
 export type RiskLevel = "none" | "low" | "medium" | "high";
 export type Email = {
   id: string;
@@ -59,7 +66,15 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
     throw new ApiError(
       typeof error === "string"
         ? error
-        : (error?.message ??
+        : Array.isArray(error)
+          ? error
+              .slice(0, 3)
+              .map(
+                (item: { loc?: (string | number)[]; msg?: string }) =>
+                  `${item.loc?.slice(1).join(".") || "catalog"}: ${item.msg || "Invalid value"}`,
+              )
+              .join("; ")
+          : (error?.message ??
             data?.error?.message ??
             "The request could not be completed. Please try again."),
       response.status,

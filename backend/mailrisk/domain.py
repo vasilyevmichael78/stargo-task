@@ -2,7 +2,7 @@
 
 from typing import Literal, Protocol
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class StrictModel(BaseModel):
@@ -33,6 +33,47 @@ class Risk(StrictModel):
     level: Literal["none", "low", "medium", "high"]
     rationale: str = Field(min_length=1)
     tags: list[str]
+
+
+class RiskSignal(StrictModel):
+    id: str = Field(min_length=1, max_length=64)
+    description: str = Field(min_length=1, max_length=500)
+    examples: list[str] = Field(default_factory=list, max_length=3)
+    counterexamples: list[str] = Field(default_factory=list, max_length=3)
+
+
+class RiskGuidanceRule(StrictModel):
+    id: str = Field(min_length=1, max_length=64)
+    required_signals: list[str] = Field(min_length=1, max_length=6)
+    suggested_level: Literal["none", "low", "medium", "high"]
+    explanation: str = Field(min_length=1, max_length=500)
+
+
+class RiskContext(StrictModel):
+    version: str = Field(min_length=1, max_length=32)
+    description: str = Field(min_length=1, max_length=500)
+    levels: dict[Literal["none", "low", "medium", "high"], str]
+    signals: list[RiskSignal] = Field(min_length=1, max_length=32)
+    rules: list[RiskGuidanceRule] = Field(min_length=1, max_length=20)
+
+    @model_validator(mode="after")
+    def validate_catalog(self):
+        if set(self.levels) != {"none", "low", "medium", "high"} or any(
+            not value.strip() for value in self.levels.values()
+        ):
+            raise ValueError("All four risk levels require definitions.")
+        signal_ids = [signal.id for signal in self.signals]
+        rule_ids = [rule.id for rule in self.rules]
+        if len(set(signal_ids)) != len(signal_ids) or len(set(rule_ids)) != len(
+            rule_ids
+        ):
+            raise ValueError("Signal and rule IDs must be unique within each group.")
+        for rule in self.rules:
+            if len(set(rule.required_signals)) != len(rule.required_signals) or not set(
+                rule.required_signals
+            ).issubset(signal_ids):
+                raise ValueError("Rules require distinct existing signal IDs.")
+        return self
 
 
 class Entity(StrictModel):
@@ -80,6 +121,8 @@ class LLMProvider(Protocol):
 
 
 class Store(Protocol):
+    def active_risk_context(self) -> dict | None: ...
+    def ensure_risk_context(self, path) -> dict: ...
     def message(self, message_id: str) -> dict: ...
     def run(self, run_id: str) -> dict: ...
     def new_run(self, message_id: str, provenance: dict) -> str: ...

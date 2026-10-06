@@ -1,0 +1,205 @@
+{
+  "version": "2",
+  "description": "Advisory local triage rubric. Examples and counterexamples illustrate signals; they are never evidence. Use source-backed combinations, preserve uncertainty, and avoid keyword-only decisions.",
+  "levels": {
+    "none": "Ordinary correspondence without a concerning signal.",
+    "low": "Weak or ambiguous signal without a credible concerning combination.",
+    "medium": "Credible concern needing analyst review; uncertainty remains.",
+    "high": "Strong source-supported signals warrant urgent analyst review; this is not proof of wrongdoing."
+  },
+  "signals": [
+    {
+      "id": "payment_request",
+      "description": "A request to transfer money or settle an invoice.",
+      "examples": [
+        "Send the vendor payment."
+      ],
+      "counterexamples": []
+    },
+    {
+      "id": "urgency",
+      "description": "Pressure to act before normal checks.",
+      "examples": [
+        "Complete this within the next hour."
+      ],
+      "counterexamples": [
+        "A routine scheduled deadline alone is not suspicious."
+      ]
+    },
+    {
+      "id": "secrecy",
+      "description": "Concealment from normal approvers or reviewers.",
+      "examples": [
+        "Keep the transfer outside the approval workflow."
+      ],
+      "counterexamples": [
+        "Authorized handling of confidential material is not concealment."
+      ]
+    },
+    {
+      "id": "identity_mismatch",
+      "description": "A claimed identity conflicts with explicit sender/address evidence.",
+      "examples": [
+        "An executive claim accompanies a visibly different sender domain."
+      ],
+      "counterexamples": [
+        "An unfamiliar name alone does not prove impersonation."
+      ]
+    },
+    {
+      "id": "changed_payment_details",
+      "description": "The source explicitly describes replacement payment details.",
+      "examples": [
+        "Use the replacement beneficiary account."
+      ],
+      "counterexamples": [
+        "An account appearing once does not establish a change."
+      ]
+    },
+    {
+      "id": "confidential_forwarding",
+      "description": "A request to move confidential material outside its authorized audience.",
+      "examples": [
+        "Send the restricted pricing sheet to my private mailbox."
+      ],
+      "counterexamples": [
+        "Approved internal sharing is not exfiltration."
+      ]
+    },
+    {
+      "id": "departure",
+      "description": "The source explicitly states planned departure from an organization.",
+      "examples": [
+        "My employment ends next week."
+      ],
+      "counterexamples": [
+        "Do not infer departure from an out-of-office notice."
+      ]
+    },
+    {
+      "id": "preannouncement_trading",
+      "description": "Trading advice explicitly linked to nonpublic forthcoming information.",
+      "examples": [
+        "Buy before our undisclosed merger becomes public."
+      ],
+      "counterexamples": [
+        "Ordinary public-market discussion is insufficient."
+      ]
+    },
+    {
+      "id": "delete_request",
+      "description": "A request to erase the relevant communication or record.",
+      "examples": [
+        "Remove this conversation after acting."
+      ],
+      "counterexamples": [
+        "Routine retention housekeeping is not proof of concealment."
+      ]
+    },
+    {
+      "id": "credential_request",
+      "description": "A request to enter, reveal, or reset credentials.",
+      "examples": [
+        "Enter your password to restore access."
+      ],
+      "counterexamples": [
+        "Routine maintenance without credential collection is insufficient."
+      ]
+    },
+    {
+      "id": "suspicious_link",
+      "description": "An explicit link/domain inconsistency supports suspicion.",
+      "examples": [
+        "The displayed organization and the destination domain differ."
+      ],
+      "counterexamples": [
+        "Never assume a domain is malicious without source support."
+      ]
+    },
+    {
+      "id": "threat",
+      "description": "Explicit language threatening harm or retaliation.",
+      "examples": [
+        "Comply or I will harm you."
+      ],
+      "counterexamples": [
+        "A normal payment reminder alone is not a threat."
+      ]
+    },
+    {
+      "id": "unverified_allegation",
+      "description": "The message alleges misconduct without independent verification.",
+      "examples": [
+        "An anonymous writer alleges concealed losses."
+      ],
+      "counterexamples": [
+        "An allegation is not proof of the alleged act."
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "payment_impersonation",
+      "required_signals": [
+        "payment_request",
+        "urgency",
+        "secrecy",
+        "identity_mismatch"
+      ],
+      "suggested_level": "high",
+      "explanation": "Strong combined payment/identity/concealment signals warrant urgent verification."
+    },
+    {
+      "id": "payment_change",
+      "required_signals": [
+        "payment_request",
+        "changed_payment_details"
+      ],
+      "suggested_level": "medium",
+      "explanation": "Verify the change through an established channel; do not assert proven fraud."
+    },
+    {
+      "id": "departure_exfiltration",
+      "required_signals": [
+        "confidential_forwarding",
+        "departure"
+      ],
+      "suggested_level": "high",
+      "explanation": "Combined restricted forwarding and explicit departure warrant urgent review."
+    },
+    {
+      "id": "nonpublic_trading",
+      "required_signals": [
+        "preannouncement_trading",
+        "delete_request"
+      ],
+      "suggested_level": "high",
+      "explanation": "Nonpublic trading advice with deletion warrants urgent compliance review."
+    },
+    {
+      "id": "credential_phishing",
+      "required_signals": [
+        "credential_request",
+        "suspicious_link"
+      ],
+      "suggested_level": "high",
+      "explanation": "Credential collection with source-supported domain inconsistency warrants urgent review."
+    },
+    {
+      "id": "threat_review",
+      "required_signals": [
+        "threat"
+      ],
+      "suggested_level": "medium",
+      "explanation": "Review seriousness and specificity; explicit imminent harm may warrant high."
+    },
+    {
+      "id": "allegation_review",
+      "required_signals": [
+        "unverified_allegation"
+      ],
+      "suggested_level": "medium",
+      "explanation": "Review the claim while preserving its unverified status."
+    }
+  ]
+}

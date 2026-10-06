@@ -2,7 +2,7 @@
 
 ## Status and success criteria
 
-This is the approved implementation baseline, not a verification report. The mandatory application flow has now been implemented; see [README](../README.md) and [PROCESS](../PROCESS.md) for actual behavior and checks. Successful real inference remains pending provider setup. The primary target is the full-stack/pipeline track while meeting the mandatory UI requirements. The target implementation budget is 5–6 focused hours; record actual time honestly and account for documentation preparation separately.
+This is the approved implementation baseline, not a verification report. The mandatory application flow has now been implemented; see [README](../README.md) and [PROCESS](../PROCESS.md) for actual behavior and checks. Real provider experiments are documented in evaluations; semantic reliability remains insufficient for unattended triage. The primary target is the full-stack/pipeline track while meeting the mandatory UI requirements. The target implementation budget is 5–6 focused hours; record actual time honestly and account for documentation preparation separately.
 
 The mandatory outcome is a locally runnable application with ten seed emails, text/file ingestion, two real chained LLM stages, persisted results, a responsive inbox/detail UI, explicit failures, tests, and verified setup documentation. No paid API key is required: Ollama is the default. An interactive aggregate graph is a bonus after the mandatory flow works.
 
@@ -200,3 +200,11 @@ With more time, prioritize durable jobs with restart-safe claims/idempotency, th
 ## Delivery gate
 
 Mandatory flow works with real inference; unhappy paths are visible; selected results and graph evidence survive restart; setup is verified from lockfiles; tests/evaluation outcomes and actual time are recorded. README distinguishes implemented behavior from future design, documents explicit provider switching, and discloses limits. PROCESS captures real AI use, corrections, and autonomy. Do not sacrifice mandatory requirements for graph polish.
+
+## Approved risk-catalog extension
+
+The user requested rollback to llama3.2:3b and an editable JSON context catalog, persisted in SQLite with a simple React editor. Agent A remains unchanged; Agent B receives the complete active catalog as advisory context. No vector retrieval or deterministic risk engine is introduced. Examples illustrate signals and never count as email evidence.
+
+Bootstrap a new database from RISK_CONTEXT_PATH; validate structure, unique IDs, signal references and size. Persist immutable revisions and one active selection. GET/PUT /risk-context expose editing with expected_revision_id compare-and-save; stale writes return 409. New analyses snapshot version, revision ID and canonical hash; existing runs/results are unchanged. Validate restart persistence, duplicate-content idempotency, stale-save handling, stage isolation and immutable snapshots.
+
+The current catalog remains experimental: the three-case Llama smoke completed two cases but matched no expected risk levels. Prioritize evidence-bearing observed signals, prevention of example/signal leakage, and an independently reviewed rubric before treating this as deterministic policy. Expanded catalogs may require selective retrieval and explicit token-budget handling; a 16 KB catalog cap and 8192-token Ollama context do not solve arbitrary long-document ingestion.

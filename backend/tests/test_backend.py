@@ -588,6 +588,172 @@ async def test_assessment_repair_preserves_validated_extraction_and_prompt_snaps
     assert store.detail(mid)["selected_run"]["id"] == rid
     assert provider.extraction_calls == 1
     assert provider.assessment_calls == 2
-    assert run["orchestration_version"] == "2"
+    assert run["orchestration_version"] == "3"
     assert len(run["prompt_hashes"]) == 3
     assert len(run["prompt_snapshots"]) == 3
+
+
+def test_risk_catalog_validation_and_size(settings):
+    import copy
+
+    from mailrisk.risk_context import load_risk_context, parse_risk_context
+
+    catalog, _ = load_risk_context(settings.path(settings.risk_context_path))
+    for mutation in (
+        "duplicate_signal",
+        "duplicate_rule",
+        "unknown_signal",
+        "missing_level",
+        "oversized",
+    ):
+        invalid = copy.deepcopy(catalog)
+        if mutation == "duplicate_signal":
+            invalid["signals"].append(copy.deepcopy(invalid["signals"][0]))
+        elif mutation == "duplicate_rule":
+            invalid["rules"].append(copy.deepcopy(invalid["rules"][0]))
+        elif mutation == "unknown_signal":
+            invalid["rules"][0]["required_signals"] = ["unknown"]
+        elif mutation == "missing_level":
+            del invalid["levels"]["none"]
+        else:
+            invalid["signals"][0]["examples"] = ["PRIVATE_CATALOG_TEXT" * 2000]
+        with pytest.raises(AppError) as error:
+            parse_risk_context(json.dumps(invalid))
+        assert error.value.code == "configuration"
+        assert "PRIVATE_CATALOG_TEXT" not in str(error.value)
+    with pytest.raises(AppError):
+        parse_risk_context("not JSON")
+
+
+def test_catalog_revision_persistence_idempotency_and_conflict(settings):
+    import copy
+
+    store = SQLiteStore(settings.path(settings.database_path))
+    first = store.ensure_risk_context(settings.path(settings.risk_context_path))
+    assert (
+        store.save_risk_context(first["catalog"], first["revision_id"])["revision_id"]
+        == first["revision_id"]
+    )
+    changed = copy.deepcopy(first["catalog"])
+    changed["version"] = "test-new"
+    second = store.save_risk_context(changed, first["revision_id"])
+    assert second["hash"] != first["hash"]
+    assert (
+        SQLiteStore(settings.path(settings.database_path)).active_risk_context()
+        == second
+    )
+    # The file is only a bootstrap seed; restart must preserve UI edits.
+    assert store.ensure_risk_context(settings.path("absent-catalog.json")) == second
+    with pytest.raises(AppError) as error:
+        store.save_risk_context(first["catalog"], first["revision_id"])
+    assert error.value.status == 409
+    assert store.active_risk_context() == second
+    with store.connect() as db:
+        assert (
+            db.execute("SELECT count(*) FROM risk_context_revisions").fetchone()[0] == 2
+        )
+
+
+@pytest.mark.asyncio
+async def test_catalog_snapshot_is_only_sent_to_assessment(settings):
+    import copy
+
+    store = SQLiteStore(settings.path(settings.database_path))
+    mid, _ = store.ingest(normalize("Hello"))
+
+    class ContextProvider(FakeProvider):
+        expected = None
+
+        async def generate_structured(self, instructions, input, schema, timeout):
+            if "extraction" in input:
+                assert input["risk_policy_context"] == self.expected
+            else:
+                assert "risk_policy_context" not in input
+            assert len(input["sources"]) == 1
+            return await super().generate_structured(
+                instructions, input, schema, timeout
+            )
+
+    provider = ContextProvider()
+    service = AnalysisService(store, provider, settings)
+    first_context = store.active_risk_context()
+    provider.expected = first_context["catalog"]
+    first_run = service.submit(mid)
+    changed = copy.deepcopy(first_context["catalog"])
+    changed["version"] = "updated"
+    second_context = store.save_risk_context(changed, first_context["revision_id"])
+    await service.process(first_run)
+    assert store.run(first_run)["status"] == "completed"
+    assert (
+        store.run(first_run)["risk_context_revision_id"] == first_context["revision_id"]
+    )
+    assert store.run(first_run)["risk_context_hash"] == first_context["hash"]
+    provider.expected = changed
+    second_run = service.submit(mid)
+    await service.process(second_run)
+    assert store.run(second_run)["status"] == "completed"
+    assert (
+        store.run(second_run)["risk_context_revision_id"]
+        == second_context["revision_id"]
+    )
+    assert store.run(second_run)["policy_version"] == "updated"
+
+
+def test_catalog_http_edit_conflict_and_snapshot_exclusion(settings):
+    import copy
+
+    with TestClient(create_app(settings, FakeProvider())) as client:
+        first = client.get("/risk-context").json()
+        changed = copy.deepcopy(first["catalog"])
+        changed["version"] = "edited"
+        payload = {"expected_revision_id": first["revision_id"], "catalog": changed}
+        second = client.put("/risk-context", json=payload)
+        assert second.status_code == 200
+        assert second.json()["version"] == "edited"
+        assert client.put("/risk-context", json=payload).status_code == 409
+        bad = copy.deepcopy(second.json()["catalog"])
+        bad["rules"][0]["required_signals"] = ["missing"]
+        invalid = client.put(
+            "/risk-context",
+            json={"expected_revision_id": second.json()["revision_id"], "catalog": bad},
+        )
+        assert invalid.status_code == 422
+        assert client.get("/risk-context").json() == second.json()
+        rid = client.post("/emails", json={"raw_text": "Hello"}).json()[
+            "analysis_run_id"
+        ]
+        result = client.get("/analyses/" + rid).json()
+        assert result["policy_version"] == "edited"
+        assert result["risk_context_hash"]
+        assert "risk_context_snapshot" not in result
+        detail = client.get("/emails/" + result["message_id"]).json()
+        assert "risk_context_snapshot" not in detail["latest_run"]
+
+
+def test_catalog_bootstrap_failure_is_actionable(settings):
+    settings.risk_context_path = "missing-catalog.json"
+    with pytest.raises(RuntimeError, match="RISK_CONTEXT_PATH"):
+        create_app(settings, FakeProvider())
+
+
+def test_catalog_example_is_not_valid_source_evidence(settings):
+    from mailrisk.risk_context import load_risk_context
+
+    catalog, _ = load_risk_context(settings.path(settings.risk_context_path))
+    example = catalog["signals"][0]["examples"][0]
+    result = Extraction(
+        sender=None,
+        recipients=[],
+        date=None,
+        subject=None,
+        summary="Test",
+        facts=[
+            {
+                "kind": "payment",
+                "value": example,
+                "evidence": [{"source_id": "source", "quote": example}],
+            }
+        ],
+    )
+    with pytest.raises(AppError):
+        validate_evidence(result, [{"id": "source", "text": "Hello"}])

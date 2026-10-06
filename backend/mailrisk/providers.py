@@ -83,7 +83,7 @@ class OllamaProvider(HTTPProvider):
                     if self.settings.ollama_think is not None
                     else {}
                 ),
-                "options": {"temperature": 0},
+                "options": {"temperature": 0, "num_ctx": self.settings.ollama_num_ctx},
             },
         )
 

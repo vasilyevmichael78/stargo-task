@@ -969,3 +969,20 @@
     animation: none;
   }
 }
+
+.policyToolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+.policyDialog {
+  width: 820px;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+}
+.policyDialog .dialogFooter {
+  flex-wrap: wrap;
+}
+.policyDialog .muted {
+  overflow-wrap: anywhere;
+}

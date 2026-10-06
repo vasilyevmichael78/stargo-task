@@ -11,7 +11,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from .application import AnalysisService
-from .domain import AppError
+from .domain import AppError, RiskContext
 from .ingestion import MAX_UPLOAD, normalize, upload
 from .providers import create_provider
 from .settings import Settings
@@ -20,6 +20,11 @@ from .storage import SQLiteStore
 
 class TextInput(BaseModel):
     raw_text: str = Field(min_length=1, max_length=100_000)
+
+
+class RiskContextUpdate(BaseModel):
+    expected_revision_id: str = Field(min_length=1)
+    catalog: RiskContext
 
 
 def create_app(settings=None, provider=None):
@@ -41,7 +46,12 @@ def create_app(settings=None, provider=None):
     if settings.llm_provider == "groq" and not settings.groq_api_key:
         raise RuntimeError("Set GROQ_API_KEY in backend/.env before selecting Groq.")
     store = SQLiteStore(settings.path(settings.database_path))
-    service = AnalysisService(store, provider or create_provider(settings), settings)
+    try:
+        service = AnalysisService(
+            store, provider or create_provider(settings), settings
+        )
+    except AppError as error:
+        raise RuntimeError(error.message) from None
 
     @asynccontextmanager
     async def lifespan(app):
@@ -78,7 +88,7 @@ def create_app(settings=None, provider=None):
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins.split(","),
-        allow_methods=["GET", "POST"],
+        allow_methods=["GET", "POST", "PUT"],
         allow_headers=["Content-Type"],
     )
 
@@ -103,6 +113,16 @@ def create_app(settings=None, provider=None):
     def emails():
         return store.inbox()
 
+    @app.get("/risk-context")
+    def risk_context():
+        return store.active_risk_context()
+
+    @app.put("/risk-context")
+    def update_risk_context(input: RiskContextUpdate):
+        return store.save_risk_context(
+            input.catalog.model_dump(), input.expected_revision_id
+        )
+
     @app.get("/emails/{message_id}")
     def detail(message_id: str):
         result = store.detail(message_id)
@@ -110,6 +130,7 @@ def create_app(settings=None, provider=None):
         for key in ("latest_run", "selected_run"):
             if result[key]:
                 result[key].pop("prompt_snapshots", None)
+                result[key].pop("risk_context_snapshot", None)
         return result
 
     def ingest(content):
@@ -141,6 +162,7 @@ def create_app(settings=None, provider=None):
     def run(run_id: str):
         result = store.run(run_id)
         result.pop("prompt_snapshots", None)
+        result.pop("risk_context_snapshot", None)
         return result
 
     @app.get("/graph")

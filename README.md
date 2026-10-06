@@ -44,10 +44,10 @@ Install Ollama using its [official instructions](https://docs.ollama.com/quickst
 ```sh
 ollama serve
 # In another terminal:
-ollama pull qwen3.5:4b
+ollama pull llama3.2:3b
 ```
 
-The current candidate is `OLLAMA_MODEL=qwen3.5:4b` with `OLLAMA_BASE_URL=http://localhost:11434` and `OLLAMA_THINK=false` in the example environment. The model download (3.3 GB) is verified. A [three-case Qwen smoke](evaluations/QWEN_REPAIR_SMOKE_2026-10-06.md) preserved all three validated extractions but completed no assessments because both attempts timed out at 60 seconds; the current timeout/runtime configuration is not ready for reliable triage. This is an experimental selection, not proof of quality; the historical Llama baseline does not describe Qwen performance. Existing environment files are preserved by setup: change the model explicitly and restart the backend. Optional thinking is omitted from requests when `OLLAMA_THINK` is unset. Hardware affects latency; adjust the timeout if needed.
+The current model is `OLLAMA_MODEL=llama3.2:3b`, selected explicitly after the Qwen experiment. The local model is installed. `OLLAMA_NUM_CTX=8192` reserves context for sources, schemas, and the risk catalog; it is not a guarantee that every accepted long document fits. `OLLAMA_THINK=false` disables optional thinking; unset omits that parameter. The per-call timeout remains 60 seconds. A [Llama/catalog development smoke](evaluations/LLAMA_RISK_CATALOG_2026-10-06.md) completed 2/3 cases, matched no accepted risk levels, and exposed unsupported signals. The catalog is experimental guidance, not a quality-approved policy. The [historical Qwen smoke](evaluations/QWEN_REPAIR_SMOKE_2026-10-06.md) remains available. Preserve existing private environment values, change the model explicitly, and restart the backend.
 
 ### Groq alternative
 
@@ -73,7 +73,9 @@ See [backend/.env.example](backend/.env.example). Environment variables override
 | --- | --- |
 | `LLM_PROVIDER` | `ollama`; alternatives: `groq` |
 | `LLM_TIMEOUT_SECONDS` | 60 seconds per call, including an outer timeout |
-| `OLLAMA_MODEL` | `qwen3.5:4b`, experimental local candidate |
+| `OLLAMA_MODEL` | `llama3.2:3b`, experimental local model |
+| `OLLAMA_NUM_CTX` | 8192 tokens for Ollama; configurable 2048–32768 |
+| `RISK_CONTEXT_PATH` | `policies/risk_context.json`; first-run SQLite bootstrap only |
 | `OLLAMA_THINK` | `false` in the example environment; unset omits the optional provider parameter |
 | `LLM_MAX_RETRIES` | 1 additional call per stage maximum; 0 disables retries |
 | `AGENT_A_SYSTEM_PROMPT_PATH` | `prompts/extraction_system.txt` |
@@ -82,7 +84,15 @@ See [backend/.env.example](backend/.env.example). Environment variables override
 | `DATABASE_PATH` | `data/mail_risk.sqlite3` |
 | `CORS_ORIGINS` | localhost/127.0.0.1 frontend origins on 5173 |
 
-System prompts are version-controlled files, not multiline environment values. Each run snapshots them and records SHA-256 hashes, provider/model, schema/policy versions, stage attempts, latency, and available usage. Prompt snapshots are persisted locally but excluded from HTTP responses and routine logs. `.env`, runtime data, and private evaluation reports are ignored by Git.
+System prompts are version-controlled files, not multiline environment values. Each run snapshots them and records SHA-256 hashes, provider/model, schema/policy versions, stage attempts, latency, and available usage. Prompt and risk-catalog snapshots are persisted locally but excluded from analysis/detail responses and routine logs. The catalog has its own explicit editing endpoint. `.env`, runtime data, and private evaluation reports are ignored by Git.
+
+## Editable risk catalog
+
+Open **Risk catalog** in the React workspace to edit the JSON. It defines four severity levels, 13 signals with illustrative examples/counterexamples, and seven advisory combinations. Save validates IDs, references, structure, and a 16 KB normalized size bound. This is classification context, not vector retrieval, a deterministic policy engine, or verified company policy. The model still chooses the risk level; catalog examples must never become source evidence.
+
+SQLite stores immutable JSON revisions in `risk_context_revisions` and one active selection. The version-controlled file seeds a new database only; restarting or editing that file does not overwrite an existing active catalog. Use the editor/API to change it. Each new analysis snapshots the active revision, canonical JSON hash, and policy version. Changes do not rerun emails or alter old results. Identical content reuses a revision; update the human-readable version when the policy meaning changes. Retained revisions have no history/restore UI yet.
+
+`GET /risk-context` returns `{revision_id, version, hash, catalog, created_at}`. `PUT /risk-context` takes `{expected_revision_id, catalog}` and atomically activates the validated revision. Invalid input returns 422; a stale revision returns 409. The editor retains unsaved text on conflict and requires explicit reload before another save. This editor shares the MVP's trusted-local-user boundary.
 
 ## Architecture and domain boundaries
 
@@ -159,11 +169,11 @@ npm run build
 npm run format:check
 ```
 
-Verification result: **29 backend tests and six frontend tests passed**, with successful type checking/build and formatting checks. One upstream Starlette TestClient deprecation warning remains.
+Verification result: **35 backend tests and eight frontend tests passed**, with successful type checking/build and formatting checks. One upstream Starlette TestClient deprecation warning remains.
 
 The deterministic suite covers ingestion and valid text PDF/EML attachments, queue behavior, restart/idempotency, bounded retries/timeouts, partial results, provider mappings/errors, selected graph contribution, and UI ingestion/error handling. Browser smoke checks covered desktop/mobile, paste and TXT upload, original text, and unavailable-provider retry. Successful model output is covered with explicit test doubles, not fabricated application data.
 
-See [evaluation protocol and collector](evaluations/README.md). Historical Llama and Groq evaluations are linked above. The Qwen selection and repair policy change are a new configuration and require separate evaluation. Manually review facts, risk signals, evidence, and unsupported claims. The ten seed emails are a small regression set, not general accuracy evidence.
+See [evaluation protocol and collector](evaluations/README.md). Historical Llama and Groq evaluations are linked above. The Llama/catalog development smoke is linked above and is not a full baseline or held-out evaluation. Manually review facts, risk signals, evidence, and unsupported claims. The ten seed emails are a small regression set, not general accuracy evidence.
 
 ## Observability, trade-offs, and further work
 

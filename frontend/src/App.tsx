@@ -5,6 +5,7 @@ import styles from "./App.module.css";
 import IngestDialog from "./IngestDialog";
 import EmailInbox from "./EmailInbox";
 import EmailDetails from "./EmailDetails";
+import RiskContextDialog from "./RiskContextDialog";
 
 export default function App() {
   const [emails, setEmails] = useState<Email[]>([]);
@@ -20,6 +21,7 @@ export default function App() {
   } | null>(null);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
+  const [riskDialog, setRiskDialog] = useState(false);
   const [dialog, setDialog] = useState(false);
   const [retrying, setRetrying] = useState(false);
   const [health, setHealth] = useState<{
@@ -151,6 +153,14 @@ export default function App() {
               Add email
             </button>
           </section>
+          <div className={styles.policyToolbar}>
+            <button
+              className={styles.secondary}
+              onClick={() => setRiskDialog(true)}
+            >
+              Risk catalog
+            </button>
+          </div>
           <div className={styles.summary}>
             <div>
               <Mail size={18} />
@@ -215,6 +225,7 @@ export default function App() {
           </footer>
         </main>
       </div>
+      {riskDialog && <RiskContextDialog onClose={() => setRiskDialog(false)} />}
       {dialog && (
         <IngestDialog
           onClose={() => setDialog(false)}

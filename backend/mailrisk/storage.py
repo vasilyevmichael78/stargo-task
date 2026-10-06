@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 from uuid import uuid4
 
 from .domain import AppError
+from .risk_context import load_risk_context, parse_risk_context
 
 
 def now():
@@ -30,6 +31,8 @@ class SQLiteStore:
             CREATE TABLE IF NOT EXISTS entities(id TEXT PRIMARY KEY, type TEXT NOT NULL, label TEXT NOT NULL, canonical_key TEXT UNIQUE);
             CREATE TABLE IF NOT EXISTS entity_mentions(run_id TEXT NOT NULL REFERENCES analysis_runs(id), entity_id TEXT NOT NULL REFERENCES entities(id), evidence TEXT NOT NULL DEFAULT '[]', PRIMARY KEY(run_id,entity_id));
             CREATE TABLE IF NOT EXISTS relationships(id TEXT PRIMARY KEY, run_id TEXT NOT NULL REFERENCES analysis_runs(id), source_id TEXT NOT NULL REFERENCES entities(id), target_id TEXT NOT NULL REFERENCES entities(id), type TEXT NOT NULL, evidence TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS risk_context_revisions(id TEXT PRIMARY KEY, version TEXT NOT NULL, hash TEXT NOT NULL UNIQUE, content TEXT NOT NULL, created_at TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS risk_context_selection(id INTEGER PRIMARY KEY CHECK(id=1), revision_id TEXT NOT NULL REFERENCES risk_context_revisions(id));
             """)
             columns = {
                 row["name"] for row in db.execute("PRAGMA table_info(entity_mentions)")
@@ -52,6 +55,78 @@ class SQLiteStore:
             raise
         finally:
             db.close()
+
+    def active_risk_context(self):
+        with self.connect() as db:
+            row = db.execute(
+                "SELECT r.* FROM risk_context_revisions r JOIN risk_context_selection s ON s.revision_id=r.id WHERE s.id=1"
+            ).fetchone()
+        if not row:
+            return None
+        catalog, context_hash = parse_risk_context(row["content"])
+        if context_hash != row["hash"] or catalog["version"] != row["version"]:
+            raise AppError(
+                "configuration", "Stored risk catalog integrity check failed."
+            )
+        return {
+            "revision_id": row["id"],
+            "version": row["version"],
+            "hash": context_hash,
+            "catalog": catalog,
+            "created_at": row["created_at"],
+        }
+
+    def ensure_risk_context(self, path):
+        current = self.active_risk_context()
+        if current is not None:
+            return current
+        catalog, _ = load_risk_context(path)
+        return self.save_risk_context(catalog)
+
+    def save_risk_context(self, catalog, expected_revision_id=None):
+        catalog, context_hash = parse_risk_context(encode(catalog))
+        with self.connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            current = db.execute(
+                "SELECT revision_id FROM risk_context_selection WHERE id=1"
+            ).fetchone()
+            if (current["revision_id"] if current else None) != expected_revision_id:
+                raise AppError(
+                    "conflict",
+                    "Risk catalog changed. Reload the current revision before saving.",
+                    False,
+                    409,
+                )
+            existing = db.execute(
+                "SELECT id FROM risk_context_revisions WHERE hash=?", (context_hash,)
+            ).fetchone()
+            revision_id = existing["id"] if existing else str(uuid4())
+            if not existing:
+                db.execute(
+                    "INSERT INTO risk_context_revisions VALUES (?,?,?,?,?)",
+                    (
+                        revision_id,
+                        catalog["version"],
+                        context_hash,
+                        encode(catalog),
+                        now(),
+                    ),
+                )
+            db.execute(
+                "INSERT INTO risk_context_selection VALUES (1,?) ON CONFLICT(id) DO UPDATE SET revision_id=excluded.revision_id",
+                (revision_id,),
+            )
+            created_at = db.execute(
+                "SELECT created_at FROM risk_context_revisions WHERE id=?",
+                (revision_id,),
+            ).fetchone()["created_at"]
+        return {
+            "revision_id": revision_id,
+            "version": catalog["version"],
+            "hash": context_hash,
+            "catalog": catalog,
+            "created_at": created_at,
+        }
 
     def ingest(self, content, message_id=None):
         message_id = message_id or str(uuid4())

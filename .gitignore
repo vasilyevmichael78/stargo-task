@@ -46,3 +46,6 @@ test-results/
 
 # Local real-inference reports can contain source content
 /evaluations/reports/
+
+# TypeScript incremental build cache
+*.tsbuildinfo

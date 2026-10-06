@@ -70,3 +70,13 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Design simplification:** SQLite stores normalized message/source data and extraction/assessment/provenance as JSON payloads alongside relational entities, mentions, and relationships, rather than separate tables for every value object. Retry starts both stages afresh; previous partial extraction remains available in history. These are deliberate MVP deviations, documented in README.
 - **Outcome:** backend logical block implemented and deterministic gates passed; live provider quality remains unverified.
 - **Commit:** `feat: implement persisted email analysis pipeline and providers`.
+
+### Responsive frontend and API integration
+
+- **Delegation outcome:** frontend agent built React/Vite components for inbox, detail, badges, ingestion, search/filtering, polling, partial output, previous results, and retry. CSS Modules use system fonts with no remote font dependency.
+- **Root review:** upgraded outdated Vite/Vitest tooling after the initial dependency audit found six advisories; the updated dependency tree reported zero. Added queue-saturation notice preservation so a persisted message opens without hiding the failed submission; added multipart upload coverage and ignored TypeScript build caches.
+- **Browser checks:** actual localhost API and frontend were exercised in Codex's in-app browser. Verified seed inbox, original content, retry, new pasted message persistence, TXT upload/original-text persistence, and visible unavailable-provider failure. Measured CSS viewport widths 1440 and 390 with scrollWidth equal to innerWidth; also observed the narrower 325 layout without overflow. Console error inspection returned no errors. No successful real-model assessment is claimed.
+- **Validation:** frontend agent verified npm ci --offline, formatting, build, and four initial UI tests. Root repeated build/tests after review and added queue/error and upload coverage; six UI tests passed, including multipart upload and queue-saturation notice preservation. A synthetic file chooser test initially hit jsdom native validation; dispatching submit after verifying the selected filename resolved the test-environment limitation, and actual browser TXT upload independently passed.
+- **Environment:** localhost binds and dependency downloads required sandbox escalation. Vite selected 5174 because 5173 was already occupied; unrelated services were left untouched. The backend runs on 8000.
+- **Outcome:** integrated mandatory UI implemented; aggregate interactive graph remains deferred. Screenshots were captured outside Git for review.
+- **Commit:** `feat: add responsive evidence-linked mail review interface`.

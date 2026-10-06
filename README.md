@@ -1,50 +1,178 @@
 # Mail Risk Intelligence
 
-A planned local full-stack tool for reviewing email risk, extracting facts, and exploring evidence-linked entities and relationships for a fictional Arcline compliance team.
+A local full-stack email triage tool for the fictional Arcline compliance team. It extracts facts, assesses risk through two chained LLM stages, and persists evidence-linked entities and relationships.
 
-## Current status
+## Status
 
-**Documentation preparation only. The application has not been implemented.** There are no runnable services, provider integrations, application tests, or model evaluation results yet. This repository preserves the supplied assignment and ten-email dataset.
+The mandatory application flow is implemented: ten seed emails, pasted text and file ingestion, responsive inbox/detail views, extraction/risk panels, entities/relationships, provider adapters, SQLite history, retries, and tests. An aggregate graph API exists; an interactive graph UI is not implemented.
 
-- [Original assignment](candidate_task_brief.md)
-- [Seed dataset](mock_mailbox_data.json)
-- [Detailed implementation plan](docs/IMPLEMENTATION_PLAN.md)
-- [Codex instructions](AGENTS.md)
-- [AI workflow journal](PROCESS.md)
+**Successful real-model inference and AI quality evaluation are not yet verified.** Ollama is not installed on the development machine, and no Groq credentials were supplied. The app runs without the provider: original messages remain accessible and analysis displays an explicit error. It never substitutes fake assessments or interprets failure as `none`.
 
-## Planned stack and workflow
+## Quick start
 
-React + TypeScript + Vite with npm and CSS Modules; Python + FastAPI with uv; SQLite persistence; configurable Ollama and Groq adapters. Commit `uv.lock` and `package-lock.json` during implementation. Verified run commands and exact model selection will be added after implementation; none are claimed here.
+Requirements: Python 3.11+, [uv](https://docs.astral.sh/uv/), Node.js 22.12+ and npm. Dependencies are locked in `backend/uv.lock` and `frontend/package-lock.json`.
 
-The backend will be a modular monolith with inward dependencies and separate mailbox ingestion, analysis, persistence, and graph projection responsibilities. Two typed stages perform extraction and risk/graph assessment with validation between them. Evidence and run history are persisted. Graph entities/relationships live in SQLite; visualization state lives in browser memory.
+Start the backend in one terminal, from the repository root:
 
-Ollama will be the default and require no API key. Groq will be an explicitly configured alternative using the user's key; current availability and model support must be checked during implementation. Both agents use the selected provider. Failures remain visible and retryable where appropriate, without silent provider switching or mock results.
+```sh
+cd backend
+uv sync --locked
+cp .env.example .env
+uv run uvicorn mailrisk.api:app --host 127.0.0.1 --port 8000
+```
 
-System prompts will be versioned files selected through `AGENT_A_SYSTEM_PROMPT_PATH` and `AGENT_B_SYSTEM_PROMPT_PATH` in backend `.env`. Each run will retain prompt/model/schema provenance. `.env.example`, prompt files, and lockfiles are future implementation deliverables.
+Start the UI in a second terminal:
 
-## Assumptions and boundaries
+```sh
+cd frontend
+npm ci
+npm run dev
+```
 
-One trusted local analyst; no authentication; assessment is triage rather than a verdict. Source content is untrusted. PDFs require an extractable text layer; OCR is excluded. Risk reasoning operates per email, including attachment evidence. The per-email entity/relationship panel is mandatory; an interactive aggregate graph is optional.
+Open the URL printed by Vite (normally `http://127.0.0.1:5173`). The Vite development proxy forwards `/api` to backend port 8000. FastAPI API documentation is at `http://127.0.0.1:8000/docs`.
 
-The MVP will process one analysis at a time inside the API process. Persisted results survive restart, but unfinished execution will be marked interrupted and require retry. This is not a durable worker queue. Failed analysis is not risk `none`, and failed reanalysis does not discard previous successful results.
+Use **one backend process**; do not run multiple Uvicorn workers. The in-process queue and startup interruption handling assume a single owner. Setup, installation from lockfiles, server startup, build, and tests were exercised locally. Sandbox restrictions in Codex required approval for dependency downloads and localhost binding; ordinary terminal operation does not require those tool overrides.
 
-## Planned trade-offs
+Ten seed records are imported and submitted only when absent. Restarting does not duplicate them or automatically resubmit failures. After configuring a provider, use each email's retry action. New emails follow the same normalization and analysis pipeline.
 
-| Decision | Reason | Limitation |
+### Ollama (default)
+
+Install Ollama using its [official instructions](https://docs.ollama.com/quickstart), start its service, and download a model separately:
+
+```sh
+ollama pull llama3.2:3b
+```
+
+The default configuration uses `OLLAMA_BASE_URL=http://localhost:11434` and `OLLAMA_MODEL=llama3.2:3b`. This is a starting candidate, **not a quality-validated model choice**. Download/inference were not executed in this session. Set another installed model in `.env` if appropriate, restart the backend, and evaluate before trusting results. Hardware affects latency; adjust the timeout if needed.
+
+### Groq alternative
+
+Set these values in `backend/.env`, then restart the backend:
+
+```dotenv
+LLM_PROVIDER=groq
+GROQ_API_KEY=your-key-here
+GROQ_MODEL=llama-3.3-70b-versatile
+```
+
+Use an eligible free-tier account; check current access, model availability, and limits in the [Groq console](https://console.groq.com/docs/models). No paid key is required by the application. Groq processes email content externally; switching is explicit and never automatic. Missing selected-provider credentials/model or invalid prompt files produce a startup configuration error. An unreachable configured provider leaves the API operational and produces analysis errors.
+
+Ollama uses its native JSON-schema output format. Groq uses JSON object mode with the schema included in instructions; the shared pipeline validates the result itself. JSON syntax is not a guarantee of schema compliance or factual correctness. See [Ollama API documentation](https://github.com/ollama/ollama/blob/main/docs/api.md) and [Groq structured outputs](https://console.groq.com/docs/structured-outputs).
+
+## Configuration and prompts
+
+See [backend/.env.example](backend/.env.example). Environment variables override `backend/.env`. Relative database and prompt paths resolve against `backend/`, independently of the working directory.
+
+| Setting | Default / behavior |
+| --- | --- |
+| `LLM_PROVIDER` | `ollama`; alternatives: `groq` |
+| `LLM_TIMEOUT_SECONDS` | 60 seconds per call, including an outer timeout |
+| `LLM_MAX_RETRIES` | 1 additional call per stage maximum; 0 disables retries |
+| `AGENT_A_SYSTEM_PROMPT_PATH` | `prompts/extraction_system.txt` |
+| `AGENT_B_SYSTEM_PROMPT_PATH` | `prompts/risk_graph_system.txt` |
+| `DATABASE_PATH` | `data/mail_risk.sqlite3` |
+| `CORS_ORIGINS` | localhost/127.0.0.1 frontend origins on 5173 |
+
+System prompts are version-controlled files, not multiline environment values. Each run snapshots them and records SHA-256 hashes, provider/model, schema/policy versions, stage attempts, latency, and available usage. Prompt snapshots are persisted locally but excluded from HTTP responses and routine logs. `.env`, runtime data, and private evaluation reports are ignored by Git.
+
+## Architecture and domain boundaries
+
+```mermaid
+flowchart LR
+    UI[React inbox and details] --> API[FastAPI delivery]
+    API --> APP[Ingestion and analysis use cases]
+    APP --> DOMAIN[Typed domain contracts and evidence rules]
+    APP --> DB[SQLite persistence adapter]
+    APP --> A[Extraction stage]
+    A --> VA[Schema and evidence validation]
+    VA --> B[Risk and graph stage]
+    B --> VB[Schema and evidence validation]
+    VB --> DB
+    A --> P[LLM provider interface]
+    B --> P
+    P --> O[Ollama]
+    P --> G[Groq]
+```
+
+A modular monolith separates Mailbox inputs, Analysis lifecycle, and Knowledge Graph projections. Agent A/B are stages within Analysis, not independent services. Domain contracts do not depend on FastAPI, provider SDKs, or SQLite. Small ports enable provider substitution and deterministic failure tests.
+
+SQLite uses relational tables for messages, runs, entities, mentions, and relationships. Normalized source segments, extraction, risk, and provenance are JSON payloads within message/run records. This keeps the local schema small; SQL-queryable fact tables and explicit schema migrations would be appropriate as querying needs grow.
+
+Evidence stores a source ID and exact quote, validated against persisted normalized text. Entities and relationships retain evidence. Evidence presence does not establish that a quoted claim or an inferred relationship is true. Identity claims and allegations must remain qualified. Only complete email-shaped identifiers merge across runs; names and partial accounts remain separate.
+
+A message can have several analysis runs. One successful run is selected for its current assessment and graph contribution. A failed newer run preserves the selected result and any completed extraction from the failed run. The UI displays selected extraction alongside selected risk when a previous success exists, avoiding mixed provenance. Detailed run history is persisted, but there is no dedicated history browser yet.
+
+Graph data is persisted in SQLite; `/graph` aggregates only selected successful runs, retaining relationship message/run provenance. Interactive layout/pan/zoom would be browser state. No graph database is used.
+
+## Failure handling and scope
+
+- One active analysis, up to 20 pending runs, persisted processing states. Duplicate active submissions for a message reuse its run ID.
+- Restart marks unfinished runs `interrupted`; manual retry creates a new run. Retry currently reruns both stages; partial extraction remains in history.
+- Transient timeout/unavailable/rate-limit errors receive at most one retry; numeric Retry-After is capped at five seconds. Invalid output may use that same budget for repair. Authentication/configuration errors do not retry.
+- Valid Agent A output is saved before Agent B. Failed processing never receives a `none` risk assessment.
+- Queue saturation returns the persisted message ID; the UI opens it and retains the submission error so retry does not create another email.
+- Inputs: UTF-8 `.txt`, MIME `.eml` with plain-text or HTML bodies and supported text/PDF attachments, and unencrypted text-layer `.pdf`. HTML is converted to inert text with link targets retained; script/style/head content is omitted. Image-only/encrypted PDFs are rejected. Unsupported attachments generate a visible note. No OCR.
+- Upload limit: 10 MiB; normalized text limit: 100,000 characters. No silent truncation. PDF parser work is synchronous and not isolated into a resource-limited worker yet.
+- Email content is displayed as text; links are not activated and source instructions are not executed. Prompt separation and validation reduce injection risk without guaranteeing model safety.
+
+No auth, multi-tenancy, automated compliance decisions, durable distributed queue, cross-email risk reasoning, or production deployment is included. The product supports analyst triage, not verdicts. The UI uses CSS Modules, system fonts, semantic controls, native dialog focus handling, focus outlines, and textual risk labels. Mobile uses inbox/detail navigation.
+
+## API
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /health` | Process/configuration status; does not prove model readiness |
+| `GET /emails` | Inbox summaries with processing status and selected successful risk |
+| `GET /emails/{id}` | Original sources, warnings, latest/selected runs, extraction, risk, entities, relationships |
+| `POST /emails` | JSON `{ "raw_text": "..." }`; persist and enqueue |
+| `POST /emails/upload` | Multipart field `file`; persist and enqueue |
+| `POST /emails/{id}/analyses` | Submit analysis/retry |
+| `GET /analyses/{id}` | State, safe error, partial/final results, provenance |
+| `GET /graph` | Aggregate entities and relationships |
+
+Accepted submissions return `202` with `message_id` and `analysis_run_id`. Invalid input returns 422, oversized uploads 413, unknown IDs 404, and queue saturation 429. Safe application errors use `error: {code, message, retryable}`; FastAPI validation errors use its standard `detail` format. The UI polls active work every two seconds.
+
+## Verification and AI evaluation
+
+Backend, from `backend/`:
+
+```sh
+uv run pytest -q
+uv run ruff check .
+uv run ruff format --check .
+```
+
+Frontend, from `frontend/`:
+
+```sh
+npm test
+npm run build
+npm run format:check
+```
+
+Verification result: **20 backend tests and six frontend tests passed**, with successful type checking/build and formatting checks. One upstream Starlette TestClient deprecation warning remains.
+
+The deterministic suite covers ingestion and valid text PDF/EML attachments, queue behavior, restart/idempotency, bounded retries/timeouts, partial results, provider mappings/errors, selected graph contribution, and UI ingestion/error handling. Browser smoke checks covered desktop/mobile, paste and TXT upload, original text, and unavailable-provider retry. Successful model output is covered with explicit test doubles, not fabricated application data.
+
+See [evaluation protocol and collector](evaluations/README.md). A one-case collector run against the actual unavailable Ollama configuration correctly recorded failure; no semantic accuracy score was produced. Groq has not been called. Use real inference after provider setup, then manually review facts, risk signals, evidence, and unsupported claims. The ten seed emails are a small regression set, not general accuracy evidence.
+
+## Observability, trade-offs, and further work
+
+Structured analysis logs include message/run IDs, stage, attempt, outcome, provider/model, timings, and safe errors. Successful stage logs include prompt hashes; run metadata retains prompt provenance. Bodies, attachments, full prompts, and provider error payloads are not logged. Operational reliability and semantic AI quality are measured separately.
+
+| Decision | Benefit | Limitation |
 | --- | --- | --- |
-| Modular monolith | Clear responsibilities within a small delivery budget | Shared deployment |
-| SQLite | Easy persistent local setup | Write contention at higher scale |
-| Two sequential LLM stages | Inspectable intermediate extraction | Latency and propagated extraction errors |
-| Ollama default | Local operation without paid credentials | Hardware and model-download requirements |
-| Conservative entity matching | Avoid unsupported identity merges | Possible duplicate entities |
-| SQL-backed graph | Simple evidence-linked projection | Limited complex traversal scalability |
+| Modular monolith | Clear internal boundaries and simple local operation | Shared deployment |
+| SQLite + JSON value objects | Persistent setup without infrastructure provisioning | Limited write scaling and JSON querying |
+| Explicit sequential stages | Inspectable extraction and failures | Latency and propagated extraction mistakes |
+| Ollama default | Local operation without API keys | Hardware/download requirements and unvalidated candidate model |
+| In-process queue | Small operational surface | Single process, no durable execution |
+| Conservative entity matching | Avoids unsupported identity merges | Duplicate entities may remain |
 
-Evidence validation checks source references, not whether an assessment is objectively correct. Structured operational logs and deterministic engineering tests will be kept separate from real AI evaluation. The ten seed emails provide regression examples, not general accuracy evidence.
+With more time: introduce durable jobs with restart-safe claims/idempotency; adopt PostgreSQL when deployment/contention justifies it; manage inference capacity independently of worker count; add filtered graph queries and interactive graph UI; expand held-out evaluation and model comparison; add analyst corrections/audit/history; implement external-access auth, isolation, and retention. Add queue/stage percentiles, error rates, tracing, and actionable alerts as operational needs emerge. OCR and cross-email investigations follow explicit product requirements. Microservices and graph databases require measured resource, ownership, or query justification.
 
-## With more time
+## Process and time
 
-Introduce durable jobs and restart-safe workers; move to PostgreSQL when deployment or contention warrants it; manage inference capacity; add filtered graph queries and deeper evaluation; provide analyst review/audit history and external-access controls. Add operational metrics/tracing as deployment needs emerge. OCR and cross-email reasoning require explicit product scope. Microservices and graph databases need measured justification.
+[PROCESS.md](PROCESS.md) records real Codex delegation, corrections, checks, limitations, and elapsed session time. The 5–6 hour assignment budget is a planning target, not a claimed human effort measurement. Significant completed blocks are committed locally; no remote or publication is configured.
 
-## Delivery and process
-
-The implementation target is 5–6 focused hours, with actual time recorded separately from documentation preparation. Codex work, user corrections, checks, and limitations belong in [PROCESS.md](PROCESS.md). Commit completed significant logical blocks, including meaningful UI components, provider work, and substantive prompt changes, rather than every small edit.
+[Original assignment](candidate_task_brief.md) · [Implementation baseline](docs/IMPLEMENTATION_PLAN.md) · [Agent instructions](AGENTS.md)

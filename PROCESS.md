@@ -50,7 +50,7 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Prompt summaries:** both agents received the approved plan and common HTTP/result shapes; instructed to keep changes within owned directories, run meaningful checks, avoid mock application results, and leave Git commits to the root agent.
 - **Acceptance:** supported ingestion and UI flows work; absent inference is visible; no silent provider switching; tests pass; limitations and live evaluation status are explicit.
 - **Initial environment:** uv and npm available; ollama executable not found. No model installation or paid access is assumed.
-- **Validation/outcome:** implementation in progress.
+- **Validation/outcome:** implementation and deterministic checks completed; successful real inference remains pending. See delivery verification below.
 
 ### Evaluation baseline and collector
 
@@ -88,3 +88,15 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Validation:** 20 backend tests and Ruff checks passed, including an HTML-only email with a reset link and hidden script/style content. No new dependency was added.
 - **Outcome:** HTML-only EML support implemented; normalized source text is the evidence basis. This does not establish semantic correctness or preserve a binary MIME archive.
 - **Commit:** `fix: normalize HTML email bodies without rendering source content`.
+
+### Delivery verification and shutdown
+
+- **Completed checks:** 20 backend tests, six frontend tests, backend Ruff checks/formatting, frontend TypeScript/Vite production build and Prettier checks. Locked uv installation and npm ci were verified. Updated npm installation reported zero advisories. One upstream Starlette TestClient deprecation warning remains.
+- **Runtime evidence:** localhost health succeeded after the final backend restart. Browser flows verified paste and TXT upload persistence, original text, retry/unavailable states, and no horizontal overflow at measured CSS widths 1440 and 390. No browser console errors were observed during the smoke check.
+- **Evaluation:** actual E001 collector smoke returned failed/unavailable. No successful inference or semantic evaluation was performed; no Groq call or model installation occurred. The initial prompts and default model remain quality-unvalidated.
+- **Documentation:** README now provides actual setup, configuration, APIs, implemented boundaries, trade-offs, and explicit pending validation. Local Markdown links and language checks passed. Original assignment/data SHA-256 hashes are unchanged. No remote or push was configured.
+- **Commit references:** c34cd53 evaluation baseline; 3dbcea7 backend/providers/prompts; 0385ab8 responsive UI; edd7773 HTML email normalization.
+- **User intervention:** the user interrupted execution twice, then requested current status and possible application shutdown. Root stopped only its backend on 8000 and Vite on 5174 gracefully. Port 5173 belongs to gate-fit-ai and was left untouched. The browser tab now points to a stopped server; restart using README when needed.
+- **Time accounting:** implementation start was observed at 09:25:27 UTC; final documentation checks were observed at 09:50:26 UTC (24 minutes 59 seconds elapsed). This interval includes user interruption and parallel agent execution, excludes subsequent shutdown/finalization, and is not a measurement of focused human effort. Historical planning time is unmeasured.
+- **Outcome:** application code, deterministic verification, and documentation delivered; real-model validation and optional interactive aggregate graph remain pending. Local smoke emails remain in the ignored runtime database; fresh checkout imports the original ten seeds.
+- **Commit:** `docs: finalize setup and implementation verification`.

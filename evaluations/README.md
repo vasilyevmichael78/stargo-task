@@ -2,7 +2,7 @@
 
 ## Current status
 
-Live inference has not been executed. The user reported that no local model is installed, and initial inspection found no `ollama` executable. Groq evaluation requires explicitly configured credentials. Deterministic tests must not be interpreted as model quality results.
+No successful live inference has been executed. A one-case E001 collector smoke run against the configured local provider recorded `failed` with an unavailable-provider error; no quality score was produced. The user reported that no local model is installed, and initial inspection found no `ollama` executable. Groq evaluation requires explicitly configured credentials. Deterministic tests must not be interpreted as model quality results.
 
 ## Review protocol
 

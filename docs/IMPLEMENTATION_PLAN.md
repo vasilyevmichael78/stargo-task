@@ -2,7 +2,7 @@
 
 ## Status and success criteria
 
-This is a plan, not an implementation report. The application has not been built. The primary target is the full-stack/pipeline track while meeting the mandatory UI requirements. The target implementation budget is 5–6 focused hours; record actual time honestly and account for documentation preparation separately.
+This is the approved implementation baseline, not a verification report. The mandatory application flow has now been implemented; see [README](../README.md) and [PROCESS](../PROCESS.md) for actual behavior and checks. Successful real inference remains pending provider setup. The primary target is the full-stack/pipeline track while meeting the mandatory UI requirements. The target implementation budget is 5–6 focused hours; record actual time honestly and account for documentation preparation separately.
 
 The mandatory outcome is a locally runnable application with ten seed emails, text/file ingestion, two real chained LLM stages, persisted results, a responsive inbox/detail UI, explicit failures, tests, and verified setup documentation. No paid API key is required: Ollama is the default. An interactive aggregate graph is a bonus after the mandatory flow works.
 

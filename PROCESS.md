@@ -126,3 +126,19 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Findings:** underestimated E001/E005; false-positive E009; unsupported facts, modality changes and graph type/entailment errors. No corrections to prompts made during baseline.
 - **Runtime:** backend gracefully stopped after collection; native Ollama remains running. Successful analyses and failure/partial history persist in ignored SQLite storage.
 - **Outcome:** quality baseline completed; current model/configuration is unsuitable for unattended triage. Documentation updated; no application changes or new engineering tests needed.
+
+### Prompt-only Llama quality iteration
+
+- **Started:** 2026-10-06T10:36:52.375523+00:00.
+- **User request:** improve prompts and rerun the same model before other optimizations.
+- **Scope:** version both system prompts; preserve model llama3.2:3b, temperature 0, timeout 60 seconds, retry budget 1, schema and application code. Clarify evidence copying, nonempty typed facts, uncertainty, risk rubric and sparse supported graph. Use unrelated illustrative examples.
+- **Evaluation caveat:** prompts are informed by observed seed failures; the next seed run is a development regression comparison, not held-out generalization evidence. Baseline commit 341068f remains available.
+
+- **Completed:** 2026-10-06T10:50:29.206119+00:00. Real ten-case v2 experiment ran 2026-10-06T10:37:33.205655+00:00 to 2026-10-06T10:49:06.083867+00:00 (692.88 seconds elapsed).
+- **Results:** 2/10 completed versus baseline 5/10; 6/10 validated extractions versus 8/10. Risk agreement was 2/2 among survivors, but complete-and-accepted coverage stayed 2/10. Four extraction evidence failures, two assessment entity-reference failures and two assessment timeouts. Both completed outputs still had semantic fact/graph errors.
+- **Decision:** candidate not promoted; default prompt files restored byte-for-byte. Archived v2 prompts and sanitized comparison report committed; ignored full report retained. Prior selected successful runs were not counted as new outputs on failed reanalysis.
+- **Validation:** 20 deterministic backend tests passed during the experiment (one existing upstream deprecation warning). Diff/English/provenance checks performed before commit. No raw invalid-output diagnostics, held-out evaluation, repeats or independent human review performed.
+- **Runtime:** evaluation backend stopped, Ollama remains available. No application/settings/schema changes; model, timeout, retry budget, .env and original seed files unchanged. SQLite history retains both experiments and mixed selected successful versions.
+- **Implementation correction:** the first patch invocation rejected duplicate delete/add targets; no prompt edits were applied by that invocation, then ordinary file writes created the candidates. No subagents used.
+- **Prior commit:** 341068f records original baseline.
+- **Outcome:** prompt-only hypothesis tested; this candidate regressed reliability and does not justify promotion.

@@ -8,6 +8,8 @@ The mandatory application flow is implemented: ten seed emails, pasted text and 
 
 **The current model is not reliable enough for unattended triage.** A real ten-email `llama3.2:3b` baseline completed five runs; only two completed risk levels matched the accepted ranges. Codex review found unsupported claims and entity/relationship errors; independent human review remains pending. See [the evaluation report](evaluations/LLAMA_BASELINE_2026-10-06.md). No Groq evaluation was performed. Provider failures remain visible and are never treated as risk `none`.
 
+A [prompt-only v2 experiment](evaluations/PROMPT_EXPERIMENT_V2_2026-10-06.md) regressed completion from 5/10 to 2/10. Its prompts are archived for reproduction; default prompts remain the baseline version.
+
 ## Quick start
 
 Requirements: Python 3.11+, [uv](https://docs.astral.sh/uv/), Node.js 22.12+ and npm. Dependencies are locked in `backend/uv.lock` and `frontend/package-lock.json`.

@@ -4,6 +4,8 @@
 
 A real ten-case Ollama / llama3.2:3b baseline was executed on 2026-10-06: five runs completed, and two completed risk levels matched the expected ranges. Codex reviewed sources and outputs; independent human review remains pending. See [the baseline report](LLAMA_BASELINE_2026-10-06.md). Groq was not evaluated. Deterministic tests must not be interpreted as model quality results.
 
+A [prompt-only v2 experiment](PROMPT_EXPERIMENT_V2_2026-10-06.md) subsequently completed 2/10 cases versus 5/10 for the baseline. The candidate was not promoted; original defaults were restored. Archived candidate prompts and the comparison report are committed.
+
 ## Review protocol
 
 Use `cases.json` as a small human-authored regression specification, not a calibrated ground truth benchmark. The accepted levels express triage expectations and may be refined through documented review. Judge facts semantically, preserving currencies, amounts, partial accounts, and allegation status rather than comparing rationale strings.

@@ -142,3 +142,20 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Implementation correction:** the first patch invocation rejected duplicate delete/add targets; no prompt edits were applied by that invocation, then ordinary file writes created the candidates. No subagents used.
 - **Prior commit:** 341068f records original baseline.
 - **Outcome:** prompt-only hypothesis tested; this candidate regressed reliability and does not justify promotion.
+
+### Groq baseline provider comparison
+
+- **Started:** 2026-10-06T10:52:26.058333+00:00.
+- **User request:** run the configured stronger Groq model with original baseline prompts and compare quality.
+- **Configuration check:** Groq credentials are present; no secret value displayed. Configured model llama-3.3-70b-versatile, 60-second timeout and one retry. Both baseline prompt hashes match the original Llama experiment.
+- **Scope:** explicitly select Groq for this evaluation process without editing .env; run the same ten fictional seed messages through the actual API, review current-run outputs, and retain prior experiments. Provider transport differs (Groq JSON mode versus Ollama schema format), so this compares configured model/provider stacks rather than isolating model size alone.
+
+- **Configured model check:** all ten configured llama-3.3-70b-versatile submissions failed with configuration errors. Direct httpx API inspection confirmed model_not_found; models API listed openai/gpt-oss-120b among available models for this key. An initial urllib models probe returned HTTPError; matching the application httpx transport succeeded. No secret/provider raw content printed.
+- **Explicit experiment selection:** root announced openai/gpt-oss-120b as the accessible stronger-model candidate and will use a process environment override. .env and production fallback behavior remain unchanged; no automatic provider/model switching was added. Preserve the unavailable-model report separately from the quality run.
+
+- **Quota diagnosis:** unpaced GPT-OSS run completed 0/10; eight validated partial extractions, all final failures rate_limit. Safe response inspection showed TPM 8000, retry-after 8 seconds, whereas the app caps waits at 5 seconds. No settings/retry policy changed in this block.
+- **Paced evaluation:** initial 60-second cooldown; invoked the existing collector once for each E001–E010, with 60-second gaps, then combined reports. Interval 2026-10-06T10:56:35.896442+00:00 to 2026-10-06T11:08:09.445957+00:00 (693.55 seconds including waits). External pacing is not an app feature.
+- **Results:** 9/10 completed, 10/10 validated extractions, accepted risk 7/9 completed and 7/10 overall coverage. E004 assessment hit rate limit; E003/E005 under-triaged medium versus expected high. Completed median latency 8.06 seconds excluding between-case waits. Successful-stage metadata totals 50012 tokens, not complete billing usage.
+- **Review:** Codex compared sources, facts, risk and graph; independent human review remains pending. Observed modal strengthening, empty fact lists, inferred employment/identity and graph allegations presented as events. No held-out, repeatability or injection evaluation performed.
+- **Artifacts:** committed sanitized evaluations/GROQ_BASELINE_2026-10-06.md; full configured/unpaced/paced reports ignored. Baseline prompt hashes verified identical; no secrets printed or committed. Documentation-only change; no new engineering tests needed.
+- **Runtime/outcome:** backend stopped after evaluation; frontend stays stopped, Ollama remains running. .env, prompts, defaults and application code unchanged. GPT-OSS is a more promising candidate but provider quota handling and semantic quality still require work.

@@ -2,9 +2,11 @@
 
 ## Current status
 
-A real ten-case Ollama / llama3.2:3b baseline was executed on 2026-10-06: five runs completed, and two completed risk levels matched the expected ranges. Codex reviewed sources and outputs; independent human review remains pending. See [the baseline report](LLAMA_BASELINE_2026-10-06.md). Groq was not evaluated. Deterministic tests must not be interpreted as model quality results.
+A real ten-case Ollama / llama3.2:3b baseline was executed on 2026-10-06: five runs completed, and two completed risk levels matched the expected ranges. Codex reviewed sources and outputs; independent human review remains pending. See [the baseline report](LLAMA_BASELINE_2026-10-06.md). Groq was subsequently evaluated; see the provider comparison below. Deterministic tests must not be interpreted as model quality results.
 
 A [prompt-only v2 experiment](PROMPT_EXPERIMENT_V2_2026-10-06.md) subsequently completed 2/10 cases versus 5/10 for the baseline. The candidate was not promoted; original defaults were restored. Archived candidate prompts and the comparison report are committed.
+
+The [Groq GPT-OSS baseline comparison](GROQ_BASELINE_2026-10-06.md) completed 9/10 cases with external quota pacing and matched accepted risk on 7/9 completed cases. Unpaced requests all hit rate limits. Configured llama-3.3-70b-versatile was inaccessible to the key; openai/gpt-oss-120b was explicitly selected for the comparison. No default/private configuration changed.
 
 ## Review protocol
 

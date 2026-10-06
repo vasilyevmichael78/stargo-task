@@ -2,7 +2,7 @@
 
 ## Current status
 
-No successful live inference has been executed. A one-case E001 collector smoke run against the configured local provider recorded `failed` with an unavailable-provider error; no quality score was produced. The user reported that no local model is installed, and initial inspection found no `ollama` executable. Groq evaluation requires explicitly configured credentials. Deterministic tests must not be interpreted as model quality results.
+A real ten-case Ollama / llama3.2:3b baseline was executed on 2026-10-06: five runs completed, and two completed risk levels matched the expected ranges. Codex reviewed sources and outputs; independent human review remains pending. See [the baseline report](LLAMA_BASELINE_2026-10-06.md). Groq was not evaluated. Deterministic tests must not be interpreted as model quality results.
 
 ## Review protocol
 

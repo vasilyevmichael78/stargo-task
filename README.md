@@ -6,7 +6,7 @@ A local full-stack email triage tool for the fictional Arcline compliance team. 
 
 The mandatory application flow is implemented: ten seed emails, pasted text and file ingestion, responsive inbox/detail views, extraction/risk panels, entities/relationships, provider adapters, SQLite history, retries, and tests. An aggregate graph API exists; an interactive graph UI is not implemented.
 
-**AI quality evaluation is not yet verified.** Native Ollama and `llama3.2:3b` are installed on the development machine; a short real JSON-schema inference smoke test passed. The full extraction/risk workflow has not yet been evaluated with the model, and no Groq credentials were supplied. The app runs without the provider: original messages remain accessible and analysis displays an explicit error. It never substitutes fake assessments or interprets failure as `none`.
+**The current model is not reliable enough for unattended triage.** A real ten-email `llama3.2:3b` baseline completed five runs; only two completed risk levels matched the accepted ranges. Codex review found unsupported claims and entity/relationship errors; independent human review remains pending. See [the evaluation report](evaluations/LLAMA_BASELINE_2026-10-06.md). No Groq evaluation was performed. Provider failures remain visible and are never treated as risk `none`.
 
 ## Quick start
 
@@ -45,7 +45,7 @@ ollama serve
 ollama pull llama3.2:3b
 ```
 
-The default configuration uses `OLLAMA_BASE_URL=http://localhost:11434` and `OLLAMA_MODEL=llama3.2:3b`. This is a starting candidate, **not a quality-validated model choice**. Local download and a short JSON-schema inference smoke test passed; seed email quality evaluation remains pending. Set another installed model in `.env` if appropriate, restart the backend, and evaluate before trusting results. Hardware affects latency; adjust the timeout if needed.
+The default configuration uses `OLLAMA_BASE_URL=http://localhost:11434` and `OLLAMA_MODEL=llama3.2:3b`. This is a starting candidate, **not a quality-validated model choice**. Local download and a short JSON-schema inference smoke test passed; the first seed baseline exposed reliability and semantic failures (see the evaluation report). Set another installed model in `.env` if appropriate, restart the backend, and evaluate before trusting results. Hardware affects latency; adjust the timeout if needed.
 
 ### Groq alternative
 

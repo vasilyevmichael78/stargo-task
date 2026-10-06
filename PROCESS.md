@@ -114,3 +114,15 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Verification:** actual JSON-schema chat request returned {"status":"ok"} in 1.85 seconds, with seven output tokens. This is a provider smoke check, not an evaluation of extraction/risk quality. Full seed evaluation and Groq smoke remain pending.
 - **Documentation:** updated README runtime status and made the example environment copy preserve an existing .env. No application logic changed.
 - **Outcome:** requested local model and private configuration are ready.
+
+### Llama seed quality evaluation
+
+- **Started:** 2026-10-06T10:10:18.308840+00:00.
+- **User request:** evaluate the current local Llama model on email quality.
+- **Plan:** explicitly select Ollama / llama3.2:3b, run the ten seed cases through the actual two-stage pipeline, inspect original content and outputs against the existing review specification, and report pipeline reliability separately from semantic quality. No prompt or model tuning during this baseline.
+
+- **Completed:** real collector ran 10:10:34–10:20:16 UTC (9m42s), without model/prompt/configuration tuning. Five of ten pipelines completed; accepted risk matched two of five completed cases. Two evidence failures and three assessment failures ending in timeout; eight validated extractions persisted. Codex reviewed sources, facts, risk and graph; independent human review remains pending.
+- **Evidence:** ignored full report evaluations/reports/llama3.2-3b-baseline.json; sanitized committed report evaluations/LLAMA_BASELINE_2026-10-06.md includes per-case findings, latency, model ID, prompt hashes and limitations. No Groq, held-out, prompt-injection or repeatability run performed.
+- **Findings:** underestimated E001/E005; false-positive E009; unsupported facts, modality changes and graph type/entailment errors. No corrections to prompts made during baseline.
+- **Runtime:** backend gracefully stopped after collection; native Ollama remains running. Successful analyses and failure/partial history persist in ignored SQLite storage.
+- **Outcome:** quality baseline completed; current model/configuration is unsuitable for unattended triage. Documentation updated; no application changes or new engineering tests needed.

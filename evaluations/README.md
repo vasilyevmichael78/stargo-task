@@ -44,3 +44,9 @@ uv run --project backend python evaluations/run.py --output evaluations/reports/
 For a single-case Groq smoke run, explicitly select Groq in backend configuration, restart the backend, and add `--ids E001`. The collector submits new runs and waits for terminal status. It stores full API results for manual review, including partial failures. `level_screen` is a simple screening check; `semantic_review` remains pending until a human reviews facts and evidence. It does not claim a complete quality score.
 
 Reports under `evaluations/reports/` are ignored because they can contain source content. Use an explicitly sanitized report when sharing results. API access errors stop the collector; unfinished server work may continue after a collector deadline.
+
+## Bounded repair diagnostics
+
+New analysis runs record `orchestration_version=2`, generation settings, and three prompt hashes (extraction, assessment, repair instructions). Each stage records `attempt_history` with outcome, duration, mode (`generate` or `repair`), validation codes/paths, and available usage. Compare first-attempt success against eventual success and account for extra latency/tokens. The stage-level `usage` field describes the last attempt; use per-attempt usage to inspect the complete observed history. Timed-out/provider-rejected calls may not expose usage.
+
+Runtime repair never receives benchmark expected answers. It receives only original inputs, the previous invalid output (at most 8,000 characters), and up to 20 validator errors. It shares the existing retry budget with transient errors. These validators check structure, source quote presence, and entity references, not factual entailment or risk correctness. Full ten-case and held-out evaluation remain necessary after selecting a model or changing orchestration.

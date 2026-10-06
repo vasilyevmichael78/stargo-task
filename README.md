@@ -6,7 +6,7 @@ A local full-stack email triage tool for the fictional Arcline compliance team. 
 
 The mandatory application flow is implemented: ten seed emails, pasted text and file ingestion, responsive inbox/detail views, extraction/risk panels, entities/relationships, provider adapters, SQLite history, retries, and tests. An aggregate graph API exists; an interactive graph UI is not implemented.
 
-**The current model is not reliable enough for unattended triage.** A real ten-email `llama3.2:3b` baseline completed five runs; only two completed risk levels matched the accepted ranges. Codex review found unsupported claims and entity/relationship errors; independent human review remains pending. See [the evaluation report](evaluations/LLAMA_BASELINE_2026-10-06.md). A subsequent [Groq GPT-OSS comparison](evaluations/GROQ_BASELINE_2026-10-06.md) completed 9/10 cases with external quota pacing and matched accepted risk in 7/9 completed cases; semantic gaps remain. Provider failures remain visible and are never treated as risk `none`.
+**No evaluated configuration is approved for unattended triage.** A real ten-email `llama3.2:3b` baseline completed five runs; only two completed risk levels matched the accepted ranges. Codex review found unsupported claims and entity/relationship errors; independent human review remains pending. See [the evaluation report](evaluations/LLAMA_BASELINE_2026-10-06.md). A subsequent [Groq GPT-OSS comparison](evaluations/GROQ_BASELINE_2026-10-06.md) completed 9/10 cases with external quota pacing and matched accepted risk in 7/9 completed cases; semantic gaps remain. Provider failures remain visible and are never treated as risk `none`.
 
 A [prompt-only v2 experiment](evaluations/PROMPT_EXPERIMENT_V2_2026-10-06.md) regressed completion from 5/10 to 2/10. Its prompts are archived for reproduction; default prompts remain the baseline version.
 
@@ -44,10 +44,10 @@ Install Ollama using its [official instructions](https://docs.ollama.com/quickst
 ```sh
 ollama serve
 # In another terminal:
-ollama pull llama3.2:3b
+ollama pull qwen3.5:4b
 ```
 
-The default configuration uses `OLLAMA_BASE_URL=http://localhost:11434` and `OLLAMA_MODEL=llama3.2:3b`. This is a starting candidate, **not a quality-validated model choice**. Local download and a short JSON-schema inference smoke test passed; the first seed baseline exposed reliability and semantic failures (see the evaluation report). Set another installed model in `.env` if appropriate, restart the backend, and evaluate before trusting results. Hardware affects latency; adjust the timeout if needed.
+The current candidate is `OLLAMA_MODEL=qwen3.5:4b` with `OLLAMA_BASE_URL=http://localhost:11434` and `OLLAMA_THINK=false` in the example environment. The model download (3.3 GB) is verified. A [three-case Qwen smoke](evaluations/QWEN_REPAIR_SMOKE_2026-10-06.md) preserved all three validated extractions but completed no assessments because both attempts timed out at 60 seconds; the current timeout/runtime configuration is not ready for reliable triage. This is an experimental selection, not proof of quality; the historical Llama baseline does not describe Qwen performance. Existing environment files are preserved by setup: change the model explicitly and restart the backend. Optional thinking is omitted from requests when `OLLAMA_THINK` is unset. Hardware affects latency; adjust the timeout if needed.
 
 ### Groq alternative
 
@@ -73,9 +73,12 @@ See [backend/.env.example](backend/.env.example). Environment variables override
 | --- | --- |
 | `LLM_PROVIDER` | `ollama`; alternatives: `groq` |
 | `LLM_TIMEOUT_SECONDS` | 60 seconds per call, including an outer timeout |
+| `OLLAMA_MODEL` | `qwen3.5:4b`, experimental local candidate |
+| `OLLAMA_THINK` | `false` in the example environment; unset omits the optional provider parameter |
 | `LLM_MAX_RETRIES` | 1 additional call per stage maximum; 0 disables retries |
 | `AGENT_A_SYSTEM_PROMPT_PATH` | `prompts/extraction_system.txt` |
 | `AGENT_B_SYSTEM_PROMPT_PATH` | `prompts/risk_graph_system.txt` |
+| `AGENT_REPAIR_SYSTEM_PROMPT_PATH` | `prompts/repair_system.txt`; immutable repair-instruction snapshot per run |
 | `DATABASE_PATH` | `data/mail_risk.sqlite3` |
 | `CORS_ORIGINS` | localhost/127.0.0.1 frontend origins on 5173 |
 
@@ -114,7 +117,7 @@ Graph data is persisted in SQLite; `/graph` aggregates only selected successful 
 
 - One active analysis, up to 20 pending runs, persisted processing states. Duplicate active submissions for a message reuse its run ID.
 - Restart marks unfinished runs `interrupted`; manual retry creates a new run. Retry currently reruns both stages; partial extraction remains in history.
-- Transient timeout/unavailable/rate-limit errors receive at most one retry; numeric Retry-After is capped at five seconds. Invalid output may use that same budget for repair. Authentication/configuration errors do not retry.
+- Transient timeout/unavailable/rate-limit errors receive at most one retry; numeric Retry-After is capped at five seconds. Invalid output uses that same budget for repair: the next request carries the previous output (up to 8,000 characters) and up to 20 specific schema/evidence/reference errors as untrusted data. Repair returns a complete replacement object and reruns the same validators; it does not establish semantic correctness. Transient retries do not create repair feedback. Authentication/configuration errors do not retry.
 - Valid Agent A output is saved before Agent B. Failed processing never receives a `none` risk assessment.
 - Queue saturation returns the persisted message ID; the UI opens it and retains the submission error so retry does not create another email.
 - Inputs: UTF-8 `.txt`, MIME `.eml` with plain-text or HTML bodies and supported text/PDF attachments, and unencrypted text-layer `.pdf`. HTML is converted to inert text with link targets retained; script/style/head content is omitted. Image-only/encrypted PDFs are rejected. Unsupported attachments generate a visible note. No OCR.
@@ -156,15 +159,15 @@ npm run build
 npm run format:check
 ```
 
-Verification result: **20 backend tests and six frontend tests passed**, with successful type checking/build and formatting checks. One upstream Starlette TestClient deprecation warning remains.
+Verification result: **29 backend tests and six frontend tests passed**, with successful type checking/build and formatting checks. One upstream Starlette TestClient deprecation warning remains.
 
 The deterministic suite covers ingestion and valid text PDF/EML attachments, queue behavior, restart/idempotency, bounded retries/timeouts, partial results, provider mappings/errors, selected graph contribution, and UI ingestion/error handling. Browser smoke checks covered desktop/mobile, paste and TXT upload, original text, and unavailable-provider retry. Successful model output is covered with explicit test doubles, not fabricated application data.
 
-See [evaluation protocol and collector](evaluations/README.md). A one-case collector run against the actual unavailable Ollama configuration correctly recorded failure; no semantic accuracy score was produced. Groq has not been called. Use real inference after provider setup, then manually review facts, risk signals, evidence, and unsupported claims. The ten seed emails are a small regression set, not general accuracy evidence.
+See [evaluation protocol and collector](evaluations/README.md). Historical Llama and Groq evaluations are linked above. The Qwen selection and repair policy change are a new configuration and require separate evaluation. Manually review facts, risk signals, evidence, and unsupported claims. The ten seed emails are a small regression set, not general accuracy evidence.
 
 ## Observability, trade-offs, and further work
 
-Structured analysis logs include message/run IDs, stage, attempt, outcome, provider/model, timings, and safe errors. Successful stage logs include prompt hashes; run metadata retains prompt provenance. Bodies, attachments, full prompts, and provider error payloads are not logged. Operational reliability and semantic AI quality are measured separately.
+Structured analysis logs include message/run IDs, stage, attempt, outcome, provider/model, timings, and safe errors. Successful stage logs include prompt hashes; run metadata retains prompt provenance, orchestration version, generation settings, and per-attempt outcomes, durations, validation codes/paths, and available token usage. Raw invalid outputs are request-local only and are not persisted or delivered through the API. Bodies, attachments, full prompts, and provider error payloads are not logged. Operational reliability and semantic AI quality are measured separately.
 
 | Decision | Benefit | Limitation |
 | --- | --- | --- |

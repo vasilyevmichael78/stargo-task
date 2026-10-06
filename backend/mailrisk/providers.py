@@ -78,6 +78,11 @@ class OllamaProvider(HTTPProvider):
                 ],
                 "format": schema,
                 "stream": False,
+                **(
+                    {"think": self.settings.ollama_think}
+                    if self.settings.ollama_think is not None
+                    else {}
+                ),
                 "options": {"temperature": 0},
             },
         )

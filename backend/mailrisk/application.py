@@ -49,6 +49,7 @@ class AnalysisService:
             for path in (
                 self.settings.agent_a_system_prompt_path,
                 self.settings.agent_b_system_prompt_path,
+                self.settings.agent_repair_system_prompt_path,
             )
         ]
         provenance = {
@@ -56,6 +57,15 @@ class AnalysisService:
             "model": self.settings.model,
             "schema_version": "1",
             "policy_version": "1",
+            "orchestration_version": "2",
+            "generation_settings": {
+                "temperature": 0,
+                "ollama_think": self.settings.ollama_think
+                if self.settings.llm_provider == "ollama"
+                else None,
+                "timeout_seconds": self.settings.llm_timeout_seconds,
+                "max_retries": self.settings.llm_max_retries,
+            },
             "prompt_snapshots": prompts,
             "prompt_hashes": [
                 hashlib.sha256(prompt.encode()).hexdigest() for prompt in prompts
@@ -67,12 +77,23 @@ class AnalysisService:
 
     async def stage(self, run, name, schema, input, sources, instructions):
         started = time.monotonic()
+        history = []
+        repair = None
         for attempt in range(1 + self.settings.llm_max_retries):
+            attempt_started = time.monotonic()
+            usage = {}
+            validation_errors = []
+            request_input = (
+                input if repair is None else {**input, "repair_context": repair}
+            )
+            request_instructions = instructions
+            if repair is not None:
+                request_instructions += "\n" + run["prompt_snapshots"][2]
             try:
                 raw, usage = await asyncio.wait_for(
                     self.provider.generate_structured(
-                        instructions,
-                        input,
+                        request_instructions,
+                        request_input,
                         schema.model_json_schema(),
                         self.settings.llm_timeout_seconds,
                     ),
@@ -80,46 +101,69 @@ class AnalysisService:
                 )
                 try:
                     result = schema.model_validate_json(raw)
-                    validate_evidence(result, sources)
-                except (ValidationError, ValueError):
+                except ValidationError as caught:
+                    validation_errors = [
+                        {
+                            "path": list(item["loc"]),
+                            "code": item["type"],
+                            "message": item["msg"],
+                        }
+                        for item in caught.errors(
+                            include_input=False,
+                            include_context=False,
+                            include_url=False,
+                        )[:20]
+                    ]
+                    # The invalid output is bounded request-local state, not durable history.
+                    repair = {
+                        "previous_output": raw[:8000],
+                        "previous_output_truncated": len(raw) > 8000,
+                        "errors": validation_errors,
+                    }
                     raise AppError(
                         "invalid_output",
                         "The model output did not match the required schema.",
                         True,
                     ) from None
-                duration = round((time.monotonic() - started) * 1000)
-                self.store.update_run(
-                    run["id"],
-                    **{
-                        name + "_metadata": {
-                            "duration_ms": duration,
-                            "attempts": attempt + 1,
-                            "usage": usage,
-                        }
-                    },
-                )
-                logger.info(
-                    json.dumps(
-                        {
-                            "message_id": run["message_id"],
-                            "analysis_run_id": run["id"],
-                            "stage": name,
-                            "attempt": attempt + 1,
-                            "outcome": "success",
-                            "provider": run["provider"],
-                            "model": run["model"],
-                            "prompt_hash": run["prompt_hashes"][
-                                0 if name == "extraction" else 1
-                            ],
-                            "duration_ms": duration,
-                        }
-                    )
-                )
-                return result
+                try:
+                    validate_evidence(result, sources)
+                except AppError as caught:
+                    validation_errors = getattr(caught, "validation_errors", [])
+                    repair = {
+                        "previous_output": raw[:8000],
+                        "previous_output_truncated": len(raw) > 8000,
+                        "errors": validation_errors,
+                    }
+                    raise
+                error = None
             except asyncio.TimeoutError:
                 error = AppError("timeout", "The model request timed out.", True)
             except AppError as caught:
                 error = caught
+            entry = {
+                "attempt": attempt + 1,
+                "mode": "repair" if "repair_context" in request_input else "generate",
+                "outcome": "failure" if error else "success",
+                "duration_ms": round((time.monotonic() - attempt_started) * 1000),
+                "usage": usage,
+            }
+            if error:
+                entry["error_code"] = error.code
+            if validation_errors:
+                entry["validation_errors"] = [
+                    {"path": item["path"], "code": item["code"]}
+                    for item in validation_errors
+                ]
+            history.append(entry)
+            metadata = {
+                "duration_ms": round((time.monotonic() - started) * 1000),
+                "attempts": attempt + 1,
+                "attempt_history": history,
+                "usage": usage,
+            }
+            if error:
+                metadata["error_code"] = error.code
+            self.store.update_run(run["id"], **{name + "_metadata": metadata})
             logger.info(
                 json.dumps(
                     {
@@ -127,29 +171,26 @@ class AnalysisService:
                         "analysis_run_id": run["id"],
                         "stage": name,
                         "attempt": attempt + 1,
-                        "outcome": "failure",
-                        "error_code": error.code,
+                        "mode": entry["mode"],
+                        "outcome": entry["outcome"],
+                        "error_code": error.code if error else None,
                         "provider": run["provider"],
                         "model": run["model"],
-                        "duration_ms": round((time.monotonic() - started) * 1000),
+                        "repair_prompt_hash": run["prompt_hashes"][2]
+                        if entry["mode"] == "repair"
+                        else None,
+                        "prompt_hash": run["prompt_hashes"][
+                            0 if name == "extraction" else 1
+                        ],
+                        "duration_ms": entry["duration_ms"],
                     }
                 )
             )
-            self.store.update_run(
-                run["id"],
-                **{
-                    name + "_metadata": {
-                        "duration_ms": round((time.monotonic() - started) * 1000),
-                        "attempts": attempt + 1,
-                        "error_code": error.code,
-                    }
-                },
-            )
+            if error is None:
+                return result
             if not error.retryable or attempt == self.settings.llm_max_retries:
                 raise error
-            if error.code == "invalid_output":
-                instructions += "\nThe previous output was invalid. Return only schema-conforming JSON with exact source evidence."
-            else:
+            if error.code != "invalid_output":
                 await asyncio.sleep(getattr(error, "retry_after", 1))
 
     async def process(self, run_id):

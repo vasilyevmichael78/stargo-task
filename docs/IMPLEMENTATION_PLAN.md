@@ -67,7 +67,7 @@ No agent framework, tool execution, autonomous exploration loop, RAG, or cross-e
 
 ### Provider interface
 
-Define `LLMProvider.generate_structured(instructions, input, output_schema, timeout)` as an asynchronous operation returning generated content and available metadata (provider, model, duration, token usage). Implement Ollama and Groq adapters; provider SDKs, credentials, request formats, and response envelopes stay inside them. Orchestration owns domain-schema validation and the retry budget. Disable hidden SDK retries where they would exceed that budget.
+Define `LLMProvider.generate_structured(instructions, input, output_schema, timeout)` as an asynchronous operation returning generated content and available metadata (provider, model, duration, token usage). Implement Ollama and Groq adapters; provider SDKs, credentials, request formats, and response envelopes stay inside them. Orchestration owns domain-schema validation and the retry budget. Within that budget, invalid output receives bounded repair context containing the previous output and specific schema/evidence/reference errors as untrusted data. Transient failures repeat the request without inventing validation feedback. Persist sanitized attempt metadata, not raw invalid output; keep benchmark expected answers out of runtime repair context. Disable hidden SDK retries where they would exceed that budget.
 
 Use one configured provider for both stages. Default to Ollama; do not automatically send local content to Groq if local inference fails. Groq is an explicitly selected alternative with a user-supplied key; verify current free-tier availability and supported models during implementation. Select exact model identifiers through actual evaluation rather than claiming an untested model choice.
 
@@ -83,6 +83,7 @@ GROQ_API_KEY=
 GROQ_MODEL=
 AGENT_A_SYSTEM_PROMPT_PATH=prompts/extraction_system.txt
 AGENT_B_SYSTEM_PROMPT_PATH=prompts/risk_graph_system.txt
+AGENT_REPAIR_SYSTEM_PROMPT_PATH=prompts/repair_system.txt
 DATABASE_PATH=data/mail_risk.sqlite3
 ```
 

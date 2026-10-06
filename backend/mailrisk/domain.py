@@ -87,29 +87,62 @@ class Store(Protocol):
     def complete(self, run_id: str, assessment: dict) -> None: ...
 
 
+class OutputValidationError(AppError):
+    def __init__(self, errors: list[dict]):
+        super().__init__(
+            "invalid_output", "Model evidence or references are invalid.", True
+        )
+        self.validation_errors = errors
+
+
 def validate_evidence(result: Extraction | Assessment, sources: list[dict]):
     texts = {source["id"]: source["text"] for source in sources}
-    evidence = (
-        [item for fact in result.facts for item in fact.evidence]
+    errors = []
+    groups = (
+        [("facts", result.facts)]
         if isinstance(result, Extraction)
-        else [item for relation in result.relationships for item in relation.evidence]
-        + [item for entity in result.entities for item in entity.evidence]
+        else [("entities", result.entities), ("relationships", result.relationships)]
     )
-    if any(
-        item.source_id not in texts or item.quote not in texts[item.source_id]
-        for item in evidence
-    ):
-        raise AppError(
-            "invalid_output", "Model evidence does not match the source text.", True
-        )
+    for group, items in groups:
+        for index, item in enumerate(items):
+            for offset, evidence in enumerate(item.evidence):
+                path = [group, index, "evidence", offset]
+                if evidence.source_id not in texts:
+                    errors.append(
+                        {
+                            "path": path + ["source_id"],
+                            "code": "unknown_source",
+                            "message": "Use an existing source ID.",
+                        }
+                    )
+                elif evidence.quote not in texts[evidence.source_id]:
+                    errors.append(
+                        {
+                            "path": path + ["quote"],
+                            "code": "quote_mismatch",
+                            "message": "Copy an exact substring from the referenced source.",
+                        }
+                    )
     if isinstance(result, Assessment):
         ids = [entity.id for entity in result.entities]
-        if len(ids) != len(set(ids)) or any(
-            r.source_id not in ids or r.target_id not in ids
-            for r in result.relationships
-        ):
-            raise AppError(
-                "invalid_output",
-                "Model relationships reference invalid entities.",
-                True,
-            )
+        for index, entity_id in enumerate(ids):
+            if entity_id in ids[:index]:
+                errors.append(
+                    {
+                        "path": ["entities", index, "id"],
+                        "code": "duplicate_entity",
+                        "message": "Entity IDs must be unique.",
+                    }
+                )
+        for index, relation in enumerate(result.relationships):
+            for field in ("source_id", "target_id"):
+                if getattr(relation, field) not in ids:
+                    errors.append(
+                        {
+                            "path": ["relationships", index, field],
+                            "code": "unknown_entity",
+                            "message": "Reference an entity ID from this output or omit the unsupported relationship.",
+                        }
+                    )
+    if errors:
+        raise OutputValidationError(errors[:20])

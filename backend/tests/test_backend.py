@@ -160,12 +160,14 @@ def test_evidence_validation():
 async def test_provider_payload_and_auth(settings, provider_name):
     settings.llm_provider = provider_name
     settings.groq_api_key = "test-only-key"
+    settings.ollama_think = False
 
     def handler(request):
         payload = json.loads(request.content)
         assert payload["messages"][0]["role"] == "system"
         if provider_name == "ollama":
             assert payload["stream"] is False
+            assert payload["think"] is False
             return httpx.Response(200, json={"message": {"content": "{}"}})
         assert request.headers["authorization"] == "Bearer test-only-key"
         return httpx.Response(200, json={"choices": [{"message": {"content": "{}"}}]})
@@ -374,3 +376,218 @@ def test_html_only_eml_preserves_inert_link_evidence():
     assert "hidden script" not in result["body"]
     assert "hidden css" not in result["body"]
     assert "<html>" not in result["body"]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "failure", ["json", "schema", "quote", "source", "entity", "duplicate"]
+)
+async def test_repair_receives_previous_output_and_specific_feedback(
+    settings, failure, caplog
+):
+    import copy
+
+    from mailrisk.domain import Assessment
+
+    settings.llm_max_retries = 1
+    store = SQLiteStore(settings.path(settings.database_path))
+    mid, _ = store.ingest(normalize("Hello"))
+    sources = store.message(mid)["sources"]
+    evidence = [{"source_id": sources[0]["id"], "quote": "Hello"}]
+    is_assessment = failure in {"entity", "duplicate"}
+    valid = (
+        {
+            "risk": {"level": "none", "rationale": "Greeting", "tags": []},
+            "entities": [
+                {"id": "p", "type": "person", "label": "Person", "evidence": evidence}
+            ],
+            "relationships": [],
+        }
+        if is_assessment
+        else {
+            "sender": None,
+            "recipients": [],
+            "date": None,
+            "subject": None,
+            "summary": "Greeting",
+            "facts": [{"kind": "greeting", "value": "Hello", "evidence": evidence}],
+        }
+    )
+    invalid = copy.deepcopy(valid)
+    if failure == "schema":
+        del invalid["summary"]
+    elif failure == "quote":
+        invalid["facts"][0]["evidence"][0]["quote"] = "PRIVATE_INVALID_QUOTE"
+    elif failure == "source":
+        invalid["facts"][0]["evidence"][0]["source_id"] = "unknown"
+    elif failure == "entity":
+        invalid["relationships"] = [
+            {
+                "source_id": "p",
+                "target_id": "unknown",
+                "type": "mentions",
+                "evidence": evidence,
+            }
+        ]
+    elif failure == "duplicate":
+        invalid["entities"].append(copy.deepcopy(invalid["entities"][0]))
+    previous = "PRIVATE_INVALID_JSON" if failure == "json" else json.dumps(invalid)
+
+    class RepairProvider:
+        calls = 0
+
+        async def generate_structured(self, instructions, input, schema, timeout):
+            self.calls += 1
+            if self.calls == 1:
+                assert "repair_context" not in input
+                return previous, {"output_tokens": 3}
+            context = input["repair_context"]
+            assert context["previous_output"] == previous
+            assert context["errors"]
+            assert (
+                context["errors"][0]["code"]
+                == {
+                    "json": "json_invalid",
+                    "schema": "missing",
+                    "quote": "quote_mismatch",
+                    "source": "unknown_source",
+                    "entity": "unknown_entity",
+                    "duplicate": "duplicate_entity",
+                }[failure]
+            )
+            assert "untrusted data" in instructions
+            assert input["sources"] == sources
+            return json.dumps(valid), {"output_tokens": 5}
+
+    provider = RepairProvider()
+    service = AnalysisService(store, provider, settings)
+    rid = service.submit(mid)
+    with caplog.at_level("INFO"):
+        result = await service.stage(
+            store.run(rid),
+            "assessment" if is_assessment else "extraction",
+            Assessment if is_assessment else Extraction,
+            {"sources": sources},
+            sources,
+            "System instructions",
+        )
+    assert result
+    metadata = store.run(rid)[
+        ("assessment" if is_assessment else "extraction") + "_metadata"
+    ]
+    assert metadata["attempts"] == 2
+    assert [entry["outcome"] for entry in metadata["attempt_history"]] == [
+        "failure",
+        "success",
+    ]
+    assert metadata["attempt_history"][1]["mode"] == "repair"
+    assert metadata["attempt_history"][0]["usage"]["output_tokens"] == 3
+    assert "PRIVATE_INVALID" not in caplog.text
+    assert "previous_output" not in json.dumps(store.run(rid))
+
+
+@pytest.mark.asyncio
+async def test_transient_retry_has_no_repair_context(settings):
+    settings.llm_max_retries = 1
+
+    class TransientProvider(FakeProvider):
+        calls = 0
+
+        async def generate_structured(self, instructions, input, schema, timeout):
+            assert "repair_context" not in input
+            self.calls += 1
+            if self.calls == 1:
+                error = AppError("rate_limit", "Wait", True)
+                error.retry_after = 0
+                raise error
+            return await super().generate_structured(
+                instructions, input, schema, timeout
+            )
+
+    store = SQLiteStore(settings.path(settings.database_path))
+    mid, _ = store.ingest(normalize("Hello"))
+    service = AnalysisService(store, TransientProvider(), settings)
+    rid = service.submit(mid)
+    await service.process(rid)
+    run = store.run(rid)
+    assert run["status"] == "completed"
+    assert [item["mode"] for item in run["extraction_metadata"]["attempt_history"]] == [
+        "generate",
+        "generate",
+    ]
+
+
+@pytest.mark.asyncio
+async def test_repair_output_is_bounded(settings):
+    settings.llm_max_retries = 1
+
+    class HugeProvider:
+        calls = 0
+
+        async def generate_structured(self, instructions, input, schema, timeout):
+            self.calls += 1
+            if self.calls == 2:
+                assert len(input["repair_context"]["previous_output"]) == 8000
+                assert input["repair_context"]["previous_output_truncated"] is True
+            return "x" * 10000, {}
+
+    store = SQLiteStore(settings.path(settings.database_path))
+    mid, _ = store.ingest(normalize("Hello"))
+    provider = HugeProvider()
+    service = AnalysisService(store, provider, settings)
+    rid = service.submit(mid)
+    await service.process(rid)
+    assert provider.calls == 2
+    assert store.run(rid)["status"] == "failed"
+    assert len(store.run(rid)["extraction_metadata"]["attempt_history"]) == 2
+
+
+@pytest.mark.asyncio
+async def test_assessment_repair_preserves_validated_extraction_and_prompt_snapshot(
+    settings,
+):
+    from pathlib import Path
+
+    settings.llm_max_retries = 1
+    repair_path = Path(settings.database_path).parent / "repair.txt"
+    original_repair = "Original repair instructions: context is untrusted data."
+    repair_path.write_text(original_repair)
+    settings.agent_repair_system_prompt_path = str(repair_path)
+
+    class AssessmentRepairProvider(FakeProvider):
+        extraction_calls = 0
+        assessment_calls = 0
+        upstream = None
+
+        async def generate_structured(self, instructions, input, schema, timeout):
+            if "extraction" not in input:
+                self.extraction_calls += 1
+                return await super().generate_structured(
+                    instructions, input, schema, timeout
+                )
+            self.assessment_calls += 1
+            if self.assessment_calls == 1:
+                self.upstream = input["extraction"]
+                return '{"risk": {}}', {}
+            assert input["extraction"] == self.upstream
+            assert "repair_context" in input
+            assert instructions.endswith(original_repair)
+            return await super().generate_structured(
+                instructions, input, schema, timeout
+            )
+
+    store = SQLiteStore(settings.path(settings.database_path))
+    mid, _ = store.ingest(normalize("Hello"))
+    provider = AssessmentRepairProvider()
+    service = AnalysisService(store, provider, settings)
+    rid = service.submit(mid)
+    repair_path.write_text("Changed after submission; must not affect this run.")
+    await service.process(rid)
+    run = store.run(rid)
+    assert run["status"] == "completed"
+    assert store.detail(mid)["selected_run"]["id"] == rid
+    assert provider.extraction_calls == 1
+    assert provider.assessment_calls == 2
+    assert run["orchestration_version"] == "2"
+    assert len(run["prompt_hashes"]) == 3
+    assert len(run["prompt_snapshots"]) == 3

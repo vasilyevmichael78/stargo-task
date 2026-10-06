@@ -19,7 +19,7 @@ All project content must be in English: Markdown, instructions, comments, UI tex
 
 ## System prompts
 
-Store prompts as version-controlled UTF-8 files under `backend/prompts/`. Select them through `AGENT_A_SYSTEM_PROMPT_PATH` and `AGENT_B_SYSTEM_PROMPT_PATH` in backend configuration; relative paths resolve against `backend/`.
+Store prompts as version-controlled UTF-8 files under `backend/prompts/`. Select them through `AGENT_A_SYSTEM_PROMPT_PATH`, `AGENT_B_SYSTEM_PROMPT_PATH`, and `AGENT_REPAIR_SYSTEM_PROMPT_PATH` in backend configuration; relative paths resolve against `backend/`.
 
 Validate prompt files at startup. Snapshot/hash prompts per analysis run and keep source content separate from instructions. A substantive prompt change requires relevant actual evaluation, or an explicit record that evaluation could not run and why. Keep prompt changes and their evaluation report together in one logical commit. Do not store API keys or private user data in prompts.
 

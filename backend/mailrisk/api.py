@@ -27,6 +27,7 @@ def create_app(settings=None, provider=None):
     for path in (
         settings.agent_a_system_prompt_path,
         settings.agent_b_system_prompt_path,
+        settings.agent_repair_system_prompt_path,
     ):
         if (
             not settings.path(path).is_file()

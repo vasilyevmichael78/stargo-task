@@ -6,7 +6,7 @@ A local full-stack email triage tool for the fictional Arcline compliance team. 
 
 The mandatory application flow is implemented: ten seed emails, pasted text and file ingestion, responsive inbox/detail views, extraction/risk panels, entities/relationships, provider adapters, SQLite history, retries, and tests. An aggregate graph API exists; an interactive graph UI is not implemented.
 
-**Successful real-model inference and AI quality evaluation are not yet verified.** Ollama is not installed on the development machine, and no Groq credentials were supplied. The app runs without the provider: original messages remain accessible and analysis displays an explicit error. It never substitutes fake assessments or interprets failure as `none`.
+**AI quality evaluation is not yet verified.** Native Ollama and `llama3.2:3b` are installed on the development machine; a short real JSON-schema inference smoke test passed. The full extraction/risk workflow has not yet been evaluated with the model, and no Groq credentials were supplied. The app runs without the provider: original messages remain accessible and analysis displays an explicit error. It never substitutes fake assessments or interprets failure as `none`.
 
 ## Quick start
 
@@ -17,7 +17,7 @@ Start the backend in one terminal, from the repository root:
 ```sh
 cd backend
 uv sync --locked
-cp .env.example .env
+test -f .env || cp .env.example .env
 uv run uvicorn mailrisk.api:app --host 127.0.0.1 --port 8000
 ```
 
@@ -40,10 +40,12 @@ Ten seed records are imported and submitted only when absent. Restarting does no
 Install Ollama using its [official instructions](https://docs.ollama.com/quickstart), start its service, and download a model separately:
 
 ```sh
+ollama serve
+# In another terminal:
 ollama pull llama3.2:3b
 ```
 
-The default configuration uses `OLLAMA_BASE_URL=http://localhost:11434` and `OLLAMA_MODEL=llama3.2:3b`. This is a starting candidate, **not a quality-validated model choice**. Download/inference were not executed in this session. Set another installed model in `.env` if appropriate, restart the backend, and evaluate before trusting results. Hardware affects latency; adjust the timeout if needed.
+The default configuration uses `OLLAMA_BASE_URL=http://localhost:11434` and `OLLAMA_MODEL=llama3.2:3b`. This is a starting candidate, **not a quality-validated model choice**. Local download and a short JSON-schema inference smoke test passed; seed email quality evaluation remains pending. Set another installed model in `.env` if appropriate, restart the backend, and evaluate before trusting results. Hardware affects latency; adjust the timeout if needed.
 
 ### Groq alternative
 

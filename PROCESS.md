@@ -100,3 +100,17 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Time accounting:** implementation start was observed at 09:25:27 UTC; final documentation checks were observed at 09:50:26 UTC (24 minutes 59 seconds elapsed). This interval includes user interruption and parallel agent execution, excludes subsequent shutdown/finalization, and is not a measurement of focused human effort. Historical planning time is unmeasured.
 - **Outcome:** application code, deterministic verification, and documentation delivered; real-model validation and optional interactive aggregate graph remain pending. Local smoke emails remain in the ignored runtime database; fresh checkout imports the original ten seeds.
 - **Commit:** `docs: finalize setup and implementation verification`.
+
+### Local Ollama installation and private configuration
+
+- **Started:** 2026-10-06T10:06:00.373659+00:00 UTC.
+- **User request:** install local Llama inference and create an ignored backend environment file; the user will supply the Groq API key separately.
+- **Actions planned:** install native Ollama through Homebrew, download the configured llama3.2:3b model, verify local inference and Git exclusion. Preserve any existing private environment values.
+- **Status:** in progress; no model-quality evaluation claimed.
+
+- **Completed:** 2026-10-06T10:09:14.212002+00:00 UTC. Native Ollama 0.35.1 installed via Homebrew; llama3.2:3b downloaded successfully (approximately 2 GB). Homebrew also updated its formula metadata/dependencies and ran automatic cleanup.
+- **Runtime:** Ollama is listening on 127.0.0.1:11434 and detected Apple M4 / Metal. Started with ollama serve, without configuring login autostart. Backend and frontend remain stopped.
+- **Private configuration:** created backend/.env from all example variables, left GROQ_API_KEY empty, permissions 0600. git check-ignore confirms exclusion; git ls-files confirms the file is untracked. No secret values were printed.
+- **Verification:** actual JSON-schema chat request returned {"status":"ok"} in 1.85 seconds, with seven output tokens. This is a provider smoke check, not an evaluation of extraction/risk quality. Full seed evaluation and Groq smoke remain pending.
+- **Documentation:** updated README runtime status and made the example environment copy preserve an existing .env. No application logic changed.
+- **Outcome:** requested local model and private configuration are ready.

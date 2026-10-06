@@ -12,6 +12,8 @@ A [prompt-only v2 experiment](evaluations/PROMPT_EXPERIMENT_V2_2026-10-06.md) re
 
 ## Quick start
 
+For installation, provider/key selection, every terminal command, troubleshooting and shutdown, follow the [complete run guide](docs/RUNNING.md). **Local Ollama requires no API key.** Groq requires a private Groq key and does not require an Ollama installation.
+
 Requirements: Python 3.11+, [uv](https://docs.astral.sh/uv/), Node.js 22.12+ and npm. Dependencies are locked in `backend/uv.lock` and `frontend/package-lock.json`.
 
 Start the backend in one terminal, from the repository root:
@@ -64,6 +66,8 @@ GROQ_MODEL=openai/gpt-oss-120b
 Settings and the sample configuration select `openai/gpt-oss-120b` for Groq. The earlier `llama-3.3-70b-versatile` candidate was unavailable to the tested key. Confirm access before switching provider. The latest fifteen-case free-tier comparison used 65-second between-case pacing and still had two final rate-limit failures; the app does not implement that pacing or token-budget scheduling.
 
 Use an eligible free-tier account; check current access, model availability, and limits in the [Groq console](https://console.groq.com/docs/models). No paid key is required by the application. Groq processes email content externally; switching is explicit and never automatic. Missing selected-provider credentials/model or invalid prompt files produce a startup configuration error. An unreachable configured provider leaves the API operational and produces analysis errors.
+
+For reviewers who need a demo key, the author can provide a temporary Groq key on request, with a 30-day expiration as stated by the author; confirm its actual expiry when shared. This is optional and is not a general Groq key-expiry policy. Your own eligible key or local Ollama is sufficient. Credentials are shared privately and belong only in ignored backend/.env, never Git or frontend configuration. See the [run guide](docs/RUNNING.md) for registration and setup.
 
 Ollama uses its native JSON-schema output format. Groq uses JSON object mode with the schema included in instructions; the shared pipeline validates the result itself. JSON syntax is not a guarantee of schema compliance or factual correctness. See [Ollama API documentation](https://github.com/ollama/ollama/blob/main/docs/api.md) and [Groq structured outputs](https://console.groq.com/docs/structured-outputs).
 
@@ -159,6 +163,8 @@ No auth, multi-tenancy, automated compliance decisions, durable distributed queu
 Accepted submissions return `202` with `message_id` and `analysis_run_id`. Invalid input returns 422, oversized uploads 413, unknown IDs 404, and queue saturation 429. Safe application errors use `error: {code, message, retryable}`; FastAPI validation errors use its standard `detail` format. The UI polls active work every two seconds.
 
 ## Verification and AI evaluation
+
+See the [complete test inventory](docs/TESTING.md) for every current backend/frontend test, real-inference commands and tracked evaluation reports. Test sources and sanitized Markdown reports are committed; raw source-bearing reports and databases remain ignored.
 
 Backend, from `backend/`:
 

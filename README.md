@@ -123,6 +123,16 @@ flowchart LR
 
 A modular monolith separates Mailbox inputs, Analysis lifecycle, and Knowledge Graph projections. Agent A/B are stages within Analysis, not independent services. Domain contracts do not depend on FastAPI, provider SDKs, or SQLite. Small ports enable provider substitution and deterministic failure tests.
 
+### Why no LangChain or LangGraph
+
+The assignment specifies a fixed two-stage workflow: extraction, validation, risk/entity/relationship analysis, validation and persistence. It does not require dynamic tool selection, parallel investigations, retrieval or an autonomous planning loop. A small orchestration service, typed contracts and a shared provider interface cover that scope while keeping call order, timeouts, bounded repair, partial results and failure handling explicit and testable.
+
+Within the assignment's 5–6 focused-hour planning target, the priority was the business outcome: faithful facts, supported risk signals, preserved allegation status and interpretable relationships, alongside a usable UI. Actual focused human time was not measured; this is a scoping rationale, not a claim that the work took that many hours. The real evaluations expose unsupported conclusions and graph typing/direction errors. Adding an orchestration framework does not by itself establish evidence entailment or correct those outputs; semantic contracts and measured evaluation remain necessary.
+
+The application's knowledge graph represents email entities and relationships persisted in SQLite. A LangGraph execution graph represents workflow control and state; it is not required to store or visualize this business graph. Current processing is a bounded chained LLM workflow, with request-local repair feedback and persisted run metadata, rather than autonomous agents.
+
+Reconsider LangGraph if requirements introduce resumable human review, branching investigations, tool-driven workflows or more complex execution state. Reconsider LangChain if its retrieval/integration components materially reduce useful application code. Either adoption should solve a concrete requirement and preserve provider, evidence and lifecycle boundaries; framework use alone is not a success criterion in this take-home.
+
 SQLite uses relational tables for messages, runs, entities, mentions, and relationships. Normalized source segments, extraction, risk, and provenance are JSON payloads within message/run records. This keeps the local schema small; SQL-queryable fact tables and explicit schema migrations would be appropriate as querying needs grow.
 
 Evidence stores a source ID and exact quote, validated against persisted normalized text. Entities and relationships retain evidence. Evidence presence does not establish that a quoted claim or an inferred relationship is true. Identity claims and allegations must remain qualified. Only complete email-shaped identifiers merge across runs; names and partial accounts remain separate.

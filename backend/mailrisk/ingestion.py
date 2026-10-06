@@ -3,6 +3,7 @@
 from email import policy
 from email.parser import BytesParser
 from email.utils import getaddresses
+from html.parser import HTMLParser
 from io import BytesIO
 from pathlib import Path
 from uuid import uuid4
@@ -13,6 +14,46 @@ from .domain import AppError
 
 MAX_UPLOAD = 10 * 1024 * 1024
 MAX_TEXT = 100_000
+
+
+class EmailHTMLText(HTMLParser):
+    """Extract inert text and link targets without rendering or fetching HTML."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.parts = []
+        self.hidden_depth = 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag in {"script", "style", "head"}:
+            self.hidden_depth += 1
+        if self.hidden_depth:
+            return
+        if tag in {"p", "div", "br", "li", "tr", "h1", "h2", "h3"}:
+            self.parts.append("\n")
+        if tag == "a":
+            href = dict(attrs).get("href")
+            if href:
+                self.parts.append(f" [link target: {href}] ")
+
+    def handle_endtag(self, tag):
+        if tag in {"script", "style", "head"} and self.hidden_depth:
+            self.hidden_depth -= 1
+        elif not self.hidden_depth and tag in {"p", "div", "li", "tr"}:
+            self.parts.append("\n")
+
+    def handle_data(self, data):
+        if not self.hidden_depth:
+            self.parts.append(data)
+
+
+def html_text(value):
+    parser = EmailHTMLText()
+    parser.feed(value)
+    parser.close()
+    return "\n".join(
+        line.strip() for line in "".join(parser.parts).splitlines() if line.strip()
+    )
 
 
 def source(name, text):
@@ -85,13 +126,16 @@ def upload(filename: str, data: bytes):
         raise AppError("invalid_input", "Upload a .txt, .pdf, or .eml file.")
     try:
         message = BytesParser(policy=policy.default).parsebytes(data)
-        body = message.get_body(preferencelist=("plain",))
+        body = message.get_body(preferencelist=("plain", "html"))
         if not body:
             raise AppError(
-                "invalid_input",
-                "EML requires a plain-text body; HTML-only email is not supported.",
+                "invalid_input", "EML requires a readable text or HTML body."
             )
         text = body.get_content()
+        if body.get_content_type() == "text/html":
+            text = html_text(text)
+        if not text.strip():
+            raise AppError("invalid_input", "The email body is empty.")
         attachments, warnings = [], []
         for part in message.iter_attachments():
             name = part.get_filename() or "attachment"
@@ -100,9 +144,12 @@ def upload(filename: str, data: bytes):
                 attachments.append(
                     {"filename": name, "extracted_text": pdf_text(content)}
                 )
-            elif part.get_content_type() == "text/plain":
+            elif part.get_content_type() in {"text/plain", "text/html"}:
+                attachment_text = part.get_content()
+                if part.get_content_type() == "text/html":
+                    attachment_text = html_text(attachment_text)
                 attachments.append(
-                    {"filename": name, "extracted_text": part.get_content()}
+                    {"filename": name, "extracted_text": attachment_text}
                 )
             else:
                 warnings.append("An unsupported attachment was skipped.")

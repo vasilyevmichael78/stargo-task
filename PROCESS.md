@@ -80,3 +80,11 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Environment:** localhost binds and dependency downloads required sandbox escalation. Vite selected 5174 because 5173 was already occupied; unrelated services were left untouched. The backend runs on 8000.
 - **Outcome:** integrated mandatory UI implemented; aggregate interactive graph remains deferred. Screenshots were captured outside Git for review.
 - **Commit:** `feat: add responsive evidence-linked mail review interface`.
+
+### HTML email ingestion compatibility
+
+- **Trigger:** root review identified that rejecting HTML-only EML excluded a common email representation despite the required EML ingestion capability.
+- **Work:** added standard-library HTML-to-text normalization for email bodies and textual attachments, retaining link targets as inert text and excluding head/script/style content. No browser rendering, URL fetching, or execution occurs.
+- **Validation:** 20 backend tests and Ruff checks passed, including an HTML-only email with a reset link and hidden script/style content. No new dependency was added.
+- **Outcome:** HTML-only EML support implemented; normalized source text is the evidence basis. This does not establish semantic correctness or preserve a binary MIME archive.
+- **Commit:** `fix: normalize HTML email bodies without rendering source content`.

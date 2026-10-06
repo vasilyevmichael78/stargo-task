@@ -356,3 +356,21 @@ def test_configuration_and_invalid_prompt(settings):
     settings.agent_a_system_prompt_path = "does-not-exist.txt"
     with pytest.raises(RuntimeError, match="prompt"):
         create_app(settings)
+
+
+def test_html_only_eml_preserves_inert_link_evidence():
+    from email.message import EmailMessage
+
+    message = EmailMessage()
+    message["From"] = "security@example.com"
+    message["Subject"] = "Reset request"
+    message.set_content(
+        '<html><head><style>hidden css</style></head><body><p>Reset now</p><a href="https://example.com/reset">Verify</a><script>hidden script</script></body></html>',
+        subtype="html",
+    )
+    result = upload("mail.eml", message.as_bytes())
+    assert "Reset now" in result["body"]
+    assert "https://example.com/reset" in result["body"]
+    assert "hidden script" not in result["body"]
+    assert "hidden css" not in result["body"]
+    assert "<html>" not in result["body"]

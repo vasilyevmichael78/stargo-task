@@ -1,6 +1,6 @@
 # Implementation Review — 2026-10-06
 
-This is a source-backed take-home review, not a production-readiness certificate. Runtime behavior and prompts were not changed. The expanded provider comparison was still in progress when reviewed; its partial results must not be presented as a finished four-model benchmark.
+This is a source-backed take-home review, not a production-readiness certificate. Refreshed after the [completed fifteen-case comparison](../evaluations/EXPANDED_COMPARISON_2026-10-06.md): Groq GPT-OSS, local Llama and local Qwen are included; Mistral was cancelled and excluded. Prompts and orchestration remain unchanged. User-requested settings/example defaults now select Qwen 3.5 4B for Ollama and GPT-OSS 120B for Groq; private configuration was not modified.
 
 ## Requirement coverage
 
@@ -10,17 +10,29 @@ This is a source-backed take-home review, not a production-readiness certificate
 | Paste text; TXT/PDF/EML upload | POST endpoints, MIME/text-layer parsing, frontend ingestion dialog | Implemented with explicit UTF-8, OCR/encryption and attachment limitations. |
 | A extracts metadata, summary, facts and attachments | `Extraction`, extraction prompt, saved source segments | Contract implemented; real experiments show missing/unsupported facts. |
 | B consumes A and returns risk, entities, relationships | `AnalysisService.process`, `Assessment`, assessment prompt | Implemented. B also receives original sources for evidence and a policy snapshot; stages remain chained. |
-| Free-tier or local LLM; unavailable-provider behavior | Explicit Ollama/Groq adapters, environment example, safe failures | Local no-key path implemented. Groq example names a model unavailable to the tested key; README documents an evaluated alternative. |
+| Free-tier or local LLM; unavailable-provider behavior | Explicit Ollama/Groq adapters, aligned environment example, safe failures | Local no-key path implemented with Qwen default; Groq default GPT-OSS was evaluated. Account eligibility remains conditional. Fallback is explicit reconfiguration/restart/retry. |
 | Model failures, timeouts, garbage output | Outer timeout, bounded shared retry/repair budget, validators, explicit failed states | Implemented. No silent provider fallback or mocked runtime output. |
 | Persist processed emails and graph | SQLite messages/runs/entities/mentions/relationships; atomic completion | Implemented, including prior-success preservation and provenance. |
 | Inbox risk badge, original/extraction/rationale, selected-email entities | React inbox/detail components, textual status/risk labels | Implemented; component tests cover important failure and ingestion flows. |
-| Narrow viewport usability | Responsive CSS and prior recorded desktop/mobile browser checks | Implemented; this review reruns engineering checks, not a fresh visual/accessibility audit. |
+| Narrow viewport usability | Responsive CSS and prior recorded desktop/mobile browser checks | Implemented; no fresh visual/accessibility audit in this refresh. |
 | Bonus aggregate interactive graph | Canvas, pan/zoom, node connections, source navigation and explorer | Implemented for small datasets. |
 | React/TypeScript; permitted backend; styling rationale | React/Vite, FastAPI, CSS Modules and README | Conforms. Scoped styles avoid an extra styling framework. |
 | Tests, README, AI workflow journal | pytest, Vitest, setup/architecture docs, PROCESS | Present. Deterministic engineering tests and real model evaluations are distinct. |
 | Honest 5–6 hour accounting | PROCESS block timings and README explanation | Focused human time has not been measured; wall-clock blocks cannot be summed into that claim. |
 
 The feature scope satisfies the assignment. Semantic reliability is the principal limitation, especially for the pipeline-focused track; feature completeness is not evidence that every model result fulfills the intended extraction/risk meaning.
+
+## Latest model evidence and recommendation
+
+| Configuration | Completed / all | Accepted risk / all | Original seeds: completed / accepted | Median completed-case seconds |
+| --- | --- | --- | --- | --- |
+| Groq openai/gpt-oss-120b | 13/15 | 12/15 | 9/10 / 9/10 | 7.36 |
+| Ollama qwen3.5:4b | 13/15 | 12/15 | 8/10 / 7/10 | 137.27 |
+| Ollama llama3.2:3b | 6/15 | 2/15 | 4/10 / 1/10 | 47.81 |
+
+Recommend the tested Groq configuration for a supervised demo, with local Qwen retained for explicit offline/private operation. Groq's completed-case median is about 19 times lower on this hardware, and the seed-only results better match the original task. Qwen's aggregate risk agreement equals Groq's, so do not claim measured superiority on that metric. Its known graph typing errors, unsupported signals and invented account-change reason also matter for this assignment; Groq has semantic errors too. Both miss or fail cases. Groq's two final quota failures occurred despite 65-second external pacing; output/token-aware scheduling is absent from the app.
+
+This is one development comparison, not a scored independent semantic benchmark or proof that any frontier model will work better. GPT-OSS is the tested large open-weight API candidate. Evaluate another strong API candidate against frozen, independently reviewed labels before promotion; a paid-only dependency cannot replace the required free-tier/local path. Latencies exclude queue wait/pacing, and hardware/transport/output-mode differences prevent model-size-only conclusions. Full per-case findings and provenance are linked above.
 
 ## Explicit assumptions
 
@@ -73,7 +85,7 @@ For future model/prompt/catalog releases, use a frozen, independently reviewed h
 - Benign urgency, embedded instructions in bodies/attachments, same-name identities, account suffix collisions, long inputs/context pressure, malformed attachments and provider outage/recovery cases.
 - Repeat runs with identical snapshots/settings and review disagreements. Temperature zero does not establish deterministic provider output.
 
-A proposed gate is: engineering checks pass, no unreviewed critical hallucination or severe-risk miss in the release set, and agreed completion/false-positive targets are met. Targets need analyst approval and adequate sample sizes; this repository has no automated CI quality gate or established production SLO. Synthetic cases and Codex qualitative reviews should be labeled accordingly. Finish pending comparisons before promoting a candidate; keep prompt changes and actual evaluation evidence together.
+A proposed gate is: engineering checks pass, no unreviewed critical hallucination or severe-risk miss in the release set, and agreed completion/false-positive targets are met. Targets need analyst approval and adequate sample sizes; this repository has no automated CI quality gate or established production SLO. Synthetic cases and Codex qualitative reviews should be labeled accordingly. Included comparisons are finished, but independent semantic review remains pending; keep future prompt changes and actual evaluation evidence together.
 
 ## Observability
 
@@ -85,9 +97,9 @@ Suggested low-cardinality metrics: queue depth/oldest age, accepted/rejected sub
 
 ## Submission priorities
 
-1. Finish and accurately label pending evaluation results; independently review the strongest candidate. Do not claim unattended-triage quality from risk-level agreement.
-2. Align the Groq environment example with an explicitly available tested model; make readiness versus health and local trust assumptions easy to find.
-3. Add a compact reproducible successful two-agent demo and unavailable-provider demonstration; a screen recording is optional in the brief.
-4. Keep scale/monitoring proposals as documented follow-up work. Production infrastructure is not required by this take-home and should not delay a clear, runnable submission.
+1. Independently review the API candidate and a held-out set; fix severe-risk misses, unsupported claims and graph semantics with measured regressions. Evidence-bearing signals, typed facts and explicit allegation/direction contracts precede further prompt/catalog tuning. Do not claim unattended-triage quality from risk-level agreement.
+2. Defaults/examples now match tested candidates. Verify a clean lockfile-based setup and add a compact successful two-agent demo plus unavailable-provider recovery. Account limits remain an explicit constraint; a screen recording is optional in the brief.
+3. Bound tokens/output and handle quota scheduling; improve readiness, queue age/stage visibility and worker-stall detection. Preserve bounded repair and structural evidence checks.
+4. Keep scale/monitoring proposals as follow-up work. Durable jobs and filtered queries come before service splits; RAG/browser tools/frameworks do not resolve the observed entailment/type errors by themselves. Production infrastructure is not required by this take-home.
 
-Check results for this review are recorded in PROCESS.md. No new live inference, provider availability check, load test or browser audit was performed for this documentation-only block.
+Check results for the original review and this refresh are recorded in PROCESS.md. No new live inference, account availability check, load test or browser audit was performed in this refresh. Default-model changes are configuration changes, not a newly evaluated orchestration/model experiment; the selected model identifiers are those in the completed comparison.

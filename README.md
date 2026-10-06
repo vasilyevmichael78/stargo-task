@@ -6,7 +6,7 @@ A local full-stack email triage tool for the fictional Arcline compliance team. 
 
 The mandatory application flow is implemented: ten seed emails, pasted text and file ingestion, responsive inbox/detail views, extraction/risk panels, entities/relationships, provider adapters, SQLite history, retries, and tests. The bonus aggregate Canvas 2D knowledge graph is also implemented.
 
-**No evaluated configuration is approved for unattended triage.** A real ten-email `llama3.2:3b` baseline completed five runs; only two completed risk levels matched the accepted ranges. Codex review found unsupported claims and entity/relationship errors; independent human review remains pending. See [the evaluation report](evaluations/LLAMA_BASELINE_2026-10-06.md). A subsequent [Groq GPT-OSS comparison](evaluations/GROQ_BASELINE_2026-10-06.md) completed 9/10 cases with external quota pacing and matched accepted risk in 7/9 completed cases; semantic gaps remain. Provider failures remain visible and are never treated as risk `none`.
+**No evaluated configuration is approved for unattended triage.** The latest [fifteen-case comparison](evaluations/EXPANDED_COMPARISON_2026-10-06.md) completed 13/15 with Groq GPT-OSS 120B, 13/15 with local Qwen 3.5 4B, and 6/15 with local Llama 3.2 3B. Groq is the recommended supervised-demo configuration based on latency and qualitative review; Ollama remains the no-key default. Semantic gaps remain in every candidate and independent human review is pending. Provider failures remain visible and are never treated as risk `none`. Earlier [Llama](evaluations/LLAMA_BASELINE_2026-10-06.md) and [Groq](evaluations/GROQ_BASELINE_2026-10-06.md) baselines retain their historical settings/results.
 
 A [prompt-only v2 experiment](evaluations/PROMPT_EXPERIMENT_V2_2026-10-06.md) regressed completion from 5/10 to 2/10. Its prompts are archived for reproduction; default prompts remain the baseline version.
 
@@ -44,12 +44,12 @@ Install Ollama using its [official instructions](https://docs.ollama.com/quickst
 ```sh
 ollama serve
 # In another terminal:
-ollama pull llama3.2:3b
-# Optional alternative:
 ollama pull qwen3.5:4b
+# Optional alternative:
+ollama pull llama3.2:3b
 ```
 
-The example selects `OLLAMA_MODEL=llama3.2:3b`; it also includes the alternative `qwen3.5:4b`. Set exactly one active model line in your private environment. The local model is installed. `OLLAMA_NUM_CTX=8192` reserves context for sources, schemas, and the risk catalog; it is not a guarantee that every accepted long document fits. `OLLAMA_THINK=false` disables optional thinking; unset omits that parameter. The per-call timeout is now 180 seconds. The initial historical baselines used 60 seconds; the [expanded comparison](evaluations/EXPANDED_COMPARISON_2026-10-06.md) uses the current 180-second budget. A [Llama/catalog development smoke](evaluations/LLAMA_RISK_CATALOG_2026-10-06.md) completed 2/3 cases, matched no accepted risk levels, and exposed unsupported signals. The catalog is experimental guidance, not a quality-approved policy. The [historical Qwen smoke](evaluations/QWEN_REPAIR_SMOKE_2026-10-06.md) remains available. Preserve existing private environment values, change the model explicitly, and restart the backend.
+Settings and the example select `OLLAMA_MODEL=qwen3.5:4b`; the example also includes `llama3.2:3b` as an alternative. Set exactly one active model line in your private environment. The local model is installed. `OLLAMA_NUM_CTX=8192` reserves context for sources, schemas, and the risk catalog; it is not a guarantee that every accepted long document fits. `OLLAMA_THINK=false` disables optional thinking; unset omits that parameter. The per-call timeout is now 180 seconds. The initial historical baselines used 60 seconds; the [expanded comparison](evaluations/EXPANDED_COMPARISON_2026-10-06.md) uses the current 180-second budget. A [Llama/catalog development smoke](evaluations/LLAMA_RISK_CATALOG_2026-10-06.md) completed 2/3 cases, matched no accepted risk levels, and exposed unsupported signals. The catalog is experimental guidance, not a quality-approved policy. The [historical Qwen smoke](evaluations/QWEN_REPAIR_SMOKE_2026-10-06.md) remains available. Preserve existing private environment values, change the model explicitly, and restart the backend.
 
 ### Groq alternative
 
@@ -61,7 +61,7 @@ GROQ_API_KEY=your-key-here
 GROQ_MODEL=openai/gpt-oss-120b
 ```
 
-The sample configuration still names `llama-3.3-70b-versatile`, which was unavailable to the tested key; explicitly select an accessible model such as the tested GPT-OSS candidate above. The free-tier experiment needed external pacing and still hit one quota error; the app does not yet implement token-budget scheduling.
+Settings and the sample configuration select `openai/gpt-oss-120b` for Groq. The earlier `llama-3.3-70b-versatile` candidate was unavailable to the tested key. Confirm access before switching provider. The latest fifteen-case free-tier comparison used 65-second between-case pacing and still had two final rate-limit failures; the app does not implement that pacing or token-budget scheduling.
 
 Use an eligible free-tier account; check current access, model availability, and limits in the [Groq console](https://console.groq.com/docs/models). No paid key is required by the application. Groq processes email content externally; switching is explicit and never automatic. Missing selected-provider credentials/model or invalid prompt files produce a startup configuration error. An unreachable configured provider leaves the API operational and produces analysis errors.
 
@@ -75,7 +75,8 @@ See [backend/.env.example](backend/.env.example). Environment variables override
 | --- | --- |
 | `LLM_PROVIDER` | `ollama`; alternatives: `groq` |
 | `LLM_TIMEOUT_SECONDS` | 180 seconds per call, including an outer timeout |
-| `OLLAMA_MODEL` | Example default `llama3.2:3b`; alternative `qwen3.5:4b` |
+| `OLLAMA_MODEL` | Default `qwen3.5:4b`; alternative `llama3.2:3b` |
+| `GROQ_MODEL` | Default `openai/gpt-oss-120b`; verify account access |
 | `OLLAMA_NUM_CTX` | 8192 tokens for Ollama; configurable 2048–32768 |
 | `RISK_CONTEXT_PATH` | `policies/risk_context.json`; first-run SQLite bootstrap only |
 | `OLLAMA_THINK` | `false` in the example environment; unset omits the optional provider parameter |
@@ -179,9 +180,51 @@ Verification result: **48 backend tests and 13 frontend tests passed**, with suc
 
 The deterministic suite covers ingestion and valid text PDF/EML attachments, queue behavior, restart/idempotency, bounded retries/timeouts, partial results, provider mappings/errors, selected graph contribution, and UI ingestion/error handling. Browser smoke checks covered desktop/mobile, paste and TXT upload, original text, and unavailable-provider retry. Successful model output is covered with explicit test doubles, not fabricated application data.
 
-The [expanded comparison](evaluations/EXPANDED_COMPARISON_2026-10-06.md) covers fifteen JSON cases with Groq GPT-OSS, Ollama Llama and Qwen. Mistral was cancelled by the user and excluded. New synthetic cases cover benign urgency, prompt injection, allegations, ambiguous identities and changed payment suffixes. Use the isolated comparison runner documented in the evaluation guide; full local reports are ignored because they contain source data.
+The [expanded comparison](evaluations/EXPANDED_COMPARISON_2026-10-06.md) covers fifteen JSON cases with Groq GPT-OSS, Ollama Llama and Qwen. All three included runs are finished; Mistral was cancelled by the user and excluded. New synthetic cases cover benign urgency, prompt injection, allegations, ambiguous identities and changed payment suffixes. Use the isolated comparison runner documented in the evaluation guide; full local reports are ignored because they contain source data.
 
 See [evaluation protocol and collector](evaluations/README.md). Historical Llama and Groq evaluations are linked above. The Llama/catalog development smoke is linked above and is not a full baseline or held-out evaluation. Manually review facts, risk signals, evidence, and unsupported claims. The ten seed emails are a small regression set, not general accuracy evidence.
+
+### Model recommendation for this task
+
+Use **Groq / openai/gpt-oss-120b for the supervised take-home demonstration**, provided the account has eligible free-tier access and external processing is acceptable. Keep **Ollama / qwen3.5:4b as the local default** for privacy, offline use and further experimentation. The user-requested model defaults and sample configuration now match these evaluated candidates; existing private environment values take precedence and are unchanged.
+
+| Latest comparison, same fifteen cases | Groq GPT-OSS 120B | Local Qwen 3.5 4B | Local Llama 3.2 3B |
+| --- | --- | --- | --- |
+| Completed analyses | 13/15 | 13/15 | 6/15 |
+| Completed and accepted risk, all submissions | 12/15 | 12/15 | 2/15 |
+| Accepted risk among completed analyses | 12/13 | 12/13 | 2/6 |
+| Original assignment seeds: completed / accepted | 9/10 / 9/10 | 8/10 / 7/10 | 4/10 / 1/10 |
+| Median completed-analysis latency | 7.36 s | 137.27 s | 47.81 s |
+
+The recommendation follows the task's needs: responsive triage, faithful extraction and interpretable relationships. Groq's median completed-case latency was approximately 19 times lower than Qwen's on this machine, making iteration and interactive review more practical. Qwen repeatedly typed dates/durations as amounts or locations, invented zero-valued amounts, lost known sender metadata in X002, and invented a reason for an account change in X005. Groq also made unsupported identity/relationship inferences, reversed an account-replacement edge and under-rated X002. Equal aggregate risk agreement therefore does not establish equal graph quality, and this qualitative review is not an independently scored quality ranking.
+
+The API has trade-offs: two final quota failures even with external pacing, network dependence, account access and content leaving the machine. Both Qwen failures were assessment timeout/invalid evidence. The measured latency excludes failed cases, queue wait and pacing; no repeated or dedicated warm-up benchmark was performed. One small development set cannot isolate model capacity from hardware, transport or provider output mode.
+
+The tested API model is a large open-weight model hosted by Groq; this experiment does **not** establish that an arbitrary frontier model is superior. A stronger API model is a reasonable next candidate for nuanced allegations, financial signals and graph semantics, but it must pass the same frozen evaluation before promotion. A paid-only frontier dependency would violate the assignment's no-paid-key requirement. The existing adapters support Ollama and Groq; another provider requires an adapter and verification. Current hosted availability and quotas should be checked in [Groq's model documentation](https://console.groq.com/docs/models) and [rate-limit documentation](https://console.groq.com/docs/rate-limits); account-specific limits govern actual access.
+
+If the API is unavailable, preserve the visible failure/partial extraction, then explicitly configure an installed Ollama model, restart and retry. There is no automatic fallback that sends local content externally. Keep analyst review on either path.
+
+### Assignment fit and improvements before submission
+
+The source-backed [requirement review](docs/IMPLEMENTATION_REVIEW.md) confirms the mandatory feature coverage and graph bonus. The remaining distinction is that a correct pipeline contract can still produce an incorrect risk or relationship.
+
+| Area in the original brief | Current assessment | Remaining improvement |
+| --- | --- | --- |
+| Seed mailbox, paste, TXT/PDF/EML and attachment text | Implemented through common normalization | PDFs require readable text layers; no OCR. Add a compact upload demonstration. |
+| Chained extraction and risk/graph agents | Implemented with validated A before B, real providers and bounded repair | Improve metadata completeness, fact grounding, risk signals and graph semantics; successful JSON is insufficient. |
+| Model errors and persisted results | Implemented failures, partial extraction, prior success and retry | Quota-aware scheduling and token/output budgets; restart recovery is manual, with no durable queue. |
+| Inbox, detail, mobile and entity panels | Implemented; engineering tests and earlier browser checks recorded | Fresh final desktop/mobile demo; expose queue/stage progress and selected-result provenance more clearly. |
+| Interactive aggregate graph bonus | Implemented pan/zoom, node connections, evidence and source navigation | Correct entity types, edge direction and allegation modality before trusting graph conclusions. |
+| Free-tier/local setup and documentation | Both paths supported; defaults match evaluated candidates; explicit fallback documented | Verify a clean setup using an eligible account. |
+| Tests, PROCESS and time accounting | Engineering and real inference evidence recorded separately | Independent review and held-out quality tests; report focused human time only if measured. |
+
+Prioritize these bounded follow-ups:
+
+1. **Submission reproducibility:** model defaults/examples are aligned; verify installation from lockfiles in a clean environment and record a successful two-agent flow plus unavailable-provider recovery. Keep a working local/no-paid-key path. These are final checks to perform, not claims of a newly executed clean-machine test.
+2. **Semantic contracts:** preserve parsed headers as source metadata, define typed date/duration/document values, require source evidence for risk signals, and represent relationship direction plus claimed/alleged status. Evaluate changes against E003, X002, X004 and X005; reject unsupported details rather than repairing them into invented facts. An evidence-based deterministic policy layer is a candidate design, not current behavior.
+3. **Capacity and reliability:** bound model input/output tokens including catalog/schema/repair overhead; add quota-aware admission and scheduling, readiness/worker-stall checks and visible queue/stage progress. A larger timeout alone cannot resolve hallucinations.
+4. **Quality measurement:** independently label held-out benign/adversarial cases; score fact completeness, unsupported claims, severe-risk misses, false positives and graph semantics separately. Repeat runs and report all-submission coverage as well as completed-case agreement.
+5. **Further scale:** durable jobs/leases and idempotent completion, paginated inbox/graph queries, then PostgreSQL when justified. Add auth/audit/retention before shared access. Microservices, LangGraph/LangChain, browser tools or a RAG stack do not directly fix the observed unsupported claims and are not required for this assignment. A curated policy retrieval experiment is appropriate only if context size or missing approved knowledge becomes a measured issue.
 
 ## Observability, trade-offs, and further work
 
@@ -210,4 +253,4 @@ With more time: introduce durable jobs with restart-safe claims/idempotency; ado
 
 The application assumes one trusted local analyst and one backend process. Risk is advisory per-email triage; source identities and allegations are not verified. PDFs require text layers. The input character limit does not guarantee fit in the configured model context. SQLite retains source/history without application-level encryption or automated retention; external provider selection sends content outside the machine. CORS does not replace authentication.
 
-See the [source-backed implementation review](docs/IMPLEMENTATION_REVIEW.md) for assignment coverage, enforced guardrails versus semantic gaps, evaluation release criteria, observability gaps and a prioritized scaling path. Metrics, tracing, durable jobs, token-aware admission and independently validated AI quality are proposed work, not implemented capabilities. The expanded comparison report remains provisional until all configured runs finish.
+See the [source-backed implementation review](docs/IMPLEMENTATION_REVIEW.md) for assignment coverage, enforced guardrails versus semantic gaps, evaluation release criteria, observability gaps and a prioritized scaling path. Metrics, tracing, durable jobs, token-aware admission and independently validated AI quality are proposed work, not implemented capabilities. The expanded comparison is complete for its three included configurations; independent human semantic review remains pending.

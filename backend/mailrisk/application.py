@@ -9,7 +9,13 @@ from datetime import datetime, timezone
 
 from pydantic import ValidationError
 
-from .domain import AppError, Assessment, Extraction, validate_evidence
+from .domain import (
+    AppError,
+    Assessment,
+    Extraction,
+    align_evidence_whitespace,
+    validate_evidence,
+)
 
 logger = logging.getLogger("mailrisk.analysis")
 
@@ -65,7 +71,7 @@ class AnalysisService:
             "risk_context_snapshot": risk_context,
             "risk_context_hash": context_revision["hash"],
             "risk_context_revision_id": context_revision["revision_id"],
-            "orchestration_version": "3",
+            "orchestration_version": "4",
             "generation_settings": {
                 "temperature": 0,
                 "ollama_num_ctx": self.settings.ollama_num_ctx
@@ -94,6 +100,7 @@ class AnalysisService:
             attempt_started = time.monotonic()
             usage = {}
             validation_errors = []
+            evidence_alignments = []
             request_input = (
                 input if repair is None else {**input, "repair_context": repair}
             )
@@ -137,6 +144,7 @@ class AnalysisService:
                         True,
                     ) from None
                 try:
+                    evidence_alignments = align_evidence_whitespace(result, sources)
                     validate_evidence(result, sources)
                 except AppError as caught:
                     validation_errors = getattr(caught, "validation_errors", [])
@@ -160,6 +168,8 @@ class AnalysisService:
             }
             if error:
                 entry["error_code"] = error.code
+            if evidence_alignments:
+                entry["evidence_alignments"] = evidence_alignments
             if validation_errors:
                 entry["validation_errors"] = [
                     {"path": item["path"], "code": item["code"]}
@@ -184,6 +194,7 @@ class AnalysisService:
                         "attempt": attempt + 1,
                         "mode": entry["mode"],
                         "outcome": entry["outcome"],
+                        "evidence_alignment_count": len(evidence_alignments),
                         "error_code": error.code if error else None,
                         "provider": run["provider"],
                         "model": run["model"],

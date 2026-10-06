@@ -58,3 +58,7 @@ The [Llama/catalog smoke](LLAMA_RISK_CATALOG_2026-10-06.md) used policy version 
 ## Timeout budgets
 
 The current application per-call timeout is 180 seconds. Two stages with one additional call each can consume approximately 720 seconds plus backoff, excluding queue wait. The collector now defaults to a 900-second per-case deadline; override --timeout for a different configuration or queue backlog. An evaluation deadline does not cancel server work. Historical reports retain their actual 60-second settings. More time can reduce timeout failures but cannot correct quote mismatches, schema errors, or unsupported risk conclusions.
+
+## Evidence formatting alignment
+
+Orchestration version 4 aligns an otherwise-invalid quote only when its unchanged words/punctuation have a unique match with whitespace variation in the referenced source. It replaces the quote with the exact original substring, then runs the existing validators. Per-attempt evidence_alignments records sanitized paths/methods; no raw invalid response is persisted. Measure deterministic alignments separately from model repair and semantic correctness. Unknown sources, changed values and ambiguous matches remain failures.

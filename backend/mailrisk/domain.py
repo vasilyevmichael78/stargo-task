@@ -1,5 +1,6 @@
 """Typed analysis contracts and evidence invariants, independent of delivery/storage."""
 
+import re
 from typing import Literal, Protocol
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -138,9 +139,7 @@ class OutputValidationError(AppError):
         self.validation_errors = errors
 
 
-def validate_evidence(result: Extraction | Assessment, sources: list[dict]):
-    texts = {source["id"]: source["text"] for source in sources}
-    errors = []
+def evidence_items(result: Extraction | Assessment):
     groups = (
         [("facts", result.facts)]
         if isinstance(result, Extraction)
@@ -149,23 +148,53 @@ def validate_evidence(result: Extraction | Assessment, sources: list[dict]):
     for group, items in groups:
         for index, item in enumerate(items):
             for offset, evidence in enumerate(item.evidence):
-                path = [group, index, "evidence", offset]
-                if evidence.source_id not in texts:
-                    errors.append(
-                        {
-                            "path": path + ["source_id"],
-                            "code": "unknown_source",
-                            "message": "Use an existing source ID.",
-                        }
-                    )
-                elif evidence.quote not in texts[evidence.source_id]:
-                    errors.append(
-                        {
-                            "path": path + ["quote"],
-                            "code": "quote_mismatch",
-                            "message": "Copy an exact substring from the referenced source.",
-                        }
-                    )
+                yield [group, index, "evidence", offset], evidence
+
+
+def align_evidence_whitespace(result: Extraction | Assessment, sources: list[dict]):
+    """Recover an exact source span only from an unambiguous whitespace variant."""
+    texts = {source["id"]: source["text"] for source in sources}
+    alignments = []
+    for path, evidence in evidence_items(result):
+        text = texts.get(evidence.source_id)
+        if text is None or evidence.quote in text:
+            continue
+        words = evidence.quote.split()
+        if not words:
+            continue
+        pattern = r"\s+".join(re.escape(word) for word in words)
+        # Lookahead includes overlapping matches; even those must be unambiguous.
+        matches = re.finditer(f"(?=({pattern}))", text)
+        first = next(matches, None)
+        if first is None or next(matches, None) is not None:
+            continue
+        evidence.quote = text[first.start(1) : first.end(1)]
+        alignments.append(
+            {"path": path + ["quote"], "method": "unique_whitespace_span"}
+        )
+    return alignments
+
+
+def validate_evidence(result: Extraction | Assessment, sources: list[dict]):
+    texts = {source["id"]: source["text"] for source in sources}
+    errors = []
+    for path, evidence in evidence_items(result):
+        if evidence.source_id not in texts:
+            errors.append(
+                {
+                    "path": path + ["source_id"],
+                    "code": "unknown_source",
+                    "message": "Use an existing source ID.",
+                }
+            )
+        elif evidence.quote not in texts[evidence.source_id]:
+            errors.append(
+                {
+                    "path": path + ["quote"],
+                    "code": "quote_mismatch",
+                    "message": "Copy an exact substring from the referenced source.",
+                }
+            )
     if isinstance(result, Assessment):
         ids = [entity.id for entity in result.entities]
         for index, entity_id in enumerate(ids):

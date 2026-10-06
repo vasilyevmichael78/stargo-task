@@ -588,7 +588,7 @@ async def test_assessment_repair_preserves_validated_extraction_and_prompt_snaps
     assert store.detail(mid)["selected_run"]["id"] == rid
     assert provider.extraction_calls == 1
     assert provider.assessment_calls == 2
-    assert run["orchestration_version"] == "3"
+    assert run["orchestration_version"] == "4"
     assert len(run["prompt_hashes"]) == 3
     assert len(run["prompt_snapshots"]) == 3
 
@@ -757,3 +757,139 @@ def test_catalog_example_is_not_valid_source_evidence(settings):
     )
     with pytest.raises(AppError):
         validate_evidence(result, [{"id": "source", "text": "Hello"}])
+
+
+@pytest.mark.parametrize(
+    "source_text,model_quote",
+    [
+        ("Send USD 100\ntoday", "Send USD 100 today"),
+        ("Send\tUSD   100 today", "Send USD 100 today"),
+        ("Send USD 100 today", "Send  USD\n100 today"),
+    ],
+)
+def test_whitespace_alignment_restores_exact_source_span(source_text, model_quote):
+    from mailrisk.domain import align_evidence_whitespace
+
+    result = Extraction(
+        sender=None,
+        recipients=[],
+        date=None,
+        subject=None,
+        summary="Payment",
+        facts=[
+            {
+                "kind": "payment",
+                "value": "USD 100",
+                "evidence": [{"source_id": "s", "quote": model_quote}],
+            }
+        ],
+    )
+    sources = [{"id": "s", "text": source_text}]
+    alignments = align_evidence_whitespace(result, sources)
+    assert alignments == [
+        {
+            "path": ["facts", 0, "evidence", 0, "quote"],
+            "method": "unique_whitespace_span",
+        }
+    ]
+    assert result.facts[0].evidence[0].quote == source_text
+    assert sources[0]["text"] == source_text
+    validate_evidence(result, sources)
+
+
+@pytest.mark.parametrize(
+    "source_text,model_quote,source_id",
+    [
+        ("Send USD 100\ntoday", "Send USD 200 today", "s"),
+        ("Do not send\nfunds", "Do send funds", "s"),
+        ("Send USD 100.\ntoday", "Send USD 100 today", "s"),
+        ("Send USD 100\ntoday; Send USD 100\ttoday", "Send USD 100 today", "s"),
+        ("Send USD 100\ntoday", "Send USD 100 today", "unknown"),
+        ("a a a", "a  a", "s"),
+    ],
+)
+def test_alignment_rejects_semantic_changes_ambiguity_and_wrong_source(
+    source_text, model_quote, source_id
+):
+    from mailrisk.domain import align_evidence_whitespace
+
+    result = Extraction(
+        sender=None,
+        recipients=[],
+        date=None,
+        subject=None,
+        summary="Payment",
+        facts=[
+            {
+                "kind": "payment",
+                "value": "USD 100",
+                "evidence": [{"source_id": source_id, "quote": model_quote}],
+            }
+        ],
+    )
+    sources = [{"id": "s", "text": source_text}]
+    assert align_evidence_whitespace(result, sources) == []
+    assert result.facts[0].evidence[0].quote == model_quote
+    with pytest.raises(AppError):
+        validate_evidence(result, sources)
+
+
+@pytest.mark.asyncio
+async def test_aligned_extraction_persists_without_model_repair(settings):
+    class WhitespaceProvider(FakeProvider):
+        extraction_calls = 0
+
+        async def generate_structured(self, instructions, input, schema, timeout):
+            raw, usage = await super().generate_structured(
+                instructions, input, schema, timeout
+            )
+            if "extraction" not in input:
+                self.extraction_calls += 1
+                body = json.loads(raw)
+                body["facts"][0]["evidence"][0]["quote"] = "Hello world"
+                return json.dumps(body), usage
+            assert (
+                input["extraction"]["facts"][0]["evidence"][0]["quote"]
+                == "Hello\nworld"
+            )
+            return raw, usage
+
+    settings.llm_max_retries = 1
+    store = SQLiteStore(settings.path(settings.database_path))
+    mid, _ = store.ingest(normalize("Hello\nworld"))
+    provider = WhitespaceProvider()
+    service = AnalysisService(store, provider, settings)
+    rid = service.submit(mid)
+    await service.process(rid)
+    run = store.run(rid)
+    assert run["status"] == "completed"
+    assert provider.extraction_calls == 1
+    assert run["extraction"]["facts"][0]["evidence"][0]["quote"] == "Hello\nworld"
+    attempt = run["extraction_metadata"]["attempt_history"][0]
+    assert attempt["outcome"] == "success" and attempt["mode"] == "generate"
+    assert len(attempt["evidence_alignments"]) == 1
+
+
+def test_alignment_applies_to_entity_and_relationship_evidence():
+    from mailrisk.domain import Assessment, align_evidence_whitespace
+
+    evidence = [{"source_id": "s", "quote": "Hello world"}]
+    result = Assessment(
+        risk={"level": "none", "rationale": "Greeting", "tags": []},
+        entities=[
+            {"id": "e", "type": "other", "label": "Greeting", "evidence": evidence}
+        ],
+        relationships=[
+            {
+                "source_id": "e",
+                "target_id": "e",
+                "type": "mentions",
+                "evidence": evidence,
+            }
+        ],
+    )
+    alignments = align_evidence_whitespace(
+        result, [{"id": "s", "text": "Hello\nworld"}]
+    )
+    assert len(alignments) == 2
+    validate_evidence(result, [{"id": "s", "text": "Hello\nworld"}])

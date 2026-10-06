@@ -1,6 +1,6 @@
 {
-  "version": "2",
-  "description": "Advisory local triage rubric. Examples and counterexamples illustrate signals; they are never evidence. Use source-backed combinations, preserve uncertainty, and avoid keyword-only decisions.",
+  "version": "3",
+  "description": "Versioned advisory rules over source-cited signals. The application selects the highest matched rule; unmatched non-neutral signals yield low. Signal detection remains probabilistic and quotations do not prove entailment.",
   "levels": {
     "none": "Ordinary correspondence without a concerning signal.",
     "low": "Weak or ambiguous signal without a credible concerning combination.",
@@ -148,6 +148,16 @@
       ],
       "suggested_level": "high",
       "explanation": "Strong combined payment/identity/concealment signals warrant urgent verification."
+    },
+    {
+      "id": "payment_concealment",
+      "required_signals": [
+        "payment_request",
+        "urgency",
+        "secrecy"
+      ],
+      "suggested_level": "high",
+      "explanation": "Urgent payment combined with concealment from normal approvers warrants urgent verification, even without an identity mismatch."
     },
     {
       "id": "payment_change",

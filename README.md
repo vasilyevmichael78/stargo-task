@@ -8,7 +8,7 @@ The mandatory application flow is implemented: ten seed emails, pasted text and 
 
 **No evaluated configuration is approved for unattended triage.** The latest [fifteen-case comparison](evaluations/EXPANDED_COMPARISON_2026-10-06.md) completed 13/15 with Groq GPT-OSS 120B, 13/15 with local Qwen 3.5 4B, and 6/15 with local Llama 3.2 3B. Groq is the recommended supervised-demo configuration based on latency and qualitative review; Ollama remains the no-key default. Semantic gaps remain in every candidate and independent human review is pending. Provider failures remain visible and are never treated as risk `none`. Earlier [Llama](evaluations/LLAMA_BASELINE_2026-10-06.md) and [Groq](evaluations/GROQ_BASELINE_2026-10-06.md) baselines retain their historical settings/results.
 
-A [prompt-only v2 experiment](evaluations/PROMPT_EXPERIMENT_V2_2026-10-06.md) regressed completion from 5/10 to 2/10. Its prompts are archived for reproduction; default prompts remain the baseline version.
+A [historical prompt-only v2 experiment](evaluations/PROMPT_EXPERIMENT_V2_2026-10-06.md) regressed completion from 5/10 to 2/10. Its prompts are archived for reproduction. Current prompts target output schema 2 and source-cited risk signals; see the focused contract verification below. Historical comparison scores do not evaluate these new prompts.
 
 ## Quick start
 
@@ -92,11 +92,11 @@ See [backend/.env.example](backend/.env.example). Environment variables override
 | `BOOTSTRAP_DATABASE_PATH` | `fixtures/mail_risk_groq.sqlite3`; copy only if runtime DB is absent; empty disables copying |
 | `CORS_ORIGINS` | localhost/127.0.0.1 frontend origins on 5173 |
 
-System prompts are version-controlled files, not multiline environment values. Each run snapshots them and records SHA-256 hashes, provider/model, schema/policy versions, stage attempts, latency, and available usage. Prompt and risk-catalog snapshots are persisted locally but excluded from analysis/detail responses and routine logs. The catalog has its own explicit editing endpoint. `.env`, runtime data, and future/private evaluation reports are ignored by Git. The reviewed demo fixture and [23 archived raw JSON reports](evaluations/artifacts/README.md) are explicitly committed with source/credential checks and provenance.
+System prompts are version-controlled files, not multiline environment values. Each run snapshots them and records SHA-256 hashes, provider/model, schema/policy versions, stage attempts, latency, and available usage. Prompt and risk-catalog snapshots are persisted locally but excluded from analysis/detail responses and routine logs. The catalog has its own explicit editing endpoint. `.env`, runtime data, and future/private evaluation reports are ignored by Git. The reviewed demo fixture and [historical and focused raw JSON reports](evaluations/artifacts/README.md) are explicitly committed with source/credential checks and provenance.
 
 ## Editable risk catalog
 
-Open **Risk catalog** in the React workspace to edit the JSON. It defines four severity levels, 13 signals with illustrative examples/counterexamples, and seven advisory combinations. Save validates IDs, references, structure, and a 16 KB normalized size bound. This is classification context, not vector retrieval, a deterministic policy engine, or verified company policy. The model still chooses the risk level; catalog examples must never become source evidence.
+Open **Risk catalog** in the React workspace to edit the JSON. It defines four severity levels, 13 signals with illustrative examples/counterexamples, and eight advisory combinations in bundled policy 3. Save validates IDs, references, structure, and a 16 KB normalized size bound. This is bounded classification context rather than vector retrieval. New schema-2 runs use the extracted source-cited signals as inputs to an application-level deterministic advisory policy; the model no longer chooses severity. The catalog is not verified company policy, and examples must never become source evidence.
 
 SQLite stores immutable JSON revisions in `risk_context_revisions` and one active selection. The version-controlled file seeds a new database only; restarting or editing that file does not overwrite an existing active catalog. Use the editor/API to change it. Each new analysis snapshots the active revision, canonical JSON hash, and policy version. Changes do not rerun emails or alter old results. Identical content reuses a revision; update the human-readable version when the policy meaning changes. Retained revisions have no history/restore UI yet.
 
@@ -146,6 +146,22 @@ Open **Knowledge graph** beside Inbox to view all extracted entities and directe
 The native canvas renderer adds no graph dependency. A deterministic, bounded layout separates disconnected components; colors encode entity types. Labels are suppressed at very small scales and avoid overlaps, with full labels available in the explorer/inspector. Layout, selection, drag positions and camera are ephemeral browser state. Proximity is not evidence of a relationship, and this visualization adds no cross-email risk reasoning. Only exact complete email identifiers merge; similar names remain separate. The full projection and synchronous layout target the take-home dataset; large graphs need server-side filtering/pagination, neighborhood queries and potentially layout in a Web Worker. Touch dragging and zoom buttons are supported; pinch zoom is not implemented.
 
 ## Failure handling and scope
+
+### Stabilized analysis contracts and advisory risk policy
+
+New runs use output schema **2**, orchestration **5**, and decision engine **1**. Agent B returns distinct catalog signal IDs with source citations; it cannot choose severity or invent risk tags. Application code validates those signals against the submission-time policy snapshot and selects the highest matching rule. Unmatched concerning signals yield `low`; payment requests or departures alone yield `none`. This is an advisory policy, not a calibrated probability or verified wrongdoing. Missing signals can still cause false negatives, and a literal quote can still be interpreted incorrectly.
+
+The bundled policy **3** adds urgent concealed payment escalation without requiring an unsupported identity-mismatch claim. Parsed message metadata takes precedence over generated metadata; headers remain unverified. Graph contracts distinguish dates, durations, documents, URLs and phones from amounts/accounts. Relationships use a bounded vocabulary, compatible endpoint roles and explicit `asserted`, `claimed`, `alleged` or `requested` source status. `asserted` means written in the source, not independently established. Complete email labels require cited addresses; amount labels require supported numeric values. These checks do not validate currency, all numeric formats, every entity label, relationship direction or semantic entailment.
+
+Existing saved results remain readable. An additive SQLite migration labels old relationships `unspecified`; it does not reinterpret historical outputs or change the committed demo fixture. That fixture retains policy 2. File changes do **not** overwrite a policy previously selected in SQLite. To explicitly activate the bundled policy for subsequent analyses, run from `backend/`:
+
+```bash
+uv run python -m mailrisk.policy_cli
+```
+
+This command selects the catalog at `RISK_CONTEXT_PATH`, preserves revisions and old runs, and leaves existing selected results unchanged. It intentionally replaces the active catalog: export custom UI edits before using it. Alternatively, paste `backend/policies/risk_context.json` into the Risk policy editor and save. Retry individual messages to create results under the new contracts; startup still runs no inference.
+
+The UI displays signal citations, matched rules and relationship source status. Historical results may have only rationale/tags. See [the detailed contracts](docs/ANALYSIS_CONTRACTS.md) and [focused contract verification](evaluations/CONTRACT_POLICY_V2_2026-10-07.md) for executed checks and limitations; earlier model comparisons describe earlier prompts/contracts.
 
 - One active analysis, up to 20 pending runs, persisted processing states. Duplicate active submissions for a message reuse its run ID.
 - Restart marks unfinished runs `interrupted`; manual retry creates a new run. Retry currently reruns both stages; partial extraction remains in history.

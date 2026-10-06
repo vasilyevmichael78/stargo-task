@@ -23,6 +23,12 @@ from mailrisk.storage import SQLiteStore
 async def evaluate(args):
     dataset = json.loads((ROOT / "evaluations/cases.json").read_text())
     cases = dataset["cases"]
+    selected = getattr(args, "ids", None)
+    if selected:
+        requested = set(selected.split(","))
+        if requested - {case["id"] for case in cases}:
+            raise ValueError("Unknown evaluation case ID.")
+        cases = [case for case in cases if case["id"] in requested]
     seeds = {
         email["id"]: email
         for email in json.loads((ROOT / "mock_mailbox_data.json").read_text())["emails"]
@@ -117,6 +123,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--provider", choices=["groq", "ollama"], required=True)
     parser.add_argument("--model", required=True)
+    parser.add_argument(
+        "--ids", help="Optional comma-separated case IDs for a focused regression run."
+    )
     parser.add_argument(
         "--database",
         required=True,

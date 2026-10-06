@@ -2,7 +2,11 @@
 
 ## Scope and commands
 
-All automated test sources and sanitized evaluation Markdown reports listed here are already tracked in Git. This inventory documents coverage, including three bootstrap regressions added for the precomputed demo. Reviewed raw reports are now archived in Git; future/private runner outputs remain ignored. Most recent recorded results: **51 pytest cases and 13 frontend tests passed**. Parametrization expands backend function count into collected cases. See [PROCESS](../PROCESS.md) for execution dates, warnings and limitations.
+Contract stabilization adds `backend/tests/test_contract_policy.py`: concealed urgent payment without invented identity, independent high-risk combinations, unknown/duplicate signals, mandatory signal evidence, prohibition on model-assigned severity, unsupported numeric/email labels, source-cited signals, relationship roles/modality, and additive migration of the unchanged historical fixture. The existing lifecycle test also verifies parsed sender preservation. Frontend tests verify rule IDs and signal citations and distinguish historical `unspecified` relationships. These deterministic checks do not measure model accuracy.
+
+Use `--ids E003,X002,X004,X005` with `evaluations/compare.py` for a focused regression subset; unknown IDs are rejected. Reports record the selected-case hash and cannot be treated as a complete baseline. New prompt/contract verification is described in [the focused report](../evaluations/CONTRACT_POLICY_V2_2026-10-07.md).
+
+All automated test sources and sanitized evaluation Markdown reports listed here are already tracked in Git. This inventory documents coverage, including three bootstrap regressions added for the precomputed demo. Reviewed raw reports are now archived in Git; future/private runner outputs remain ignored. Most recent recorded results: **63 pytest cases and 14 frontend tests passed**. Parametrization expands backend function count into collected cases. See [PROCESS](../PROCESS.md) for historical execution dates; the focused contract report records this block because the user requested no journal update.
 
 From the repository root, after installing dependencies:
 

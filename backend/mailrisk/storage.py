@@ -41,6 +41,13 @@ class SQLiteStore:
                 db.execute(
                     "ALTER TABLE entity_mentions ADD COLUMN evidence TEXT NOT NULL DEFAULT '[]'"
                 )
+            relationship_columns = {
+                row["name"] for row in db.execute("PRAGMA table_info(relationships)")
+            }
+            if "modality" not in relationship_columns:
+                db.execute(
+                    "ALTER TABLE relationships ADD COLUMN modality TEXT NOT NULL DEFAULT 'unspecified'"
+                )
 
     @contextmanager
     def connect(self):
@@ -260,7 +267,7 @@ class SQLiteStore:
                 )
             for relation in assessment["relationships"]:
                 db.execute(
-                    "INSERT INTO relationships VALUES (?,?,?,?,?,?)",
+                    "INSERT INTO relationships(id,run_id,source_id,target_id,type,evidence,modality) VALUES (?,?,?,?,?,?,?)",
                     (
                         str(uuid4()),
                         run_id,
@@ -268,6 +275,7 @@ class SQLiteStore:
                         mapping[relation["target_id"]],
                         relation["type"],
                         encode(relation["evidence"]),
+                        relation.get("modality", "unspecified"),
                     ),
                 )
             data = json.loads(row["data"])
@@ -295,7 +303,7 @@ class SQLiteStore:
             relationships = [
                 {**dict(row), "evidence": json.loads(row["evidence"])}
                 for row in db.execute(
-                    "SELECT id,source_id,target_id,type,evidence FROM relationships WHERE run_id=?",
+                    "SELECT id,source_id,target_id,type,evidence,modality FROM relationships WHERE run_id=?",
                     (run_id,),
                 )
             ]

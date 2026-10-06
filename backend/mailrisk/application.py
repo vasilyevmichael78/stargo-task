@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 
 from pydantic import ValidationError
 
+from .decision import decide_risk, validate_signal_catalog
 from .domain import (
     AppError,
     Assessment,
@@ -66,12 +67,13 @@ class AnalysisService:
         provenance = {
             "provider": self.settings.llm_provider,
             "model": self.settings.model,
-            "schema_version": "1",
+            "schema_version": "2",
+            "decision_engine_version": "1",
             "policy_version": risk_context["version"],
             "risk_context_snapshot": risk_context,
             "risk_context_hash": context_revision["hash"],
             "risk_context_revision_id": context_revision["revision_id"],
-            "orchestration_version": "4",
+            "orchestration_version": "5",
             "generation_settings": {
                 "temperature": 0,
                 "ollama_num_ctx": self.settings.ollama_num_ctx
@@ -146,6 +148,10 @@ class AnalysisService:
                 try:
                     evidence_alignments = align_evidence_whitespace(result, sources)
                     validate_evidence(result, sources)
+                    if isinstance(result, Assessment):
+                        validate_signal_catalog(
+                            result.risk, run["risk_context_snapshot"]
+                        )
                 except AppError as caught:
                     validation_errors = getattr(caught, "validation_errors", [])
                     repair = {
@@ -236,6 +242,9 @@ class AnalysisService:
                 message["sources"],
                 run["prompt_snapshots"][0],
             )
+            # Parsed source metadata is authoritative; model output cannot erase/replace it.
+            for field in ("sender", "recipients", "date", "subject"):
+                setattr(extraction, field, message[field])
             self.store.update_run(
                 run_id, status="assessing", extraction=extraction.model_dump()
             )
@@ -251,7 +260,9 @@ class AnalysisService:
                 message["sources"],
                 run["prompt_snapshots"][1],
             )
-            self.store.complete(run_id, assessment.model_dump())
+            payload = assessment.model_dump()
+            payload["risk"] = decide_risk(assessment.risk, run["risk_context_snapshot"])
+            self.store.complete(run_id, payload)
         except AppError as error:
             self.store.update_run(
                 run_id,

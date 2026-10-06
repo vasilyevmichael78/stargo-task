@@ -8,6 +8,7 @@ import {
 import { afterEach, expect, test, vi } from "vitest";
 import App from "./App";
 import IngestDialog from "./IngestDialog";
+import EmailDetails from "./EmailDetails";
 import { RiskBadge } from "./RiskBadge";
 const email = {
   id: "E001",
@@ -32,6 +33,49 @@ const extraction = {
     },
   ],
 };
+test("policy decisions show matched rules and source-cited signals", () => {
+  render(
+    <EmailDetails
+      selected="E001"
+      detail={{
+        ...email,
+        body: "Send now privately",
+        sources: [
+          { id: "body", name: "Email body", text: "Send now privately" },
+        ],
+        latest_run: null,
+        selected_run: null,
+        extraction: null,
+        risk: {
+          level: "high",
+          rationale: "Urgent concealed payment",
+          tags: ["secrecy"],
+          matched_rule_ids: ["payment_concealment"],
+          signals: [
+            {
+              id: "secrecy",
+              evidence: [{ source_id: "body", quote: "Send now privately" }],
+            },
+          ],
+        },
+        entities: [],
+        relationships: [],
+      }}
+      detailError=""
+      detailLoading={false}
+      retrying={false}
+      tab="analysis"
+      setTab={vi.fn()}
+      onBack={vi.fn()}
+      retry={async () => {}}
+    />,
+  );
+  expect(
+    screen.getByText("Matched rules: payment_concealment"),
+  ).toBeInTheDocument();
+  expect(screen.getByText("Email body")).toBeInTheDocument();
+  expect(screen.getByText(/Send now privately/)).toBeInTheDocument();
+});
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();

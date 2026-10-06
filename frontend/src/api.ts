@@ -24,7 +24,14 @@ export type Extraction = {
   summary: string;
   facts: { kind: string; value: string; evidence: Evidence[] }[];
 };
-export type Risk = { level: RiskLevel; rationale: string; tags: string[] };
+export type Risk = {
+  level: RiskLevel;
+  rationale: string;
+  tags: string[];
+  signals?: { id: string; evidence: Evidence[] }[];
+  matched_rule_ids?: string[];
+  decision_engine_version?: string;
+};
 export type Run = {
   id: string;
   status: string;
@@ -46,6 +53,7 @@ export type Detail = Email & {
     source_id: string;
     target_id: string;
     type: string;
+    modality?: string;
     evidence: Evidence[];
   }[];
 };
@@ -102,6 +110,7 @@ export type GraphRelationship = GraphMention & {
   source_id: string;
   target_id: string;
   type: string;
+  modality?: string;
 };
 export type KnowledgeGraph = {
   entities: GraphEntity[];

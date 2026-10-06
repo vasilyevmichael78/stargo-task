@@ -100,6 +100,7 @@ test("node explorer exposes directions, evidence and email navigation including 
   ).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Alice person 1" }));
   expect(screen.getByText("requests payment")).toBeInTheDocument();
+  expect(screen.getByText("Source status: unspecified")).toBeInTheDocument();
   expect(screen.getAllByText(/Alice requested payment/)).toHaveLength(2);
   fireEvent.click(
     screen.getAllByRole("button", { name: "Open email: Subject m1" })[0],

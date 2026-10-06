@@ -197,6 +197,9 @@ export default function KnowledgeGraph({
                       <span className={styles.relationType}>
                         {edge.type.replaceAll("_", " ")}
                       </span>
+                      <span className={styles.relationType}>
+                        Source status: {edge.modality || "unspecified"}
+                      </span>
                       {edge.evidence.map((e, i) => (
                         <blockquote key={i}>
                           “{e.quote}”<small>Source: {e.source_id}</small>

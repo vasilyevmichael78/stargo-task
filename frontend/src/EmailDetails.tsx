@@ -232,6 +232,21 @@ export default function EmailDetails({
                             Risk assessment
                           </h3>
                           <p>{currentRisk.rationale}</p>
+                          {currentRisk.matched_rule_ids?.length ? (
+                            <p>
+                              Matched rules:{" "}
+                              {currentRisk.matched_rule_ids.join(", ")}
+                            </p>
+                          ) : null}
+                          {currentRisk.signals?.map((signal) => (
+                            <div className={styles.fact} key={signal.id}>
+                              <strong>{signal.id.replaceAll("_", " ")}</strong>
+                              <EvidenceList
+                                items={signal.evidence}
+                                sources={detail.sources}
+                              />
+                            </div>
+                          ))}
                           <div className={styles.tags}>
                             {currentRisk.tags.map((tag) => (
                               <span key={tag}>{tag.replaceAll("-", " ")}</span>
@@ -338,6 +353,8 @@ export default function EmailDetails({
                             </div>
                             <span className={styles.factKind}>
                               {relation.type.replaceAll("_", " ")}
+                              {" · "}
+                              {relation.modality || "unspecified"}
                             </span>
                             <EvidenceList
                               items={relation.evidence}

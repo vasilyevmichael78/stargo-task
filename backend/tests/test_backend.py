@@ -39,7 +39,7 @@ class FakeProvider:
                     "subject": "Greeting",
                     "summary": "Greeting",
                     "facts": [
-                        {"kind": "greeting", "value": "Hello", "evidence": [evidence]}
+                        {"kind": "other", "value": "Hello", "evidence": [evidence]}
                     ],
                 }
             ), {}
@@ -47,7 +47,7 @@ class FakeProvider:
             raise AppError("unavailable", "Unavailable", True)
         return json.dumps(
             {
-                "risk": {"level": "none", "rationale": "Ordinary greeting", "tags": []},
+                "risk": {"signals": []},
                 "entities": [],
                 "relationships": [],
             }
@@ -57,11 +57,13 @@ class FakeProvider:
 @pytest.mark.asyncio
 async def test_partial_failure_and_selected_success_survive(settings):
     store = SQLiteStore(settings.path(settings.database_path))
-    mid, _ = store.ingest(normalize("Hello"))
+    mid, _ = store.ingest(normalize("Hello", metadata={"sender": "actual@example.com"}))
     service = AnalysisService(store, FakeProvider(), settings)
     first = service.submit(mid)
     await service.process(first)
     assert store.detail(mid)["risk"]["level"] == "none"
+    assert store.detail(mid)["extraction"]["sender"] == "actual@example.com"
+    assert store.run(first)["schema_version"] == "2"
     service.provider = FakeProvider(fail_b=True)
     second = service.submit(mid)
     await service.process(second)
@@ -403,7 +405,7 @@ async def test_repair_receives_previous_output_and_specific_feedback(
     is_assessment = failure in {"entity", "duplicate"}
     valid = (
         {
-            "risk": {"level": "none", "rationale": "Greeting", "tags": []},
+            "risk": {"signals": []},
             "entities": [
                 {"id": "p", "type": "person", "label": "Person", "evidence": evidence}
             ],
@@ -416,7 +418,7 @@ async def test_repair_receives_previous_output_and_specific_feedback(
             "date": None,
             "subject": None,
             "summary": "Greeting",
-            "facts": [{"kind": "greeting", "value": "Hello", "evidence": evidence}],
+            "facts": [{"kind": "other", "value": "Hello", "evidence": evidence}],
         }
     )
     invalid = copy.deepcopy(valid)
@@ -432,6 +434,7 @@ async def test_repair_receives_previous_output_and_specific_feedback(
                 "source_id": "p",
                 "target_id": "unknown",
                 "type": "mentions",
+                "modality": "asserted",
                 "evidence": evidence,
             }
         ]
@@ -594,7 +597,7 @@ async def test_assessment_repair_preserves_validated_extraction_and_prompt_snaps
     assert store.detail(mid)["selected_run"]["id"] == rid
     assert provider.extraction_calls == 1
     assert provider.assessment_calls == 2
-    assert run["orchestration_version"] == "4"
+    assert run["orchestration_version"] == "5"
     assert len(run["prompt_hashes"]) == 3
     assert len(run["prompt_snapshots"]) == 3
 
@@ -755,7 +758,7 @@ def test_catalog_example_is_not_valid_source_evidence(settings):
         summary="Test",
         facts=[
             {
-                "kind": "payment",
+                "kind": "request",
                 "value": example,
                 "evidence": [{"source_id": "source", "quote": example}],
             }
@@ -784,7 +787,7 @@ def test_whitespace_alignment_restores_exact_source_span(source_text, model_quot
         summary="Payment",
         facts=[
             {
-                "kind": "payment",
+                "kind": "request",
                 "value": "USD 100",
                 "evidence": [{"source_id": "s", "quote": model_quote}],
             }
@@ -827,7 +830,7 @@ def test_alignment_rejects_semantic_changes_ambiguity_and_wrong_source(
         summary="Payment",
         facts=[
             {
-                "kind": "payment",
+                "kind": "request",
                 "value": "USD 100",
                 "evidence": [{"source_id": source_id, "quote": model_quote}],
             }
@@ -881,7 +884,7 @@ def test_alignment_applies_to_entity_and_relationship_evidence():
 
     evidence = [{"source_id": "s", "quote": "Hello world"}]
     result = Assessment(
-        risk={"level": "none", "rationale": "Greeting", "tags": []},
+        risk={"signals": []},
         entities=[
             {"id": "e", "type": "other", "label": "Greeting", "evidence": evidence}
         ],
@@ -890,6 +893,7 @@ def test_alignment_applies_to_entity_and_relationship_evidence():
                 "source_id": "e",
                 "target_id": "e",
                 "type": "mentions",
+                "modality": "asserted",
                 "evidence": evidence,
             }
         ],

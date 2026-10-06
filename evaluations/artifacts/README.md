@@ -54,3 +54,13 @@ See [evaluation protocol](../README.md), [latest comparison](../EXPANDED_COMPARI
 | [qwen3.5-4b-repair-smoke.json](qwen3.5-4b-repair-smoke.json) | 15340 | c634f0ad26e816962d74389f8b3cb6d78ce0c6f28b8ccfb2a48dac9272d70773 |
 
 | [unavailable-smoke.json](unavailable-smoke.json) | 4418 | 101ffc70ea694ed1caa816462358b7d5efe7ab06ffc244601bc00578d4275c88 |
+
+## Focused schema-2 verification archive
+
+The following three additional reports retain initial failures and the separate prompt-correction follow-up. Sources were checked against committed seed/synthetic cases and the private API key/key-like values were checked without printing them. See [the focused report](../CONTRACT_POLICY_V2_2026-10-07.md); these do not replace the historical full comparison.
+
+| File | Bytes | SHA-256 |
+| --- | --- | --- |
+| [contract-v2-groq.json](contract-v2-groq.json) | 242135 | 8cb79e284bef8792a7b053cbc0fc879918be72a2a9f4a3a5bd8b3ed717c1d282 |
+| [contract-v2-groq-followup.json](contract-v2-groq-followup.json) | 138021 | 1e94c35490791efc7d030dcb9defd3d2aa677ebba0a8ba14938562a3de6e2189 |
+| [contract-v2-qwen.json](contract-v2-qwen.json) | 42878 | 22213272d6518b2764b19a4046212c4772b63edde95d666f5e1323bd11cf3c36 |

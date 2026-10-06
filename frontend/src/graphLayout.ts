@@ -10,6 +10,11 @@ export const entityColors: Record<string, string> = {
   account: "#f8b88a",
   amount: "#f6d47f",
   location: "#ed9dca",
+  date: "#96c8f0",
+  duration: "#9ec7b3",
+  document: "#d7b6ee",
+  url: "#79c5da",
+  phone: "#d8b895",
   other: "#a8b8cd",
 };
 

@@ -11,6 +11,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from .application import AnalysisService
+from .bootstrap import bootstrap_database
 from .domain import AppError, RiskContext
 from .ingestion import MAX_UPLOAD, normalize, upload
 from .providers import create_provider
@@ -45,7 +46,12 @@ def create_app(settings=None, provider=None):
         raise RuntimeError("Configure the selected provider model.")
     if settings.llm_provider == "groq" and not settings.groq_api_key:
         raise RuntimeError("Set GROQ_API_KEY in backend/.env before selecting Groq.")
-    store = SQLiteStore(settings.path(settings.database_path))
+    database_path = settings.path(settings.database_path)
+    if settings.bootstrap_database_path:
+        bootstrap_database(
+            database_path, settings.path(settings.bootstrap_database_path)
+        )
+    store = SQLiteStore(database_path)
     try:
         service = AnalysisService(
             store, provider or create_provider(settings), settings
@@ -77,9 +83,7 @@ def create_app(settings=None, provider=None):
                         "subject": seed["subject"],
                     },
                 )
-                _, inserted = store.ingest(content, seed["id"])
-                if inserted:
-                    service.submit(seed["id"])
+                store.ingest(content, seed["id"])
         yield
         await service.stop()
 

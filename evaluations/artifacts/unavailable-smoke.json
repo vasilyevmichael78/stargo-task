@@ -1,0 +1,115 @@
+{
+  "started_at": "2026-10-06T09:36:18.096099+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "ollama",
+    "model": "llama3.2:3b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E001",
+      "elapsed_seconds": 2.04,
+      "expectations": {
+        "id": "E001",
+        "acceptable_levels": [
+          "high"
+        ],
+        "required_facts": [
+          "184,500"
+        ],
+        "signals": [
+          "urgency",
+          "secrecy",
+          "claimed CEO identity",
+          "lookalike domain"
+        ],
+        "prohibited_claims": [
+          "verified CEO",
+          "invented destination account"
+        ]
+      },
+      "run": {
+        "id": "4ae6c626-bd85-45e5-892b-fa56304e23b2",
+        "message_id": "E001",
+        "status": "failed",
+        "created_at": "2026-10-06T09:36:18.114263+00:00",
+        "error": {
+          "code": "unavailable",
+          "message": "The configured model provider is unreachable. Check its setup and retry.",
+          "retryable": true
+        },
+        "extraction": null,
+        "risk": null,
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 1026,
+          "attempts": 2,
+          "error_code": "unavailable"
+        },
+        "finished_at": "2026-10-06T09:36:19.144531+00:00"
+      },
+      "detail": {
+        "id": "E001",
+        "sender": "j.harrington-ceo@arclne-corp.com",
+        "recipients": [
+          "finance-ops@arcline.com"
+        ],
+        "subject": "URGENT - confidential wire needed before noon",
+        "date": "2026-06-02T08:14:00Z",
+        "body": "From: j.harrington-ceo@arclne-corp.com\nTo: finance-ops@arcline.com\nDate: 2026-06-02T08:14:00Z\nSubject: URGENT - confidential wire needed before noon\n\nHi, I'm in back-to-back board meetings and can't talk. We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm. I'll send the account details from my personal phone in a follow-up - please treat this as confidential and don't loop in anyone else until it's done. This cannot wait. - James",
+        "sources": [
+          {
+            "id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+            "name": "Email",
+            "text": "From: j.harrington-ceo@arclne-corp.com\nTo: finance-ops@arcline.com\nDate: 2026-06-02T08:14:00Z\nSubject: URGENT - confidential wire needed before noon\n\nHi, I'm in back-to-back board meetings and can't talk. We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm. I'll send the account details from my personal phone in a follow-up - please treat this as confidential and don't loop in anyone else until it's done. This cannot wait. - James"
+          }
+        ],
+        "warnings": [],
+        "selected_run": null,
+        "status": "failed",
+        "latest_run": {
+          "id": "4ae6c626-bd85-45e5-892b-fa56304e23b2",
+          "message_id": "E001",
+          "status": "failed",
+          "created_at": "2026-10-06T09:36:18.114263+00:00",
+          "error": {
+            "code": "unavailable",
+            "message": "The configured model provider is unreachable. Check its setup and retry.",
+            "retryable": true
+          },
+          "extraction": null,
+          "risk": null,
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 1026,
+            "attempts": 2,
+            "error_code": "unavailable"
+          },
+          "finished_at": "2026-10-06T09:36:19.144531+00:00"
+        },
+        "extraction": null,
+        "risk": null,
+        "entities": [],
+        "relationships": []
+      },
+      "level_screen": null,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T09:36:20.149045+00:00"
+}

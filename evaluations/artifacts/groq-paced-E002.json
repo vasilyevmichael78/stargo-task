@@ -1,0 +1,477 @@
+{
+  "started_at": "2026-10-06T10:58:46.088634+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E002",
+      "elapsed_seconds": 6.05,
+      "expectations": {
+        "id": "E002",
+        "acceptable_levels": [
+          "none",
+          "low"
+        ],
+        "required_facts": [
+          "VPN"
+        ],
+        "signals": [
+          "routine maintenance"
+        ],
+        "prohibited_claims": [
+          "fraud based only on timing"
+        ]
+      },
+      "run": {
+        "id": "22c6a1ef-4a20-4846-8b1f-e2938d55b822",
+        "message_id": "E002",
+        "status": "completed",
+        "created_at": "2026-10-06T10:58:46.099518+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "it-notifications@arcline.com",
+          "recipients": [
+            "all-staff@arcline.com"
+          ],
+          "date": "2026-06-02T09:00:00Z",
+          "subject": "Scheduled maintenance: VPN upgrade this weekend",
+          "summary": "IT notifies staff of a VPN client upgrade scheduled for Saturday 10\u202fpm\u20132\u202fam, with an optional client reinstall on Monday morning and no other action required.",
+          "facts": [
+            {
+              "kind": "maintenance_window",
+              "value": "Saturday 10pm-2am",
+              "evidence": [
+                {
+                  "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                  "quote": "upgrading the VPN client Saturday 10pm-2am"
+                }
+              ]
+            },
+            {
+              "kind": "reinstall_required",
+              "value": "Yes, reinstall the client Monday morning",
+              "evidence": [
+                {
+                  "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                  "quote": "You may need to reinstall the client Monday morning"
+                }
+              ]
+            },
+            {
+              "kind": "action_required",
+              "value": "None, unless reinstall needed",
+              "evidence": [
+                {
+                  "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                  "quote": "No action needed otherwise"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "none",
+          "rationale": "The email is a routine IT notification about a scheduled VPN client upgrade with no request for payment, credential disclosure, or suspicious activity. It contains only standard maintenance information and standard internal distribution lists, so no concerning signals are present.",
+          "tags": [
+            "maintenance",
+            "informational"
+          ]
+        },
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 1778,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.183773261,
+            "prompt_tokens": 877,
+            "prompt_time": 0.040483631,
+            "completion_tokens": 623,
+            "completion_time": 1.317198954,
+            "total_tokens": 1500,
+            "total_time": 1.357682585,
+            "completion_tokens_details": {
+              "reasoning_tokens": 351
+            }
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 2660,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.212895672,
+            "prompt_tokens": 1482,
+            "prompt_time": 0.081856988,
+            "completion_tokens": 1012,
+            "completion_time": 2.122133329,
+            "total_tokens": 2494,
+            "total_time": 2.203990317,
+            "completion_tokens_details": {
+              "reasoning_tokens": 509
+            }
+          }
+        },
+        "finished_at": "2026-10-06T10:58:50.546651+00:00"
+      },
+      "detail": {
+        "id": "E002",
+        "sender": "it-notifications@arcline.com",
+        "recipients": [
+          "all-staff@arcline.com"
+        ],
+        "subject": "Scheduled maintenance: VPN upgrade this weekend",
+        "date": "2026-06-02T09:00:00Z",
+        "body": "From: it-notifications@arcline.com\nTo: all-staff@arcline.com\nDate: 2026-06-02T09:00:00Z\nSubject: Scheduled maintenance: VPN upgrade this weekend\n\nHi all, we'll be upgrading the VPN client Saturday 10pm-2am. You may need to reinstall the client Monday morning. No action needed otherwise. Reach out to IT helpdesk with questions.",
+        "sources": [
+          {
+            "id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+            "name": "Email",
+            "text": "From: it-notifications@arcline.com\nTo: all-staff@arcline.com\nDate: 2026-06-02T09:00:00Z\nSubject: Scheduled maintenance: VPN upgrade this weekend\n\nHi all, we'll be upgrading the VPN client Saturday 10pm-2am. You may need to reinstall the client Monday morning. No action needed otherwise. Reach out to IT helpdesk with questions."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "22c6a1ef-4a20-4846-8b1f-e2938d55b822",
+          "message_id": "E002",
+          "status": "completed",
+          "created_at": "2026-10-06T10:58:46.099518+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "it-notifications@arcline.com",
+            "recipients": [
+              "all-staff@arcline.com"
+            ],
+            "date": "2026-06-02T09:00:00Z",
+            "subject": "Scheduled maintenance: VPN upgrade this weekend",
+            "summary": "IT notifies staff of a VPN client upgrade scheduled for Saturday 10\u202fpm\u20132\u202fam, with an optional client reinstall on Monday morning and no other action required.",
+            "facts": [
+              {
+                "kind": "maintenance_window",
+                "value": "Saturday 10pm-2am",
+                "evidence": [
+                  {
+                    "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                    "quote": "upgrading the VPN client Saturday 10pm-2am"
+                  }
+                ]
+              },
+              {
+                "kind": "reinstall_required",
+                "value": "Yes, reinstall the client Monday morning",
+                "evidence": [
+                  {
+                    "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                    "quote": "You may need to reinstall the client Monday morning"
+                  }
+                ]
+              },
+              {
+                "kind": "action_required",
+                "value": "None, unless reinstall needed",
+                "evidence": [
+                  {
+                    "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                    "quote": "No action needed otherwise"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "none",
+            "rationale": "The email is a routine IT notification about a scheduled VPN client upgrade with no request for payment, credential disclosure, or suspicious activity. It contains only standard maintenance information and standard internal distribution lists, so no concerning signals are present.",
+            "tags": [
+              "maintenance",
+              "informational"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 1778,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.183773261,
+              "prompt_tokens": 877,
+              "prompt_time": 0.040483631,
+              "completion_tokens": 623,
+              "completion_time": 1.317198954,
+              "total_tokens": 1500,
+              "total_time": 1.357682585,
+              "completion_tokens_details": {
+                "reasoning_tokens": 351
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 2660,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.212895672,
+              "prompt_tokens": 1482,
+              "prompt_time": 0.081856988,
+              "completion_tokens": 1012,
+              "completion_time": 2.122133329,
+              "total_tokens": 2494,
+              "total_time": 2.203990317,
+              "completion_tokens_details": {
+                "reasoning_tokens": 509
+              }
+            }
+          },
+          "finished_at": "2026-10-06T10:58:50.546651+00:00"
+        },
+        "status": "completed",
+        "latest_run": {
+          "id": "22c6a1ef-4a20-4846-8b1f-e2938d55b822",
+          "message_id": "E002",
+          "status": "completed",
+          "created_at": "2026-10-06T10:58:46.099518+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "it-notifications@arcline.com",
+            "recipients": [
+              "all-staff@arcline.com"
+            ],
+            "date": "2026-06-02T09:00:00Z",
+            "subject": "Scheduled maintenance: VPN upgrade this weekend",
+            "summary": "IT notifies staff of a VPN client upgrade scheduled for Saturday 10\u202fpm\u20132\u202fam, with an optional client reinstall on Monday morning and no other action required.",
+            "facts": [
+              {
+                "kind": "maintenance_window",
+                "value": "Saturday 10pm-2am",
+                "evidence": [
+                  {
+                    "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                    "quote": "upgrading the VPN client Saturday 10pm-2am"
+                  }
+                ]
+              },
+              {
+                "kind": "reinstall_required",
+                "value": "Yes, reinstall the client Monday morning",
+                "evidence": [
+                  {
+                    "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                    "quote": "You may need to reinstall the client Monday morning"
+                  }
+                ]
+              },
+              {
+                "kind": "action_required",
+                "value": "None, unless reinstall needed",
+                "evidence": [
+                  {
+                    "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                    "quote": "No action needed otherwise"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "none",
+            "rationale": "The email is a routine IT notification about a scheduled VPN client upgrade with no request for payment, credential disclosure, or suspicious activity. It contains only standard maintenance information and standard internal distribution lists, so no concerning signals are present.",
+            "tags": [
+              "maintenance",
+              "informational"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 1778,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.183773261,
+              "prompt_tokens": 877,
+              "prompt_time": 0.040483631,
+              "completion_tokens": 623,
+              "completion_time": 1.317198954,
+              "total_tokens": 1500,
+              "total_time": 1.357682585,
+              "completion_tokens_details": {
+                "reasoning_tokens": 351
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 2660,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.212895672,
+              "prompt_tokens": 1482,
+              "prompt_time": 0.081856988,
+              "completion_tokens": 1012,
+              "completion_time": 2.122133329,
+              "total_tokens": 2494,
+              "total_time": 2.203990317,
+              "completion_tokens_details": {
+                "reasoning_tokens": 509
+              }
+            }
+          },
+          "finished_at": "2026-10-06T10:58:50.546651+00:00"
+        },
+        "extraction": {
+          "sender": "it-notifications@arcline.com",
+          "recipients": [
+            "all-staff@arcline.com"
+          ],
+          "date": "2026-06-02T09:00:00Z",
+          "subject": "Scheduled maintenance: VPN upgrade this weekend",
+          "summary": "IT notifies staff of a VPN client upgrade scheduled for Saturday 10\u202fpm\u20132\u202fam, with an optional client reinstall on Monday morning and no other action required.",
+          "facts": [
+            {
+              "kind": "maintenance_window",
+              "value": "Saturday 10pm-2am",
+              "evidence": [
+                {
+                  "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                  "quote": "upgrading the VPN client Saturday 10pm-2am"
+                }
+              ]
+            },
+            {
+              "kind": "reinstall_required",
+              "value": "Yes, reinstall the client Monday morning",
+              "evidence": [
+                {
+                  "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                  "quote": "You may need to reinstall the client Monday morning"
+                }
+              ]
+            },
+            {
+              "kind": "action_required",
+              "value": "None, unless reinstall needed",
+              "evidence": [
+                {
+                  "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                  "quote": "No action needed otherwise"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "none",
+          "rationale": "The email is a routine IT notification about a scheduled VPN client upgrade with no request for payment, credential disclosure, or suspicious activity. It contains only standard maintenance information and standard internal distribution lists, so no concerning signals are present.",
+          "tags": [
+            "maintenance",
+            "informational"
+          ]
+        },
+        "entities": [
+          {
+            "id": "04d399f9-e078-435c-9236-fa0c2d708a60",
+            "type": "email",
+            "label": "it-notifications@arcline.com",
+            "evidence": [
+              {
+                "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                "quote": "From: it-notifications@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "4fb5852f-80c4-402c-ae65-125259447c2f",
+            "type": "email",
+            "label": "all-staff@arcline.com",
+            "evidence": [
+              {
+                "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                "quote": "To: all-staff@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "8143408b-82c3-4ff7-bc1c-6374c9e9606c",
+            "type": "other",
+            "label": "VPN client upgrade",
+            "evidence": [
+              {
+                "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                "quote": "upgrading the VPN client Saturday 10pm-2am"
+              }
+            ]
+          },
+          {
+            "id": "b9c2073e-e14d-4277-9942-3501ec8d8a0b",
+            "type": "organization",
+            "label": "Arcline",
+            "evidence": [
+              {
+                "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                "quote": "it-notifications@arcline.com"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "137bf81e-a11e-4c33-a9c0-a3262f5deb05",
+            "source_id": "04d399f9-e078-435c-9236-fa0c2d708a60",
+            "target_id": "b9c2073e-e14d-4277-9942-3501ec8d8a0b",
+            "type": "belongs_to",
+            "evidence": [
+              {
+                "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                "quote": "it-notifications@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "31a9fab6-558f-4200-9450-3de350378552",
+            "source_id": "4fb5852f-80c4-402c-ae65-125259447c2f",
+            "target_id": "b9c2073e-e14d-4277-9942-3501ec8d8a0b",
+            "type": "belongs_to",
+            "evidence": [
+              {
+                "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                "quote": "all-staff@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "8ce8b40b-8156-4640-9d7c-e581af38bf72",
+            "source_id": "04d399f9-e078-435c-9236-fa0c2d708a60",
+            "target_id": "8143408b-82c3-4ff7-bc1c-6374c9e9606c",
+            "type": "mentions",
+            "evidence": [
+              {
+                "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                "quote": "upgrading the VPN client Saturday 10pm-2am"
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": true,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T10:58:52.147674+00:00"
+}

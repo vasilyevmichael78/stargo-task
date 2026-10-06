@@ -1,0 +1,3090 @@
+{
+  "started_at": "2026-10-06T10:37:33.205655+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "ollama",
+    "model": "llama3.2:3b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E001",
+      "elapsed_seconds": 58.24,
+      "expectations": {
+        "id": "E001",
+        "acceptable_levels": [
+          "high"
+        ],
+        "required_facts": [
+          "184,500"
+        ],
+        "signals": [
+          "urgency",
+          "secrecy",
+          "claimed CEO identity",
+          "lookalike domain"
+        ],
+        "prohibited_claims": [
+          "verified CEO",
+          "invented destination account"
+        ]
+      },
+      "run": {
+        "id": "dfb1e418-862c-47d9-840c-b69b1ebfbe0c",
+        "message_id": "E001",
+        "status": "failed",
+        "created_at": "2026-10-06T10:37:33.229142+00:00",
+        "error": {
+          "code": "invalid_output",
+          "message": "Model evidence does not match the source text.",
+          "retryable": true
+        },
+        "extraction": null,
+        "risk": null,
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+          "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 57791,
+          "attempts": 2,
+          "error_code": "invalid_output"
+        },
+        "finished_at": "2026-10-06T10:38:31.022538+00:00"
+      },
+      "detail": {
+        "id": "E001",
+        "sender": "j.harrington-ceo@arclne-corp.com",
+        "recipients": [
+          "finance-ops@arcline.com"
+        ],
+        "subject": "URGENT - confidential wire needed before noon",
+        "date": "2026-06-02T08:14:00Z",
+        "body": "From: j.harrington-ceo@arclne-corp.com\nTo: finance-ops@arcline.com\nDate: 2026-06-02T08:14:00Z\nSubject: URGENT - confidential wire needed before noon\n\nHi, I'm in back-to-back board meetings and can't talk. We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm. I'll send the account details from my personal phone in a follow-up - please treat this as confidential and don't loop in anyone else until it's done. This cannot wait. - James",
+        "sources": [
+          {
+            "id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+            "name": "Email",
+            "text": "From: j.harrington-ceo@arclne-corp.com\nTo: finance-ops@arcline.com\nDate: 2026-06-02T08:14:00Z\nSubject: URGENT - confidential wire needed before noon\n\nHi, I'm in back-to-back board meetings and can't talk. We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm. I'll send the account details from my personal phone in a follow-up - please treat this as confidential and don't loop in anyone else until it's done. This cannot wait. - James"
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "b25fb373-da1a-4b15-bb64-bb92712a24c7",
+          "message_id": "E001",
+          "status": "completed",
+          "created_at": "2026-10-06T10:10:34.504476+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "j.harrington-ceo@arclne-corp.com",
+            "recipients": [
+              "finance-ops@arcline.com"
+            ],
+            "date": "2026-06-02T08:14:00Z",
+            "subject": "URGENT - confidential wire needed before noon",
+            "summary": "Acquisition closing, wire $184,500 to new escrow partner before 12pm",
+            "facts": [
+              {
+                "kind": "Monetary Amount",
+                "value": "$184,500",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm."
+                  }
+                ]
+              },
+              {
+                "kind": "Date",
+                "value": "2026-06-02T12:00:00Z",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "before 12pm"
+                  }
+                ]
+              },
+              {
+                "kind": "Payment Account/Routing/Reference Identifier",
+                "value": "Personal phone",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "I'll send the account details from my personal phone in a follow-up"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "medium",
+            "rationale": "Urgent payment request with confidential wire, potential for time-sensitive acquisition closing, and unclear account details.",
+            "tags": [
+              "suspicious payment request",
+              "confidential wire",
+              "time-sensitive acquisition"
+            ]
+          },
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 10203,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 472,
+              "output_tokens": 375
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 21632,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 883,
+              "output_tokens": 792
+            }
+          },
+          "finished_at": "2026-10-06T10:11:06.347559+00:00"
+        },
+        "status": "failed",
+        "latest_run": {
+          "id": "dfb1e418-862c-47d9-840c-b69b1ebfbe0c",
+          "message_id": "E001",
+          "status": "failed",
+          "created_at": "2026-10-06T10:37:33.229142+00:00",
+          "error": {
+            "code": "invalid_output",
+            "message": "Model evidence does not match the source text.",
+            "retryable": true
+          },
+          "extraction": null,
+          "risk": null,
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 57791,
+            "attempts": 2,
+            "error_code": "invalid_output"
+          },
+          "finished_at": "2026-10-06T10:38:31.022538+00:00"
+        },
+        "extraction": {
+          "sender": "j.harrington-ceo@arclne-corp.com",
+          "recipients": [
+            "finance-ops@arcline.com"
+          ],
+          "date": "2026-06-02T08:14:00Z",
+          "subject": "URGENT - confidential wire needed before noon",
+          "summary": "Acquisition closing, wire $184,500 to new escrow partner before 12pm",
+          "facts": [
+            {
+              "kind": "Monetary Amount",
+              "value": "$184,500",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm."
+                }
+              ]
+            },
+            {
+              "kind": "Date",
+              "value": "2026-06-02T12:00:00Z",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "before 12pm"
+                }
+              ]
+            },
+            {
+              "kind": "Payment Account/Routing/Reference Identifier",
+              "value": "Personal phone",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "I'll send the account details from my personal phone in a follow-up"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "Urgent payment request with confidential wire, potential for time-sensitive acquisition closing, and unclear account details.",
+          "tags": [
+            "suspicious payment request",
+            "confidential wire",
+            "time-sensitive acquisition"
+          ]
+        },
+        "entities": [
+          {
+            "id": "0e40f049-eaa7-4315-9c8e-43496d95b8ac",
+            "type": "amount",
+            "label": "$184,500",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm."
+              }
+            ]
+          },
+          {
+            "id": "22785502-8b93-4aed-a159-2c72769c8bd5",
+            "type": "organization",
+            "label": "arclne-corp",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm."
+              }
+            ]
+          },
+          {
+            "id": "6aeecf18-2538-483e-96a5-62734298ac0f",
+            "type": "person",
+            "label": "j.harrington",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm."
+              }
+            ]
+          },
+          {
+            "id": "7844301e-523c-4081-9b21-27ec36f08162",
+            "type": "account",
+            "label": "Personal phone",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "I'll send the account details from my personal phone in a follow-up"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "9bda28db-6d1f-4b07-90bf-b31e0851e42b",
+            "source_id": "6aeecf18-2538-483e-96a5-62734298ac0f",
+            "target_id": "22785502-8b93-4aed-a159-2c72769c8bd5",
+            "type": "requester",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm."
+              }
+            ]
+          },
+          {
+            "id": "c47af979-8460-4731-833d-18d698035ce8",
+            "source_id": "6aeecf18-2538-483e-96a5-62734298ac0f",
+            "target_id": "0e40f049-eaa7-4315-9c8e-43496d95b8ac",
+            "type": "amount",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm."
+              }
+            ]
+          },
+          {
+            "id": "1196771a-d316-45b0-8d01-de2858671c94",
+            "source_id": "6aeecf18-2538-483e-96a5-62734298ac0f",
+            "target_id": "7844301e-523c-4081-9b21-27ec36f08162",
+            "type": "account",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "I'll send the account details from my personal phone in a follow-up"
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": null,
+      "semantic_review": "pending",
+      "codex_review": {
+        "reviewer": "Codex source/output comparison; independent human review pending",
+        "notes": "Extraction rejected after two attempts for evidence/source mismatch. Previous baseline assessment in detail is retained history, not a v2 result."
+      }
+    },
+    {
+      "id": "E002",
+      "elapsed_seconds": 50.2,
+      "expectations": {
+        "id": "E002",
+        "acceptable_levels": [
+          "none",
+          "low"
+        ],
+        "required_facts": [
+          "VPN"
+        ],
+        "signals": [
+          "routine maintenance"
+        ],
+        "prohibited_claims": [
+          "fraud based only on timing"
+        ]
+      },
+      "run": {
+        "id": "083d28bd-e9b5-48bd-82c3-010f160695c6",
+        "message_id": "E002",
+        "status": "failed",
+        "created_at": "2026-10-06T10:38:31.469189+00:00",
+        "error": {
+          "code": "invalid_output",
+          "message": "Model evidence does not match the source text.",
+          "retryable": true
+        },
+        "extraction": null,
+        "risk": null,
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+          "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 48312,
+          "attempts": 2,
+          "error_code": "invalid_output"
+        },
+        "finished_at": "2026-10-06T10:39:19.783443+00:00"
+      },
+      "detail": {
+        "id": "E002",
+        "sender": "it-notifications@arcline.com",
+        "recipients": [
+          "all-staff@arcline.com"
+        ],
+        "subject": "Scheduled maintenance: VPN upgrade this weekend",
+        "date": "2026-06-02T09:00:00Z",
+        "body": "From: it-notifications@arcline.com\nTo: all-staff@arcline.com\nDate: 2026-06-02T09:00:00Z\nSubject: Scheduled maintenance: VPN upgrade this weekend\n\nHi all, we'll be upgrading the VPN client Saturday 10pm-2am. You may need to reinstall the client Monday morning. No action needed otherwise. Reach out to IT helpdesk with questions.",
+        "sources": [
+          {
+            "id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+            "name": "Email",
+            "text": "From: it-notifications@arcline.com\nTo: all-staff@arcline.com\nDate: 2026-06-02T09:00:00Z\nSubject: Scheduled maintenance: VPN upgrade this weekend\n\nHi all, we'll be upgrading the VPN client Saturday 10pm-2am. You may need to reinstall the client Monday morning. No action needed otherwise. Reach out to IT helpdesk with questions."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "04bf2312-3720-4ef3-aa5f-1227e301267a",
+          "message_id": "E002",
+          "status": "completed",
+          "created_at": "2026-10-06T10:11:06.651870+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "it-notifications@arcline.com",
+            "recipients": [
+              "all-staff@arcline.com"
+            ],
+            "date": "2026-06-02T09:00:00Z",
+            "subject": "Scheduled maintenance: VPN upgrade this weekend",
+            "summary": "Scheduled maintenance for VPN upgrade this weekend",
+            "facts": [
+              {
+                "kind": "Notification",
+                "value": "Scheduled maintenance for VPN upgrade this weekend",
+                "evidence": [
+                  {
+                    "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                    "quote": "Hi all, we'll be upgrading the VPN client Saturday 10pm-2am."
+                  }
+                ]
+              },
+              {
+                "kind": "Action Required",
+                "value": "Reinstall the VPN client Monday morning",
+                "evidence": [
+                  {
+                    "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                    "quote": "You may need to reinstall the client Monday morning."
+                  }
+                ]
+              },
+              {
+                "kind": "Contact Information",
+                "value": "Reach out to IT helpdesk with questions",
+                "evidence": [
+                  {
+                    "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                    "quote": "Reach out to IT helpdesk with questions."
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "none",
+            "rationale": "Scheduled maintenance notification with clear instructions and no concerning signals.",
+            "tags": [
+              "scheduled maintenance",
+              "IT notification"
+            ]
+          },
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 8503,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 414,
+              "output_tokens": 336
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 11831,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 796,
+              "output_tokens": 412
+            }
+          },
+          "finished_at": "2026-10-06T10:11:26.991810+00:00"
+        },
+        "status": "failed",
+        "latest_run": {
+          "id": "083d28bd-e9b5-48bd-82c3-010f160695c6",
+          "message_id": "E002",
+          "status": "failed",
+          "created_at": "2026-10-06T10:38:31.469189+00:00",
+          "error": {
+            "code": "invalid_output",
+            "message": "Model evidence does not match the source text.",
+            "retryable": true
+          },
+          "extraction": null,
+          "risk": null,
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 48312,
+            "attempts": 2,
+            "error_code": "invalid_output"
+          },
+          "finished_at": "2026-10-06T10:39:19.783443+00:00"
+        },
+        "extraction": {
+          "sender": "it-notifications@arcline.com",
+          "recipients": [
+            "all-staff@arcline.com"
+          ],
+          "date": "2026-06-02T09:00:00Z",
+          "subject": "Scheduled maintenance: VPN upgrade this weekend",
+          "summary": "Scheduled maintenance for VPN upgrade this weekend",
+          "facts": [
+            {
+              "kind": "Notification",
+              "value": "Scheduled maintenance for VPN upgrade this weekend",
+              "evidence": [
+                {
+                  "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                  "quote": "Hi all, we'll be upgrading the VPN client Saturday 10pm-2am."
+                }
+              ]
+            },
+            {
+              "kind": "Action Required",
+              "value": "Reinstall the VPN client Monday morning",
+              "evidence": [
+                {
+                  "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                  "quote": "You may need to reinstall the client Monday morning."
+                }
+              ]
+            },
+            {
+              "kind": "Contact Information",
+              "value": "Reach out to IT helpdesk with questions",
+              "evidence": [
+                {
+                  "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                  "quote": "Reach out to IT helpdesk with questions."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "none",
+          "rationale": "Scheduled maintenance notification with clear instructions and no concerning signals.",
+          "tags": [
+            "scheduled maintenance",
+            "IT notification"
+          ]
+        },
+        "entities": [
+          {
+            "id": "04d399f9-e078-435c-9236-fa0c2d708a60",
+            "type": "email",
+            "label": "it-notifications@arcline.com",
+            "evidence": [
+              {
+                "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                "quote": "Hi all, we'll be upgrading the VPN client Saturday 10pm-2am."
+              }
+            ]
+          },
+          {
+            "id": "1bf7a7ec-ee1d-4177-8ea9-a169812ca61b",
+            "type": "organization",
+            "label": "arcline",
+            "evidence": [
+              {
+                "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                "quote": "From: it-notifications@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "4fb5852f-80c4-402c-ae65-125259447c2f",
+            "type": "email",
+            "label": "all-staff@arcline.com",
+            "evidence": [
+              {
+                "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                "quote": "To: all-staff@arcline.com"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "ff00e20e-aa9f-4d6b-b60b-da1af7205010",
+            "source_id": "04d399f9-e078-435c-9236-fa0c2d708a60",
+            "target_id": "4fb5852f-80c4-402c-ae65-125259447c2f",
+            "type": "sender",
+            "evidence": [
+              {
+                "source_id": "334007b9-c7c2-4bb0-9f35-0847258406af",
+                "quote": "From: it-notifications@arcline.com"
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": null,
+      "semantic_review": "pending",
+      "codex_review": {
+        "reviewer": "Codex source/output comparison; independent human review pending",
+        "notes": "Extraction rejected after two attempts for evidence/source mismatch. Previous none result is not counted for this run."
+      }
+    },
+    {
+      "id": "E003",
+      "elapsed_seconds": 46.17,
+      "expectations": {
+        "id": "E003",
+        "acceptable_levels": [
+          "high"
+        ],
+        "required_facts": [
+          "Meridian",
+          "Talbot",
+          "1.2M",
+          "800K"
+        ],
+        "signals": [
+          "confidential data forwarding",
+          "resignation"
+        ],
+        "prohibited_claims": [
+          "verified theft conviction"
+        ]
+      },
+      "run": {
+        "id": "e538310e-fa4b-4034-a643-9a4107d3d074",
+        "message_id": "E003",
+        "status": "failed",
+        "created_at": "2026-10-06T10:39:21.673603+00:00",
+        "error": {
+          "code": "invalid_output",
+          "message": "Model evidence does not match the source text.",
+          "retryable": true
+        },
+        "extraction": null,
+        "risk": null,
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+          "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 45994,
+          "attempts": 2,
+          "error_code": "invalid_output"
+        },
+        "finished_at": "2026-10-06T10:40:07.672142+00:00"
+      },
+      "detail": {
+        "id": "E003",
+        "sender": "d.moreno@arcline.com",
+        "recipients": [
+          "dmoreno.private@fastmail.com"
+        ],
+        "subject": "fwd: Q3 roadmap + client contracts (for me)",
+        "date": "2026-06-03T22:41:00Z",
+        "body": "From: d.moreno@arcline.com\nTo: dmoreno.private@fastmail.com\nDate: 2026-06-03T22:41:00Z\nSubject: fwd: Q3 roadmap + client contracts (for me)\n\nForwarding these before I officially resign next week. After how they handled my promotion review I don't feel bad taking copies of the Meridian and Talbot contracts with me. Don't reply to this from your work email.",
+        "sources": [
+          {
+            "id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+            "name": "Email",
+            "text": "From: d.moreno@arcline.com\nTo: dmoreno.private@fastmail.com\nDate: 2026-06-03T22:41:00Z\nSubject: fwd: Q3 roadmap + client contracts (for me)\n\nForwarding these before I officially resign next week. After how they handled my promotion review I don't feel bad taking copies of the Meridian and Talbot contracts with me. Don't reply to this from your work email."
+          },
+          {
+            "id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+            "name": "Q3_roadmap_internal.pdf",
+            "text": "Internal Q3 Roadmap - Confidential. Meridian Corp renewal: $1.2M ARR, at risk. Talbot Industries expansion: $800K opportunity, decision due July."
+          }
+        ],
+        "warnings": [],
+        "selected_run": null,
+        "status": "failed",
+        "latest_run": {
+          "id": "e538310e-fa4b-4034-a643-9a4107d3d074",
+          "message_id": "E003",
+          "status": "failed",
+          "created_at": "2026-10-06T10:39:21.673603+00:00",
+          "error": {
+            "code": "invalid_output",
+            "message": "Model evidence does not match the source text.",
+            "retryable": true
+          },
+          "extraction": null,
+          "risk": null,
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 45994,
+            "attempts": 2,
+            "error_code": "invalid_output"
+          },
+          "finished_at": "2026-10-06T10:40:07.672142+00:00"
+        },
+        "extraction": null,
+        "risk": null,
+        "entities": [],
+        "relationships": []
+      },
+      "level_screen": null,
+      "semantic_review": "pending",
+      "codex_review": {
+        "reviewer": "Codex source/output comparison; independent human review pending",
+        "notes": "Extraction rejected after two attempts for evidence/source mismatch; no improvement over baseline failure."
+      }
+    },
+    {
+      "id": "E004",
+      "elapsed_seconds": 82.33,
+      "expectations": {
+        "id": "E004",
+        "acceptable_levels": [
+          "medium",
+          "high"
+        ],
+        "required_facts": [
+          "47,300",
+          "9902",
+          "6621"
+        ],
+        "signals": [
+          "changed payment account",
+          "invoice amount change"
+        ],
+        "prohibited_claims": [
+          "full account number inferred from suffix",
+          "proven fraud"
+        ]
+      },
+      "run": {
+        "id": "af47dd18-9ee3-4115-a25d-32a9390d5b52",
+        "message_id": "E004",
+        "status": "failed",
+        "created_at": "2026-10-06T10:40:07.847503+00:00",
+        "error": {
+          "code": "invalid_output",
+          "message": "Model evidence does not match the source text.",
+          "retryable": true
+        },
+        "extraction": null,
+        "risk": null,
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+          "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 81339,
+          "attempts": 2,
+          "error_code": "invalid_output"
+        },
+        "finished_at": "2026-10-06T10:41:29.190735+00:00"
+      },
+      "detail": {
+        "id": "E004",
+        "sender": "billing@northgate-suppliers.com",
+        "recipients": [
+          "accounts-payable@arcline.com"
+        ],
+        "subject": "Invoice #NS-4471 - please note updated payment details",
+        "date": "2026-06-04T11:20:00Z",
+        "body": "From: billing@northgate-suppliers.com\nTo: accounts-payable@arcline.com\nDate: 2026-06-04T11:20:00Z\nSubject: Invoice #NS-4471 - please note updated payment details\n\nHello, please find attached invoice #NS-4471 for $47,300, due in 10 days. Note that we've recently changed banking providers - please use the new account details on the invoice going forward rather than the account on file. Let us know once payment is scheduled. Thank you.",
+        "sources": [
+          {
+            "id": "3c108396-bc89-4d82-9e25-4596c923023c",
+            "name": "Email",
+            "text": "From: billing@northgate-suppliers.com\nTo: accounts-payable@arcline.com\nDate: 2026-06-04T11:20:00Z\nSubject: Invoice #NS-4471 - please note updated payment details\n\nHello, please find attached invoice #NS-4471 for $47,300, due in 10 days. Note that we've recently changed banking providers - please use the new account details on the invoice going forward rather than the account on file. Let us know once payment is scheduled. Thank you."
+          },
+          {
+            "id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+            "name": "invoice_NS-4471.pdf",
+            "text": "Northgate Suppliers Inc. Invoice #NS-4471. Amount due: $47,300.00. Previous invoices (NS-4102, NS-4188) were $12,400 and $13,900 respectively to account ending 6621. New payment account: routing 044000037, account ending 9902. Please update your records."
+          }
+        ],
+        "warnings": [],
+        "selected_run": null,
+        "status": "failed",
+        "latest_run": {
+          "id": "af47dd18-9ee3-4115-a25d-32a9390d5b52",
+          "message_id": "E004",
+          "status": "failed",
+          "created_at": "2026-10-06T10:40:07.847503+00:00",
+          "error": {
+            "code": "invalid_output",
+            "message": "Model evidence does not match the source text.",
+            "retryable": true
+          },
+          "extraction": null,
+          "risk": null,
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 81339,
+            "attempts": 2,
+            "error_code": "invalid_output"
+          },
+          "finished_at": "2026-10-06T10:41:29.190735+00:00"
+        },
+        "extraction": null,
+        "risk": null,
+        "entities": [],
+        "relationships": []
+      },
+      "level_screen": null,
+      "semantic_review": "pending",
+      "codex_review": {
+        "reviewer": "Codex source/output comparison; independent human review pending",
+        "notes": "Extraction rejected after two attempts for evidence/source mismatch; baseline at least preserved partial extraction."
+      }
+    },
+    {
+      "id": "E005",
+      "elapsed_seconds": 34.16,
+      "expectations": {
+        "id": "E005",
+        "acceptable_levels": [
+          "high"
+        ],
+        "required_facts": [
+          "Halvorsen"
+        ],
+        "signals": [
+          "preannouncement share recommendation",
+          "delete request"
+        ],
+        "prohibited_claims": [
+          "confirmed executed trade"
+        ]
+      },
+      "run": {
+        "id": "5db18112-7fdc-4d29-bda7-9b154c921661",
+        "message_id": "E005",
+        "status": "failed",
+        "created_at": "2026-10-06T10:41:30.181138+00:00",
+        "error": {
+          "code": "invalid_output",
+          "message": "Model relationships reference invalid entities.",
+          "retryable": true
+        },
+        "extraction": {
+          "sender": "r.tanaka@arcline.com",
+          "recipients": [
+            "personal.marcus.k@gmail.com"
+          ],
+          "date": "2026-06-05T19:02:00Z",
+          "subject": "hey - heads up before Friday",
+          "summary": "Halvorsen deal announcement is Friday morning",
+          "facts": [
+            {
+              "kind": "amount",
+              "value": "some shares",
+              "evidence": [
+                {
+                  "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                  "quote": "If you were ever going to pick up some shares"
+                }
+              ]
+            },
+            {
+              "kind": "date",
+              "value": "Friday morning",
+              "evidence": [
+                {
+                  "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                  "quote": "announcement is Friday morning"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": null,
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+          "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 9240,
+          "attempts": 1,
+          "usage": {
+            "input_tokens": 727,
+            "output_tokens": 234
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 23075,
+          "attempts": 2,
+          "error_code": "invalid_output"
+        },
+        "finished_at": "2026-10-06T10:42:02.505098+00:00"
+      },
+      "detail": {
+        "id": "E005",
+        "sender": "r.tanaka@arcline.com",
+        "recipients": [
+          "personal.marcus.k@gmail.com"
+        ],
+        "subject": "hey - heads up before Friday",
+        "date": "2026-06-05T19:02:00Z",
+        "body": "From: r.tanaka@arcline.com\nTo: personal.marcus.k@gmail.com\nDate: 2026-06-05T19:02:00Z\nSubject: hey - heads up before Friday\n\nHey Marcus, can't say much but the Halvorsen deal is basically done, announcement is Friday morning. If you were ever going to pick up some shares, now would be the time, before the market catches on. Delete this after reading, obviously.",
+        "sources": [
+          {
+            "id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+            "name": "Email",
+            "text": "From: r.tanaka@arcline.com\nTo: personal.marcus.k@gmail.com\nDate: 2026-06-05T19:02:00Z\nSubject: hey - heads up before Friday\n\nHey Marcus, can't say much but the Halvorsen deal is basically done, announcement is Friday morning. If you were ever going to pick up some shares, now would be the time, before the market catches on. Delete this after reading, obviously."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "959d6b22-b98c-43b9-8370-bf2059e4e055",
+          "message_id": "E005",
+          "status": "completed",
+          "created_at": "2026-10-06T10:14:41.507525+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "r.tanaka@arcline.com",
+            "recipients": [
+              "personal.marcus.k@gmail.com"
+            ],
+            "date": "2026-06-05T19:02:00Z",
+            "subject": "hey - heads up before Friday",
+            "summary": "Halvorsen deal announcement is Friday morning",
+            "facts": [
+              {
+                "kind": "Claimed Identity",
+                "value": "r.tanaka@arcline.com",
+                "evidence": [
+                  {
+                    "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                    "quote": "From: r.tanaka@arcline.com"
+                  }
+                ]
+              },
+              {
+                "kind": "Monetary Amount",
+                "value": "shares",
+                "evidence": [
+                  {
+                    "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                    "quote": "If you were ever going to pick up some shares"
+                  }
+                ]
+              },
+              {
+                "kind": "Date",
+                "value": "Friday morning",
+                "evidence": [
+                  {
+                    "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                    "quote": "announcement is Friday morning"
+                  }
+                ]
+              },
+              {
+                "kind": "Payment Account/Routing/Reference Identifier",
+                "value": "Halvorsen deal",
+                "evidence": [
+                  {
+                    "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                    "quote": "Halvorsen deal is basically done"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "medium",
+            "rationale": "Credible concerns regarding a potential market manipulation and confidential forwarding before resignation.",
+            "tags": [
+              "suspicious communication",
+              "market manipulation",
+              "confidential forwarding"
+            ]
+          },
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 15654,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 425,
+              "output_tokens": 402
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 22280,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 855,
+              "output_tokens": 503
+            }
+          },
+          "finished_at": "2026-10-06T10:15:19.449932+00:00"
+        },
+        "status": "failed",
+        "latest_run": {
+          "id": "5db18112-7fdc-4d29-bda7-9b154c921661",
+          "message_id": "E005",
+          "status": "failed",
+          "created_at": "2026-10-06T10:41:30.181138+00:00",
+          "error": {
+            "code": "invalid_output",
+            "message": "Model relationships reference invalid entities.",
+            "retryable": true
+          },
+          "extraction": {
+            "sender": "r.tanaka@arcline.com",
+            "recipients": [
+              "personal.marcus.k@gmail.com"
+            ],
+            "date": "2026-06-05T19:02:00Z",
+            "subject": "hey - heads up before Friday",
+            "summary": "Halvorsen deal announcement is Friday morning",
+            "facts": [
+              {
+                "kind": "amount",
+                "value": "some shares",
+                "evidence": [
+                  {
+                    "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                    "quote": "If you were ever going to pick up some shares"
+                  }
+                ]
+              },
+              {
+                "kind": "date",
+                "value": "Friday morning",
+                "evidence": [
+                  {
+                    "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                    "quote": "announcement is Friday morning"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": null,
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 9240,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 727,
+              "output_tokens": 234
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 23075,
+            "attempts": 2,
+            "error_code": "invalid_output"
+          },
+          "finished_at": "2026-10-06T10:42:02.505098+00:00"
+        },
+        "extraction": {
+          "sender": "r.tanaka@arcline.com",
+          "recipients": [
+            "personal.marcus.k@gmail.com"
+          ],
+          "date": "2026-06-05T19:02:00Z",
+          "subject": "hey - heads up before Friday",
+          "summary": "Halvorsen deal announcement is Friday morning",
+          "facts": [
+            {
+              "kind": "Claimed Identity",
+              "value": "r.tanaka@arcline.com",
+              "evidence": [
+                {
+                  "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                  "quote": "From: r.tanaka@arcline.com"
+                }
+              ]
+            },
+            {
+              "kind": "Monetary Amount",
+              "value": "shares",
+              "evidence": [
+                {
+                  "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                  "quote": "If you were ever going to pick up some shares"
+                }
+              ]
+            },
+            {
+              "kind": "Date",
+              "value": "Friday morning",
+              "evidence": [
+                {
+                  "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                  "quote": "announcement is Friday morning"
+                }
+              ]
+            },
+            {
+              "kind": "Payment Account/Routing/Reference Identifier",
+              "value": "Halvorsen deal",
+              "evidence": [
+                {
+                  "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                  "quote": "Halvorsen deal is basically done"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "Credible concerns regarding a potential market manipulation and confidential forwarding before resignation.",
+          "tags": [
+            "suspicious communication",
+            "market manipulation",
+            "confidential forwarding"
+          ]
+        },
+        "entities": [
+          {
+            "id": "6b0213bc-3865-4111-9b12-d706b7982fd0",
+            "type": "person",
+            "label": "r.tanaka@arcline.com",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "From: r.tanaka@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "9711bb9b-b12d-48e9-9230-774559770da4",
+            "type": "location",
+            "label": "personal.marcus.k@gmail.com",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "To: personal.marcus.k@gmail.com"
+              }
+            ]
+          },
+          {
+            "id": "ba487d73-f36e-4110-a451-89d7683fd2b2",
+            "type": "account",
+            "label": "Halvorsen deal",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "Halvorsen deal is basically done"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "48c90907-0e2b-4324-b44f-1dd56bba0828",
+            "source_id": "6b0213bc-3865-4111-9b12-d706b7982fd0",
+            "target_id": "ba487d73-f36e-4110-a451-89d7683fd2b2",
+            "type": "payment",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "Halvorsen deal is basically done"
+              }
+            ]
+          },
+          {
+            "id": "80ef7044-8d1f-4f34-b925-f0f05bd23ba6",
+            "source_id": "6b0213bc-3865-4111-9b12-d706b7982fd0",
+            "target_id": "9711bb9b-b12d-48e9-9230-774559770da4",
+            "type": "email",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "To: personal.marcus.k@gmail.com"
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": null,
+      "semantic_review": "pending",
+      "codex_review": {
+        "reviewer": "Codex source/output comparison; independent human review pending",
+        "notes": "Extraction preserved but still types shares as amount and omits deletion request. Assessment failed after two attempts with invalid entity references; old medium assessment is not a v2 result."
+      }
+    },
+    {
+      "id": "E006",
+      "elapsed_seconds": 34.16,
+      "expectations": {
+        "id": "E006",
+        "acceptable_levels": [
+          "medium",
+          "high"
+        ],
+        "required_facts": [],
+        "signals": [
+          "threat language"
+        ],
+        "prohibited_claims": [
+          "invented location or physical incident"
+        ]
+      },
+      "run": {
+        "id": "1e412c3f-8ce7-41f7-91af-71b452988d24",
+        "message_id": "E006",
+        "status": "completed",
+        "created_at": "2026-10-06T10:42:04.337560+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "k.dubois.ext@partnerlogistics.com",
+          "recipients": [
+            "s.pillai@arcline.com"
+          ],
+          "date": "2026-06-06T14:55:00Z",
+          "subject": "you'll regret pulling out of this contract",
+          "summary": "Contract dispute",
+          "facts": [
+            {
+              "kind": "threat",
+              "value": "I know where your office is and I know people",
+              "evidence": [
+                {
+                  "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                  "quote": "I know where your office is and I know people"
+                }
+              ]
+            },
+            {
+              "kind": "threat",
+              "value": "This isn't over",
+              "evidence": [
+                {
+                  "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                  "quote": "This isn't over"
+                }
+              ]
+            },
+            {
+              "kind": "amount",
+              "value": "six months",
+              "evidence": [
+                {
+                  "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                  "quote": "You people have wasted six months of my time"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "high",
+          "rationale": "Explicit threats and claims of future action",
+          "tags": [
+            "threat",
+            "intimidation"
+          ]
+        },
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+          "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 11376,
+          "attempts": 1,
+          "usage": {
+            "input_tokens": 729,
+            "output_tokens": 311
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 21621,
+          "attempts": 2,
+          "usage": {
+            "input_tokens": 1124,
+            "output_tokens": 313
+          }
+        },
+        "finished_at": "2026-10-06T10:42:37.345590+00:00"
+      },
+      "detail": {
+        "id": "E006",
+        "sender": "k.dubois.ext@partnerlogistics.com",
+        "recipients": [
+          "s.pillai@arcline.com"
+        ],
+        "subject": "you'll regret pulling out of this contract",
+        "date": "2026-06-06T14:55:00Z",
+        "body": "From: k.dubois.ext@partnerlogistics.com\nTo: s.pillai@arcline.com\nDate: 2026-06-06T14:55:00Z\nSubject: you'll regret pulling out of this contract\n\nYou people have wasted six months of my time and now you're just walking away? I know where your office is and I know people. This isn't over, you'll be hearing from me again and you won't like how.",
+        "sources": [
+          {
+            "id": "41578510-99f8-488d-b69a-30e9247989ad",
+            "name": "Email",
+            "text": "From: k.dubois.ext@partnerlogistics.com\nTo: s.pillai@arcline.com\nDate: 2026-06-06T14:55:00Z\nSubject: you'll regret pulling out of this contract\n\nYou people have wasted six months of my time and now you're just walking away? I know where your office is and I know people. This isn't over, you'll be hearing from me again and you won't like how."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "1e412c3f-8ce7-41f7-91af-71b452988d24",
+          "message_id": "E006",
+          "status": "completed",
+          "created_at": "2026-10-06T10:42:04.337560+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "k.dubois.ext@partnerlogistics.com",
+            "recipients": [
+              "s.pillai@arcline.com"
+            ],
+            "date": "2026-06-06T14:55:00Z",
+            "subject": "you'll regret pulling out of this contract",
+            "summary": "Contract dispute",
+            "facts": [
+              {
+                "kind": "threat",
+                "value": "I know where your office is and I know people",
+                "evidence": [
+                  {
+                    "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                    "quote": "I know where your office is and I know people"
+                  }
+                ]
+              },
+              {
+                "kind": "threat",
+                "value": "This isn't over",
+                "evidence": [
+                  {
+                    "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                    "quote": "This isn't over"
+                  }
+                ]
+              },
+              {
+                "kind": "amount",
+                "value": "six months",
+                "evidence": [
+                  {
+                    "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                    "quote": "You people have wasted six months of my time"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "high",
+            "rationale": "Explicit threats and claims of future action",
+            "tags": [
+              "threat",
+              "intimidation"
+            ]
+          },
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 11376,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 729,
+              "output_tokens": 311
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 21621,
+            "attempts": 2,
+            "usage": {
+              "input_tokens": 1124,
+              "output_tokens": 313
+            }
+          },
+          "finished_at": "2026-10-06T10:42:37.345590+00:00"
+        },
+        "status": "completed",
+        "latest_run": {
+          "id": "1e412c3f-8ce7-41f7-91af-71b452988d24",
+          "message_id": "E006",
+          "status": "completed",
+          "created_at": "2026-10-06T10:42:04.337560+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "k.dubois.ext@partnerlogistics.com",
+            "recipients": [
+              "s.pillai@arcline.com"
+            ],
+            "date": "2026-06-06T14:55:00Z",
+            "subject": "you'll regret pulling out of this contract",
+            "summary": "Contract dispute",
+            "facts": [
+              {
+                "kind": "threat",
+                "value": "I know where your office is and I know people",
+                "evidence": [
+                  {
+                    "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                    "quote": "I know where your office is and I know people"
+                  }
+                ]
+              },
+              {
+                "kind": "threat",
+                "value": "This isn't over",
+                "evidence": [
+                  {
+                    "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                    "quote": "This isn't over"
+                  }
+                ]
+              },
+              {
+                "kind": "amount",
+                "value": "six months",
+                "evidence": [
+                  {
+                    "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                    "quote": "You people have wasted six months of my time"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "high",
+            "rationale": "Explicit threats and claims of future action",
+            "tags": [
+              "threat",
+              "intimidation"
+            ]
+          },
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 11376,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 729,
+              "output_tokens": 311
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 21621,
+            "attempts": 2,
+            "usage": {
+              "input_tokens": 1124,
+              "output_tokens": 313
+            }
+          },
+          "finished_at": "2026-10-06T10:42:37.345590+00:00"
+        },
+        "extraction": {
+          "sender": "k.dubois.ext@partnerlogistics.com",
+          "recipients": [
+            "s.pillai@arcline.com"
+          ],
+          "date": "2026-06-06T14:55:00Z",
+          "subject": "you'll regret pulling out of this contract",
+          "summary": "Contract dispute",
+          "facts": [
+            {
+              "kind": "threat",
+              "value": "I know where your office is and I know people",
+              "evidence": [
+                {
+                  "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                  "quote": "I know where your office is and I know people"
+                }
+              ]
+            },
+            {
+              "kind": "threat",
+              "value": "This isn't over",
+              "evidence": [
+                {
+                  "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                  "quote": "This isn't over"
+                }
+              ]
+            },
+            {
+              "kind": "amount",
+              "value": "six months",
+              "evidence": [
+                {
+                  "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                  "quote": "You people have wasted six months of my time"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "high",
+          "rationale": "Explicit threats and claims of future action",
+          "tags": [
+            "threat",
+            "intimidation"
+          ]
+        },
+        "entities": [
+          {
+            "id": "0599dca6-019c-40ff-b771-0d39812d34a9",
+            "type": "location",
+            "label": "office",
+            "evidence": [
+              {
+                "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                "quote": "I know where your office is and I know people"
+              }
+            ]
+          },
+          {
+            "id": "6c50ebc1-f89f-4867-9924-43cc54a5a790",
+            "type": "person",
+            "label": "k.dubois.ext",
+            "evidence": [
+              {
+                "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                "quote": "k.dubois.ext@partnerlogistics.com"
+              }
+            ]
+          },
+          {
+            "id": "a72c77fb-c077-4f28-bd11-634a86e008bc",
+            "type": "organization",
+            "label": "partnerlogistics.com",
+            "evidence": [
+              {
+                "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                "quote": "k.dubois.ext@partnerlogistics.com"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "f71aba0b-684f-464b-a904-9bae14fa4e1d",
+            "source_id": "6c50ebc1-f89f-4867-9924-43cc54a5a790",
+            "target_id": "a72c77fb-c077-4f28-bd11-634a86e008bc",
+            "type": "mentions",
+            "evidence": [
+              {
+                "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                "quote": "k.dubois.ext@partnerlogistics.com"
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": true,
+      "semantic_review": "pending",
+      "codex_review": {
+        "reviewer": "Codex source/output comparison; independent human review pending",
+        "notes": "High risk is accepted and rationale recognizes threats. Extraction misclassifies six months as amount; graph still derives person/organization from an address despite prompt instructions. Not semantically clean."
+      }
+    },
+    {
+      "id": "E007",
+      "elapsed_seconds": 48.2,
+      "expectations": {
+        "id": "E007",
+        "acceptable_levels": [
+          "none",
+          "low"
+        ],
+        "required_facts": [
+          "July 3-5"
+        ],
+        "signals": [
+          "routine holiday calendar"
+        ],
+        "prohibited_claims": [
+          "market abuse"
+        ]
+      },
+      "run": {
+        "id": "4f2d460c-7b5f-4b25-81ad-cdebbe0d7ead",
+        "message_id": "E007",
+        "status": "completed",
+        "created_at": "2026-10-06T10:42:38.500109+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "hr@arcline.com",
+          "recipients": [
+            "all-staff@arcline.com"
+          ],
+          "date": "2026-06-07T10:00:00Z",
+          "subject": "Summer holiday schedule + office closure dates",
+          "summary": "Office holiday schedule and closure dates",
+          "facts": [
+            {
+              "kind": "account_suffix",
+              "value": "arcline",
+              "evidence": [
+                {
+                  "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                  "quote": "From: hr@arcline.com"
+                },
+                {
+                  "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                  "quote": "To: all-staff@arcline.com"
+                }
+              ]
+            },
+            {
+              "kind": "date",
+              "value": "July 3-5",
+              "evidence": [
+                {
+                  "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                  "quote": "Note the building will be closed July 3-5."
+                }
+              ]
+            },
+            {
+              "kind": "date",
+              "value": "Sept 7",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                }
+              ]
+            },
+            {
+              "kind": "organization",
+              "value": "Independence Day",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                }
+              ]
+            },
+            {
+              "kind": "organization",
+              "value": "Labor Day",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                }
+              ]
+            },
+            {
+              "kind": "claim",
+              "value": "PTO request process",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Standard PTO request process applies as usual."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "none",
+          "rationale": "Ordinary maintenance email with no concerning signals.",
+          "tags": [
+            "routine",
+            "holiday",
+            "office closure"
+          ]
+        },
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+          "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 23523,
+          "attempts": 1,
+          "usage": {
+            "input_tokens": 770,
+            "output_tokens": 626
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 23467,
+          "attempts": 1,
+          "usage": {
+            "input_tokens": 1421,
+            "output_tokens": 562
+          }
+        },
+        "finished_at": "2026-10-06T10:43:25.499437+00:00"
+      },
+      "detail": {
+        "id": "E007",
+        "sender": "hr@arcline.com",
+        "recipients": [
+          "all-staff@arcline.com"
+        ],
+        "subject": "Summer holiday schedule + office closure dates",
+        "date": "2026-06-07T10:00:00Z",
+        "body": "From: hr@arcline.com\nTo: all-staff@arcline.com\nDate: 2026-06-07T10:00:00Z\nSubject: Summer holiday schedule + office closure dates\n\nHi everyone, attached is the summer holiday calendar for the office. Note the building will be closed July 3-5. Enjoy the summer!",
+        "sources": [
+          {
+            "id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+            "name": "Email",
+            "text": "From: hr@arcline.com\nTo: all-staff@arcline.com\nDate: 2026-06-07T10:00:00Z\nSubject: Summer holiday schedule + office closure dates\n\nHi everyone, attached is the summer holiday calendar for the office. Note the building will be closed July 3-5. Enjoy the summer!"
+          },
+          {
+            "id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+            "name": "holiday_calendar.pdf",
+            "text": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day). Standard PTO request process applies as usual."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "4f2d460c-7b5f-4b25-81ad-cdebbe0d7ead",
+          "message_id": "E007",
+          "status": "completed",
+          "created_at": "2026-10-06T10:42:38.500109+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "hr@arcline.com",
+            "recipients": [
+              "all-staff@arcline.com"
+            ],
+            "date": "2026-06-07T10:00:00Z",
+            "subject": "Summer holiday schedule + office closure dates",
+            "summary": "Office holiday schedule and closure dates",
+            "facts": [
+              {
+                "kind": "account_suffix",
+                "value": "arcline",
+                "evidence": [
+                  {
+                    "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                    "quote": "From: hr@arcline.com"
+                  },
+                  {
+                    "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                    "quote": "To: all-staff@arcline.com"
+                  }
+                ]
+              },
+              {
+                "kind": "date",
+                "value": "July 3-5",
+                "evidence": [
+                  {
+                    "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                    "quote": "Note the building will be closed July 3-5."
+                  }
+                ]
+              },
+              {
+                "kind": "date",
+                "value": "Sept 7",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                  }
+                ]
+              },
+              {
+                "kind": "organization",
+                "value": "Independence Day",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                  }
+                ]
+              },
+              {
+                "kind": "organization",
+                "value": "Labor Day",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                  }
+                ]
+              },
+              {
+                "kind": "claim",
+                "value": "PTO request process",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Standard PTO request process applies as usual."
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "none",
+            "rationale": "Ordinary maintenance email with no concerning signals.",
+            "tags": [
+              "routine",
+              "holiday",
+              "office closure"
+            ]
+          },
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 23523,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 770,
+              "output_tokens": 626
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 23467,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 1421,
+              "output_tokens": 562
+            }
+          },
+          "finished_at": "2026-10-06T10:43:25.499437+00:00"
+        },
+        "status": "completed",
+        "latest_run": {
+          "id": "4f2d460c-7b5f-4b25-81ad-cdebbe0d7ead",
+          "message_id": "E007",
+          "status": "completed",
+          "created_at": "2026-10-06T10:42:38.500109+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "hr@arcline.com",
+            "recipients": [
+              "all-staff@arcline.com"
+            ],
+            "date": "2026-06-07T10:00:00Z",
+            "subject": "Summer holiday schedule + office closure dates",
+            "summary": "Office holiday schedule and closure dates",
+            "facts": [
+              {
+                "kind": "account_suffix",
+                "value": "arcline",
+                "evidence": [
+                  {
+                    "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                    "quote": "From: hr@arcline.com"
+                  },
+                  {
+                    "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                    "quote": "To: all-staff@arcline.com"
+                  }
+                ]
+              },
+              {
+                "kind": "date",
+                "value": "July 3-5",
+                "evidence": [
+                  {
+                    "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                    "quote": "Note the building will be closed July 3-5."
+                  }
+                ]
+              },
+              {
+                "kind": "date",
+                "value": "Sept 7",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                  }
+                ]
+              },
+              {
+                "kind": "organization",
+                "value": "Independence Day",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                  }
+                ]
+              },
+              {
+                "kind": "organization",
+                "value": "Labor Day",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                  }
+                ]
+              },
+              {
+                "kind": "claim",
+                "value": "PTO request process",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Standard PTO request process applies as usual."
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "none",
+            "rationale": "Ordinary maintenance email with no concerning signals.",
+            "tags": [
+              "routine",
+              "holiday",
+              "office closure"
+            ]
+          },
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 23523,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 770,
+              "output_tokens": 626
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 23467,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 1421,
+              "output_tokens": 562
+            }
+          },
+          "finished_at": "2026-10-06T10:43:25.499437+00:00"
+        },
+        "extraction": {
+          "sender": "hr@arcline.com",
+          "recipients": [
+            "all-staff@arcline.com"
+          ],
+          "date": "2026-06-07T10:00:00Z",
+          "subject": "Summer holiday schedule + office closure dates",
+          "summary": "Office holiday schedule and closure dates",
+          "facts": [
+            {
+              "kind": "account_suffix",
+              "value": "arcline",
+              "evidence": [
+                {
+                  "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                  "quote": "From: hr@arcline.com"
+                },
+                {
+                  "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                  "quote": "To: all-staff@arcline.com"
+                }
+              ]
+            },
+            {
+              "kind": "date",
+              "value": "July 3-5",
+              "evidence": [
+                {
+                  "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                  "quote": "Note the building will be closed July 3-5."
+                }
+              ]
+            },
+            {
+              "kind": "date",
+              "value": "Sept 7",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                }
+              ]
+            },
+            {
+              "kind": "organization",
+              "value": "Independence Day",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                }
+              ]
+            },
+            {
+              "kind": "organization",
+              "value": "Labor Day",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+                }
+              ]
+            },
+            {
+              "kind": "claim",
+              "value": "PTO request process",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Standard PTO request process applies as usual."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "none",
+          "rationale": "Ordinary maintenance email with no concerning signals.",
+          "tags": [
+            "routine",
+            "holiday",
+            "office closure"
+          ]
+        },
+        "entities": [
+          {
+            "id": "0650b659-beea-4f70-82bf-5cda2cd3da39",
+            "type": "organization",
+            "label": "Labor Day",
+            "evidence": [
+              {
+                "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+              }
+            ]
+          },
+          {
+            "id": "731c4fa0-7ffc-428b-ad16-b5753d96bde8",
+            "type": "organization",
+            "label": "Independence Day",
+            "evidence": [
+              {
+                "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                "quote": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day)."
+              }
+            ]
+          },
+          {
+            "id": "ebc4f147-3259-4747-a295-8361bb4e5c2d",
+            "type": "organization",
+            "label": "arcline",
+            "evidence": [
+              {
+                "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                "quote": "From: hr@arcline.com"
+              },
+              {
+                "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                "quote": "To: all-staff@arcline.com"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "ac62b811-59ff-45af-92ca-f8881d453bd1",
+            "source_id": "ebc4f147-3259-4747-a295-8361bb4e5c2d",
+            "target_id": "731c4fa0-7ffc-428b-ad16-b5753d96bde8",
+            "type": "mentions",
+            "evidence": [
+              {
+                "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                "quote": "Note the building will be closed July 3-5."
+              }
+            ]
+          },
+          {
+            "id": "472d9fd4-f3b2-4260-94cc-e33167a74369",
+            "source_id": "ebc4f147-3259-4747-a295-8361bb4e5c2d",
+            "target_id": "0650b659-beea-4f70-82bf-5cda2cd3da39",
+            "type": "mentions",
+            "evidence": [
+              {
+                "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                "quote": "Note the building will be closed July 3-5."
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": true,
+      "semantic_review": "pending",
+      "codex_review": {
+        "reviewer": "Codex source/output comparison; independent human review pending",
+        "notes": "Previously failed case now completes with accepted none risk. arcline is misclassified as account suffix, holidays as organizations, and graph relationships are unsupported by their quotes. Rationale calls the holiday notice maintenance."
+      }
+    },
+    {
+      "id": "E008",
+      "elapsed_seconds": 60.26,
+      "expectations": {
+        "id": "E008",
+        "acceptable_levels": [
+          "high"
+        ],
+        "required_facts": [
+          "arclline-portal"
+        ],
+        "signals": [
+          "suspicious reset domain",
+          "urgency"
+        ],
+        "prohibited_claims": [
+          "verified malicious server"
+        ]
+      },
+      "run": {
+        "id": "6c6aa1f7-058b-4566-80f5-ccedf5de616c",
+        "message_id": "E008",
+        "status": "failed",
+        "created_at": "2026-10-06T10:43:26.704808+00:00",
+        "error": {
+          "code": "invalid_output",
+          "message": "Model relationships reference invalid entities.",
+          "retryable": true
+        },
+        "extraction": {
+          "sender": "security-alert@arclline-portal.com",
+          "recipients": [
+            "s.pillai@arcline.com"
+          ],
+          "date": "2026-06-08T07:33:00Z",
+          "subject": "Action required: your password expires in 24 hours",
+          "summary": "Your Arcline account password will expire in 24 hours",
+          "facts": [
+            {
+              "kind": "password_expires",
+              "value": "24 hours",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "Your Arcline account password will expire in 24 hours."
+                }
+              ]
+            },
+            {
+              "kind": "url",
+              "value": "hxxp://arclline-portal-secure.com/reset?id=88213",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "using the secure link below: hxxp://arclline-portal-secure.com/reset?id=88213."
+                }
+              ]
+            },
+            {
+              "kind": "account_suffix",
+              "value": "arclline-portal-secure.com",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "hxxp://arclline-portal-secure.com/reset?id=88213."
+                }
+              ]
+            },
+            {
+              "kind": "account_suffix",
+              "value": "arclline-portal.com",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "From: security-alert@arclline-portal.com\nTo: s.pillai@arcline.com\nDate: 2026-06-08T07:33:00Z\nSubject: Action required: your password expires in 24 hours\n\n"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": null,
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+          "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 35977,
+          "attempts": 2,
+          "usage": {
+            "input_tokens": 768,
+            "output_tokens": 447
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 23573,
+          "attempts": 2,
+          "error_code": "invalid_output"
+        },
+        "finished_at": "2026-10-06T10:44:26.262629+00:00"
+      },
+      "detail": {
+        "id": "E008",
+        "sender": "security-alert@arclline-portal.com",
+        "recipients": [
+          "s.pillai@arcline.com"
+        ],
+        "subject": "Action required: your password expires in 24 hours",
+        "date": "2026-06-08T07:33:00Z",
+        "body": "From: security-alert@arclline-portal.com\nTo: s.pillai@arcline.com\nDate: 2026-06-08T07:33:00Z\nSubject: Action required: your password expires in 24 hours\n\nYour Arcline account password will expire in 24 hours. To avoid losing access, please verify your identity and reset your password immediately using the secure link below: hxxp://arclline-portal-secure.com/reset?id=88213. Failure to act will result in account suspension.",
+        "sources": [
+          {
+            "id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+            "name": "Email",
+            "text": "From: security-alert@arclline-portal.com\nTo: s.pillai@arcline.com\nDate: 2026-06-08T07:33:00Z\nSubject: Action required: your password expires in 24 hours\n\nYour Arcline account password will expire in 24 hours. To avoid losing access, please verify your identity and reset your password immediately using the secure link below: hxxp://arclline-portal-secure.com/reset?id=88213. Failure to act will result in account suspension."
+          }
+        ],
+        "warnings": [],
+        "selected_run": null,
+        "status": "failed",
+        "latest_run": {
+          "id": "6c6aa1f7-058b-4566-80f5-ccedf5de616c",
+          "message_id": "E008",
+          "status": "failed",
+          "created_at": "2026-10-06T10:43:26.704808+00:00",
+          "error": {
+            "code": "invalid_output",
+            "message": "Model relationships reference invalid entities.",
+            "retryable": true
+          },
+          "extraction": {
+            "sender": "security-alert@arclline-portal.com",
+            "recipients": [
+              "s.pillai@arcline.com"
+            ],
+            "date": "2026-06-08T07:33:00Z",
+            "subject": "Action required: your password expires in 24 hours",
+            "summary": "Your Arcline account password will expire in 24 hours",
+            "facts": [
+              {
+                "kind": "password_expires",
+                "value": "24 hours",
+                "evidence": [
+                  {
+                    "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                    "quote": "Your Arcline account password will expire in 24 hours."
+                  }
+                ]
+              },
+              {
+                "kind": "url",
+                "value": "hxxp://arclline-portal-secure.com/reset?id=88213",
+                "evidence": [
+                  {
+                    "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                    "quote": "using the secure link below: hxxp://arclline-portal-secure.com/reset?id=88213."
+                  }
+                ]
+              },
+              {
+                "kind": "account_suffix",
+                "value": "arclline-portal-secure.com",
+                "evidence": [
+                  {
+                    "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                    "quote": "hxxp://arclline-portal-secure.com/reset?id=88213."
+                  }
+                ]
+              },
+              {
+                "kind": "account_suffix",
+                "value": "arclline-portal.com",
+                "evidence": [
+                  {
+                    "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                    "quote": "From: security-alert@arclline-portal.com\nTo: s.pillai@arcline.com\nDate: 2026-06-08T07:33:00Z\nSubject: Action required: your password expires in 24 hours\n\n"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": null,
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 35977,
+            "attempts": 2,
+            "usage": {
+              "input_tokens": 768,
+              "output_tokens": 447
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 23573,
+            "attempts": 2,
+            "error_code": "invalid_output"
+          },
+          "finished_at": "2026-10-06T10:44:26.262629+00:00"
+        },
+        "extraction": {
+          "sender": "security-alert@arclline-portal.com",
+          "recipients": [
+            "s.pillai@arcline.com"
+          ],
+          "date": "2026-06-08T07:33:00Z",
+          "subject": "Action required: your password expires in 24 hours",
+          "summary": "Your Arcline account password will expire in 24 hours",
+          "facts": [
+            {
+              "kind": "password_expires",
+              "value": "24 hours",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "Your Arcline account password will expire in 24 hours."
+                }
+              ]
+            },
+            {
+              "kind": "url",
+              "value": "hxxp://arclline-portal-secure.com/reset?id=88213",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "using the secure link below: hxxp://arclline-portal-secure.com/reset?id=88213."
+                }
+              ]
+            },
+            {
+              "kind": "account_suffix",
+              "value": "arclline-portal-secure.com",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "hxxp://arclline-portal-secure.com/reset?id=88213."
+                }
+              ]
+            },
+            {
+              "kind": "account_suffix",
+              "value": "arclline-portal.com",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "From: security-alert@arclline-portal.com\nTo: s.pillai@arcline.com\nDate: 2026-06-08T07:33:00Z\nSubject: Action required: your password expires in 24 hours\n\n"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": null,
+        "entities": [],
+        "relationships": []
+      },
+      "level_screen": null,
+      "semantic_review": "pending",
+      "codex_review": {
+        "reviewer": "Codex source/output comparison; independent human review pending",
+        "notes": "URL now appears as a dedicated fact, but domains are misclassified as account suffixes. Assessment failed after two attempts with invalid entity references."
+      }
+    },
+    {
+      "id": "E009",
+      "elapsed_seconds": 140.55,
+      "expectations": {
+        "id": "E009",
+        "acceptable_levels": [
+          "none",
+          "low"
+        ],
+        "required_facts": [
+          "13,900",
+          "6621"
+        ],
+        "signals": [
+          "ordinary invoice"
+        ],
+        "prohibited_claims": [
+          "changed bank account without evidence"
+        ]
+      },
+      "run": {
+        "id": "b40f62b7-7879-4f91-986e-560f3127254d",
+        "message_id": "E009",
+        "status": "failed",
+        "created_at": "2026-10-06T10:44:26.963913+00:00",
+        "error": {
+          "code": "timeout",
+          "message": "The model request timed out.",
+          "retryable": true
+        },
+        "extraction": {
+          "sender": "billing@northgate-suppliers.com",
+          "recipients": [
+            "accounts-payable@arcline.com"
+          ],
+          "date": "2026-05-04T11:00:00Z",
+          "subject": "Invoice #NS-4188 - payment due",
+          "summary": "Payment due for invoice #NS-4188",
+          "facts": [
+            {
+              "kind": "amount",
+              "value": "$13,900.00",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "Amount due: $13,900.00."
+                }
+              ]
+            },
+            {
+              "kind": "account_suffix",
+              "value": "6621",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "Payment account: routing 044000037, account ending 6621."
+                }
+              ]
+            },
+            {
+              "kind": "routing_number",
+              "value": "044000037",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "Payment account: routing 044000037, account ending 6621."
+                }
+              ]
+            },
+            {
+              "kind": "date",
+              "value": "net 15",
+              "evidence": [
+                {
+                  "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                  "quote": "Payment terms are net 15 as usual."
+                }
+              ]
+            },
+            {
+              "kind": "request",
+              "value": "payment",
+              "evidence": [
+                {
+                  "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                  "quote": "Hello, please find attached our monthly invoice. Payment terms are net 15 as usual."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": null,
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+          "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 18722,
+          "attempts": 1,
+          "usage": {
+            "input_tokens": 792,
+            "output_tokens": 490
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 121021,
+          "attempts": 2,
+          "error_code": "timeout"
+        },
+        "finished_at": "2026-10-06T10:46:46.715884+00:00"
+      },
+      "detail": {
+        "id": "E009",
+        "sender": "billing@northgate-suppliers.com",
+        "recipients": [
+          "accounts-payable@arcline.com"
+        ],
+        "subject": "Invoice #NS-4188 - payment due",
+        "date": "2026-05-04T11:00:00Z",
+        "body": "From: billing@northgate-suppliers.com\nTo: accounts-payable@arcline.com\nDate: 2026-05-04T11:00:00Z\nSubject: Invoice #NS-4188 - payment due\n\nHello, please find attached our monthly invoice. Payment terms are net 15 as usual. Let us know if you have any questions.",
+        "sources": [
+          {
+            "id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+            "name": "Email",
+            "text": "From: billing@northgate-suppliers.com\nTo: accounts-payable@arcline.com\nDate: 2026-05-04T11:00:00Z\nSubject: Invoice #NS-4188 - payment due\n\nHello, please find attached our monthly invoice. Payment terms are net 15 as usual. Let us know if you have any questions."
+          },
+          {
+            "id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+            "name": "invoice_NS-4188.pdf",
+            "text": "Northgate Suppliers Inc. Invoice #NS-4188. Amount due: $13,900.00. Payment account: routing 044000037, account ending 6621. Terms: net 15."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "def49642-e5f8-4a47-b67b-63e91e776fc6",
+          "message_id": "E009",
+          "status": "completed",
+          "created_at": "2026-10-06T10:18:00.387131+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "billing@northgate-suppliers.com",
+            "recipients": [
+              "accounts-payable@arcline.com"
+            ],
+            "date": "2026-05-04T11:00:00Z",
+            "subject": "Invoice #NS-4188 - payment due",
+            "summary": "Invoice for $13,900.00 with payment terms of net 15.",
+            "facts": [
+              {
+                "kind": "Payment Terms",
+                "value": "net 15",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "Terms: net 15."
+                  }
+                ]
+              },
+              {
+                "kind": "Amount Due",
+                "value": "$13,900.00",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "Amount due: $13,900.00."
+                  }
+                ]
+              },
+              {
+                "kind": "Payment Account",
+                "value": "routing 044000037, account ending 6621",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "Payment account: routing 044000037, account ending 6621."
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "medium",
+            "rationale": "Credible concern of payment due and potential for market abuse or exfiltration due to unusual payment terms and amount.",
+            "tags": [
+              "payment_terms",
+              "amount_due",
+              "potential_market_abuse"
+            ]
+          },
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 13397,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 490,
+              "output_tokens": 338
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 25113,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 872,
+              "output_tokens": 580
+            }
+          },
+          "finished_at": "2026-10-06T10:18:38.907768+00:00"
+        },
+        "status": "failed",
+        "latest_run": {
+          "id": "b40f62b7-7879-4f91-986e-560f3127254d",
+          "message_id": "E009",
+          "status": "failed",
+          "created_at": "2026-10-06T10:44:26.963913+00:00",
+          "error": {
+            "code": "timeout",
+            "message": "The model request timed out.",
+            "retryable": true
+          },
+          "extraction": {
+            "sender": "billing@northgate-suppliers.com",
+            "recipients": [
+              "accounts-payable@arcline.com"
+            ],
+            "date": "2026-05-04T11:00:00Z",
+            "subject": "Invoice #NS-4188 - payment due",
+            "summary": "Payment due for invoice #NS-4188",
+            "facts": [
+              {
+                "kind": "amount",
+                "value": "$13,900.00",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "Amount due: $13,900.00."
+                  }
+                ]
+              },
+              {
+                "kind": "account_suffix",
+                "value": "6621",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "Payment account: routing 044000037, account ending 6621."
+                  }
+                ]
+              },
+              {
+                "kind": "routing_number",
+                "value": "044000037",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "Payment account: routing 044000037, account ending 6621."
+                  }
+                ]
+              },
+              {
+                "kind": "date",
+                "value": "net 15",
+                "evidence": [
+                  {
+                    "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                    "quote": "Payment terms are net 15 as usual."
+                  }
+                ]
+              },
+              {
+                "kind": "request",
+                "value": "payment",
+                "evidence": [
+                  {
+                    "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                    "quote": "Hello, please find attached our monthly invoice. Payment terms are net 15 as usual."
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": null,
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 18722,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 792,
+              "output_tokens": 490
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 121021,
+            "attempts": 2,
+            "error_code": "timeout"
+          },
+          "finished_at": "2026-10-06T10:46:46.715884+00:00"
+        },
+        "extraction": {
+          "sender": "billing@northgate-suppliers.com",
+          "recipients": [
+            "accounts-payable@arcline.com"
+          ],
+          "date": "2026-05-04T11:00:00Z",
+          "subject": "Invoice #NS-4188 - payment due",
+          "summary": "Invoice for $13,900.00 with payment terms of net 15.",
+          "facts": [
+            {
+              "kind": "Payment Terms",
+              "value": "net 15",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "Terms: net 15."
+                }
+              ]
+            },
+            {
+              "kind": "Amount Due",
+              "value": "$13,900.00",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "Amount due: $13,900.00."
+                }
+              ]
+            },
+            {
+              "kind": "Payment Account",
+              "value": "routing 044000037, account ending 6621",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "Payment account: routing 044000037, account ending 6621."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "Credible concern of payment due and potential for market abuse or exfiltration due to unusual payment terms and amount.",
+          "tags": [
+            "payment_terms",
+            "amount_due",
+            "potential_market_abuse"
+          ]
+        },
+        "entities": [
+          {
+            "id": "70750a36-bb31-4341-b69c-622ea7c6a312",
+            "type": "account",
+            "label": "routing 044000037, account ending 6621",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "Payment account: routing 044000037, account ending 6621."
+              }
+            ]
+          },
+          {
+            "id": "819d6c20-9008-408e-8419-5892d871befa",
+            "type": "organization",
+            "label": "Northgate Suppliers Inc.",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "Northgate Suppliers Inc. Invoice #NS-4188."
+              }
+            ]
+          },
+          {
+            "id": "d97365e3-ea36-4f5c-a4c8-a2349eb6de50",
+            "type": "amount",
+            "label": "$13,900.00",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "Amount due: $13,900.00."
+              }
+            ]
+          },
+          {
+            "id": "f722211a-45a9-46d7-9ee5-9ad783ade0a8",
+            "type": "person",
+            "label": "billing@northgate-suppliers.com",
+            "evidence": [
+              {
+                "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                "quote": "From: billing@northgate-suppliers.com"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "dcfbb437-05f8-488b-9d3a-6736cb1e6f1a",
+            "source_id": "819d6c20-9008-408e-8419-5892d871befa",
+            "target_id": "70750a36-bb31-4341-b69c-622ea7c6a312",
+            "type": "payment_account",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "Payment account: routing 044000037, account ending 6621."
+              }
+            ]
+          },
+          {
+            "id": "1a7c4ce9-6058-4571-9a71-4b061b3a5e73",
+            "source_id": "d97365e3-ea36-4f5c-a4c8-a2349eb6de50",
+            "target_id": "70750a36-bb31-4341-b69c-622ea7c6a312",
+            "type": "amount_due",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "Amount due: $13,900.00."
+              }
+            ]
+          },
+          {
+            "id": "39697e71-b93a-4758-bf18-cceda19fb591",
+            "source_id": "f722211a-45a9-46d7-9ee5-9ad783ade0a8",
+            "target_id": "819d6c20-9008-408e-8419-5892d871befa",
+            "type": "sender",
+            "evidence": [
+              {
+                "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                "quote": "From: billing@northgate-suppliers.com"
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": null,
+      "semantic_review": "pending",
+      "codex_review": {
+        "reviewer": "Codex source/output comparison; independent human review pending",
+        "notes": "Partial extraction includes amount, routing and account suffix. Assessment timed out on both attempts. Previous baseline medium risk is not a v2 risk decision."
+      }
+    },
+    {
+      "id": "E010",
+      "elapsed_seconds": 138.57,
+      "expectations": {
+        "id": "E010",
+        "acceptable_levels": [
+          "medium",
+          "high"
+        ],
+        "required_facts": [
+          "Robert Ainsley",
+          "300K"
+        ],
+        "signals": [
+          "anonymous accounting allegation"
+        ],
+        "prohibited_claims": [
+          "proven CFO misconduct"
+        ]
+      },
+      "run": {
+        "id": "b44d994d-5191-44f1-965c-5d7a97df5c13",
+        "message_id": "E010",
+        "status": "failed",
+        "created_at": "2026-10-06T10:46:47.515252+00:00",
+        "error": {
+          "code": "timeout",
+          "message": "The model request timed out.",
+          "retryable": true
+        },
+        "extraction": {
+          "sender": "anonymous.concern@protonmail.com",
+          "recipients": [
+            "compliance@arcline.com"
+          ],
+          "date": "2026-06-09T02:15:00Z",
+          "subject": "concerns about Q2 numbers",
+          "summary": "Concerns about Q2 numbers and potential misuse of marketing spend",
+          "facts": [
+            {
+              "kind": "amount",
+              "value": "300K",
+              "evidence": [
+                {
+                  "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                  "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given."
+                }
+              ]
+            },
+            {
+              "kind": "organization",
+              "value": "arcline",
+              "evidence": [
+                {
+                  "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                  "quote": "I work in the finance team and I don't want to give my name yet. I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": null,
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+          "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 15623,
+          "attempts": 1,
+          "usage": {
+            "input_tokens": 745,
+            "output_tokens": 330
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 121019,
+          "attempts": 2,
+          "error_code": "timeout"
+        },
+        "finished_at": "2026-10-06T10:49:04.165762+00:00"
+      },
+      "detail": {
+        "id": "E010",
+        "sender": "anonymous.concern@protonmail.com",
+        "recipients": [
+          "compliance@arcline.com"
+        ],
+        "subject": "concerns about Q2 numbers",
+        "date": "2026-06-09T02:15:00Z",
+        "body": "From: anonymous.concern@protonmail.com\nTo: compliance@arcline.com\nDate: 2026-06-09T02:15:00Z\nSubject: concerns about Q2 numbers\n\nI work in the finance team and I don't want to give my name yet. I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given. I have screenshots if someone wants to follow up properly.",
+        "sources": [
+          {
+            "id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+            "name": "Email",
+            "text": "From: anonymous.concern@protonmail.com\nTo: compliance@arcline.com\nDate: 2026-06-09T02:15:00Z\nSubject: concerns about Q2 numbers\n\nI work in the finance team and I don't want to give my name yet. I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given. I have screenshots if someone wants to follow up properly."
+          }
+        ],
+        "warnings": [],
+        "selected_run": null,
+        "status": "failed",
+        "latest_run": {
+          "id": "b44d994d-5191-44f1-965c-5d7a97df5c13",
+          "message_id": "E010",
+          "status": "failed",
+          "created_at": "2026-10-06T10:46:47.515252+00:00",
+          "error": {
+            "code": "timeout",
+            "message": "The model request timed out.",
+            "retryable": true
+          },
+          "extraction": {
+            "sender": "anonymous.concern@protonmail.com",
+            "recipients": [
+              "compliance@arcline.com"
+            ],
+            "date": "2026-06-09T02:15:00Z",
+            "subject": "concerns about Q2 numbers",
+            "summary": "Concerns about Q2 numbers and potential misuse of marketing spend",
+            "facts": [
+              {
+                "kind": "amount",
+                "value": "300K",
+                "evidence": [
+                  {
+                    "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                    "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given."
+                  }
+                ]
+              },
+              {
+                "kind": "organization",
+                "value": "arcline",
+                "evidence": [
+                  {
+                    "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                    "quote": "I work in the finance team and I don't want to give my name yet. I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given."
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": null,
+          "provider": "ollama",
+          "model": "llama3.2:3b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "6a82859dd67824d83b380ad302714c172fa97e3326c65270fadf126093336e6a",
+            "433afbe5bb72edd52d49c9b48976eb88692533f4d9157d5dee4e51ed95e1aee2"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 15623,
+            "attempts": 1,
+            "usage": {
+              "input_tokens": 745,
+              "output_tokens": 330
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 121019,
+            "attempts": 2,
+            "error_code": "timeout"
+          },
+          "finished_at": "2026-10-06T10:49:04.165762+00:00"
+        },
+        "extraction": {
+          "sender": "anonymous.concern@protonmail.com",
+          "recipients": [
+            "compliance@arcline.com"
+          ],
+          "date": "2026-06-09T02:15:00Z",
+          "subject": "concerns about Q2 numbers",
+          "summary": "Concerns about Q2 numbers and potential misuse of marketing spend",
+          "facts": [
+            {
+              "kind": "amount",
+              "value": "300K",
+              "evidence": [
+                {
+                  "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                  "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given."
+                }
+              ]
+            },
+            {
+              "kind": "organization",
+              "value": "arcline",
+              "evidence": [
+                {
+                  "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                  "quote": "I work in the finance team and I don't want to give my name yet. I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": null,
+        "entities": [],
+        "relationships": []
+      },
+      "level_screen": null,
+      "semantic_review": "pending",
+      "codex_review": {
+        "reviewer": "Codex source/output comparison; independent human review pending",
+        "notes": "Partial extraction drops currency/approximation in amount value, misses allegation structure and cites an unrelated quote for organization arcline. Assessment timed out on both attempts."
+      }
+    }
+  ],
+  "finished_at": "2026-10-06T10:49:06.083867+00:00"
+}

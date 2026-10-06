@@ -6,7 +6,7 @@ This is a source-backed take-home review, not a production-readiness certificate
 
 | Assignment requirement | Implementation evidence | Assessment |
 | --- | --- | --- |
-| Ten seed emails and common ingestion pipeline | `api.py` startup import; `ingestion.py` normalization; seed/restart tests | Implemented. Seed ID import is idempotent; new pasted/file messages get new IDs. |
+| Ten seed emails and common ingestion pipeline | `api.py` startup import/fixture bootstrap; `ingestion.py` normalization; seed/restart/bootstrap tests | Implemented. Committed GPT-OSS results initialize a missing DB without inference; seed import remains idempotent and unassessed when no snapshot is used. |
 | Paste text; TXT/PDF/EML upload | POST endpoints, MIME/text-layer parsing, frontend ingestion dialog | Implemented with explicit UTF-8, OCR/encryption and attachment limitations. |
 | A extracts metadata, summary, facts and attachments | `Extraction`, extraction prompt, saved source segments | Contract implemented; real experiments show missing/unsupported facts. |
 | B consumes A and returns risk, entities, relationships | `AnalysisService.process`, `Assessment`, assessment prompt | Implemented. B also receives original sources for evidence and a policy snapshot; stages remain chained. |
@@ -40,7 +40,7 @@ This is one development comparison, not a scored independent semantic benchmark 
 - Risk is advisory per-email triage. Headers, identity claims, allegations and citations are unverified source material. There is no sender/domain reputation check or cross-email risk inference.
 - Seed attachment text is already extracted. Uploaded PDFs need readable text layers; OCR and malware scanning are out of scope.
 - Inputs are small enough for the chosen model context in normal use. The 100,000-character acceptance limit does **not** guarantee fit in an 8192-token context once schemas, catalog and repair feedback are included. There is no token-aware admission/chunking.
-- Original content and analysis history remain local in SQLite without application-level encryption, deletion/retention automation or a tested backup/restore procedure. Groq selection explicitly sends content to an external provider.
+- Runtime original content and analysis history remain local in SQLite without application-level encryption, deletion/retention automation or a tested operational backup/restore procedure. The reviewed seed/synthetic fixture and raw evaluation artifact archive are committed for reproducibility; private runtime data is not. Groq selection explicitly sends content to an external provider.
 - Provider access, installed model and hardware determine capacity. No evaluated stack has been approved for unattended decisions; independent human review is pending.
 
 ## Guardrails: guarantees and gaps

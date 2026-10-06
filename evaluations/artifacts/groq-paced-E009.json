@@ -1,0 +1,663 @@
+{
+  "started_at": "2026-10-06T11:06:49.193942+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E009",
+      "elapsed_seconds": 12.07,
+      "expectations": {
+        "id": "E009",
+        "acceptable_levels": [
+          "none",
+          "low"
+        ],
+        "required_facts": [
+          "13,900",
+          "6621"
+        ],
+        "signals": [
+          "ordinary invoice"
+        ],
+        "prohibited_claims": [
+          "changed bank account without evidence"
+        ]
+      },
+      "run": {
+        "id": "14ddf058-966f-4756-9548-f8e928a0bdbc",
+        "message_id": "E009",
+        "status": "completed",
+        "created_at": "2026-10-06T11:06:49.205522+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "billing@northgate-suppliers.com",
+          "recipients": [
+            "accounts-payable@arcline.com"
+          ],
+          "date": "2026-05-04T11:00:00Z",
+          "subject": "Invoice #NS-4188 - payment due",
+          "summary": "The email from Northgate Suppliers includes invoice #NS-4188 for $13,900.00, with payment terms net 15, and provides routing 044000037 and account ending 6621 for payment.",
+          "facts": [
+            {
+              "kind": "invoice_number",
+              "value": "NS-4188",
+              "evidence": [
+                {
+                  "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                  "quote": "Subject: Invoice #NS-4188 - payment due"
+                }
+              ]
+            },
+            {
+              "kind": "amount",
+              "value": "$13,900.00",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "Amount due: $13,900.00."
+                }
+              ]
+            },
+            {
+              "kind": "routing",
+              "value": "044000037",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "routing 044000037"
+                }
+              ]
+            },
+            {
+              "kind": "account_suffix",
+              "value": "6621",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "account ending 6621"
+                }
+              ]
+            },
+            {
+              "kind": "payment_terms",
+              "value": "net 15",
+              "evidence": [
+                {
+                  "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                  "quote": "Payment terms are net 15 as usual."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "none",
+          "rationale": "The email is a routine invoice request with standard payment details and no suspicious domain, urgency, or altered payment instructions, indicating no immediate concern.",
+          "tags": [
+            "invoice",
+            "payment",
+            "routine"
+          ]
+        },
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 3904,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.211326832,
+            "prompt_tokens": 956,
+            "prompt_time": 0.045791101,
+            "completion_tokens": 1167,
+            "completion_time": 2.529029895,
+            "total_tokens": 2123,
+            "total_time": 2.574820996,
+            "completion_tokens_details": {
+              "reasoning_tokens": 785
+            }
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 6366,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.005345013,
+            "prompt_tokens": 1678,
+            "prompt_time": 0.081411546,
+            "completion_tokens": 2889,
+            "completion_time": 6.017663084,
+            "total_tokens": 4567,
+            "total_time": 6.09907463,
+            "completion_tokens_details": {
+              "reasoning_tokens": 1455
+            }
+          }
+        },
+        "finished_at": "2026-10-06T11:06:59.482650+00:00"
+      },
+      "detail": {
+        "id": "E009",
+        "sender": "billing@northgate-suppliers.com",
+        "recipients": [
+          "accounts-payable@arcline.com"
+        ],
+        "subject": "Invoice #NS-4188 - payment due",
+        "date": "2026-05-04T11:00:00Z",
+        "body": "From: billing@northgate-suppliers.com\nTo: accounts-payable@arcline.com\nDate: 2026-05-04T11:00:00Z\nSubject: Invoice #NS-4188 - payment due\n\nHello, please find attached our monthly invoice. Payment terms are net 15 as usual. Let us know if you have any questions.",
+        "sources": [
+          {
+            "id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+            "name": "Email",
+            "text": "From: billing@northgate-suppliers.com\nTo: accounts-payable@arcline.com\nDate: 2026-05-04T11:00:00Z\nSubject: Invoice #NS-4188 - payment due\n\nHello, please find attached our monthly invoice. Payment terms are net 15 as usual. Let us know if you have any questions."
+          },
+          {
+            "id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+            "name": "invoice_NS-4188.pdf",
+            "text": "Northgate Suppliers Inc. Invoice #NS-4188. Amount due: $13,900.00. Payment account: routing 044000037, account ending 6621. Terms: net 15."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "14ddf058-966f-4756-9548-f8e928a0bdbc",
+          "message_id": "E009",
+          "status": "completed",
+          "created_at": "2026-10-06T11:06:49.205522+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "billing@northgate-suppliers.com",
+            "recipients": [
+              "accounts-payable@arcline.com"
+            ],
+            "date": "2026-05-04T11:00:00Z",
+            "subject": "Invoice #NS-4188 - payment due",
+            "summary": "The email from Northgate Suppliers includes invoice #NS-4188 for $13,900.00, with payment terms net 15, and provides routing 044000037 and account ending 6621 for payment.",
+            "facts": [
+              {
+                "kind": "invoice_number",
+                "value": "NS-4188",
+                "evidence": [
+                  {
+                    "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                    "quote": "Subject: Invoice #NS-4188 - payment due"
+                  }
+                ]
+              },
+              {
+                "kind": "amount",
+                "value": "$13,900.00",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "Amount due: $13,900.00."
+                  }
+                ]
+              },
+              {
+                "kind": "routing",
+                "value": "044000037",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "routing 044000037"
+                  }
+                ]
+              },
+              {
+                "kind": "account_suffix",
+                "value": "6621",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "account ending 6621"
+                  }
+                ]
+              },
+              {
+                "kind": "payment_terms",
+                "value": "net 15",
+                "evidence": [
+                  {
+                    "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                    "quote": "Payment terms are net 15 as usual."
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "none",
+            "rationale": "The email is a routine invoice request with standard payment details and no suspicious domain, urgency, or altered payment instructions, indicating no immediate concern.",
+            "tags": [
+              "invoice",
+              "payment",
+              "routine"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 3904,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.211326832,
+              "prompt_tokens": 956,
+              "prompt_time": 0.045791101,
+              "completion_tokens": 1167,
+              "completion_time": 2.529029895,
+              "total_tokens": 2123,
+              "total_time": 2.574820996,
+              "completion_tokens_details": {
+                "reasoning_tokens": 785
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 6366,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.005345013,
+              "prompt_tokens": 1678,
+              "prompt_time": 0.081411546,
+              "completion_tokens": 2889,
+              "completion_time": 6.017663084,
+              "total_tokens": 4567,
+              "total_time": 6.09907463,
+              "completion_tokens_details": {
+                "reasoning_tokens": 1455
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:06:59.482650+00:00"
+        },
+        "status": "completed",
+        "latest_run": {
+          "id": "14ddf058-966f-4756-9548-f8e928a0bdbc",
+          "message_id": "E009",
+          "status": "completed",
+          "created_at": "2026-10-06T11:06:49.205522+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "billing@northgate-suppliers.com",
+            "recipients": [
+              "accounts-payable@arcline.com"
+            ],
+            "date": "2026-05-04T11:00:00Z",
+            "subject": "Invoice #NS-4188 - payment due",
+            "summary": "The email from Northgate Suppliers includes invoice #NS-4188 for $13,900.00, with payment terms net 15, and provides routing 044000037 and account ending 6621 for payment.",
+            "facts": [
+              {
+                "kind": "invoice_number",
+                "value": "NS-4188",
+                "evidence": [
+                  {
+                    "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                    "quote": "Subject: Invoice #NS-4188 - payment due"
+                  }
+                ]
+              },
+              {
+                "kind": "amount",
+                "value": "$13,900.00",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "Amount due: $13,900.00."
+                  }
+                ]
+              },
+              {
+                "kind": "routing",
+                "value": "044000037",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "routing 044000037"
+                  }
+                ]
+              },
+              {
+                "kind": "account_suffix",
+                "value": "6621",
+                "evidence": [
+                  {
+                    "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                    "quote": "account ending 6621"
+                  }
+                ]
+              },
+              {
+                "kind": "payment_terms",
+                "value": "net 15",
+                "evidence": [
+                  {
+                    "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                    "quote": "Payment terms are net 15 as usual."
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "none",
+            "rationale": "The email is a routine invoice request with standard payment details and no suspicious domain, urgency, or altered payment instructions, indicating no immediate concern.",
+            "tags": [
+              "invoice",
+              "payment",
+              "routine"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 3904,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.211326832,
+              "prompt_tokens": 956,
+              "prompt_time": 0.045791101,
+              "completion_tokens": 1167,
+              "completion_time": 2.529029895,
+              "total_tokens": 2123,
+              "total_time": 2.574820996,
+              "completion_tokens_details": {
+                "reasoning_tokens": 785
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 6366,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.005345013,
+              "prompt_tokens": 1678,
+              "prompt_time": 0.081411546,
+              "completion_tokens": 2889,
+              "completion_time": 6.017663084,
+              "total_tokens": 4567,
+              "total_time": 6.09907463,
+              "completion_tokens_details": {
+                "reasoning_tokens": 1455
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:06:59.482650+00:00"
+        },
+        "extraction": {
+          "sender": "billing@northgate-suppliers.com",
+          "recipients": [
+            "accounts-payable@arcline.com"
+          ],
+          "date": "2026-05-04T11:00:00Z",
+          "subject": "Invoice #NS-4188 - payment due",
+          "summary": "The email from Northgate Suppliers includes invoice #NS-4188 for $13,900.00, with payment terms net 15, and provides routing 044000037 and account ending 6621 for payment.",
+          "facts": [
+            {
+              "kind": "invoice_number",
+              "value": "NS-4188",
+              "evidence": [
+                {
+                  "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                  "quote": "Subject: Invoice #NS-4188 - payment due"
+                }
+              ]
+            },
+            {
+              "kind": "amount",
+              "value": "$13,900.00",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "Amount due: $13,900.00."
+                }
+              ]
+            },
+            {
+              "kind": "routing",
+              "value": "044000037",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "routing 044000037"
+                }
+              ]
+            },
+            {
+              "kind": "account_suffix",
+              "value": "6621",
+              "evidence": [
+                {
+                  "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                  "quote": "account ending 6621"
+                }
+              ]
+            },
+            {
+              "kind": "payment_terms",
+              "value": "net 15",
+              "evidence": [
+                {
+                  "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                  "quote": "Payment terms are net 15 as usual."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "none",
+          "rationale": "The email is a routine invoice request with standard payment details and no suspicious domain, urgency, or altered payment instructions, indicating no immediate concern.",
+          "tags": [
+            "invoice",
+            "payment",
+            "routine"
+          ]
+        },
+        "entities": [
+          {
+            "id": "15e6c983-9107-48e7-9823-9161938ac1ca",
+            "type": "account",
+            "label": "044000037",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "routing 044000037"
+              }
+            ]
+          },
+          {
+            "id": "1a52b3ec-0b3a-4372-9d3f-55dba564d8d2",
+            "type": "email",
+            "label": "accounts-payable@arcline.com",
+            "evidence": [
+              {
+                "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                "quote": "To: accounts-payable@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "2b16394e-2b4b-4a75-832e-c9e32429cf5b",
+            "type": "other",
+            "label": "net 15",
+            "evidence": [
+              {
+                "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                "quote": "Payment terms are net 15 as usual."
+              }
+            ]
+          },
+          {
+            "id": "4ff444b6-b40f-4d40-ae47-90046219eb51",
+            "type": "account",
+            "label": "6621",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "account ending 6621"
+              }
+            ]
+          },
+          {
+            "id": "b3c3b975-66fc-4f1f-9420-6c8836458537",
+            "type": "email",
+            "label": "billing@northgate-suppliers.com",
+            "evidence": [
+              {
+                "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                "quote": "From: billing@northgate-suppliers.com"
+              }
+            ]
+          },
+          {
+            "id": "ca5b219a-4881-4f4f-b1fd-864c5d9411cf",
+            "type": "organization",
+            "label": "Northgate Suppliers Inc.",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "Northgate Suppliers Inc. Invoice #NS-4188."
+              }
+            ]
+          },
+          {
+            "id": "de94d4e4-ff4a-4219-ba60-1c925d202b5e",
+            "type": "other",
+            "label": "NS-4188",
+            "evidence": [
+              {
+                "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                "quote": "Subject: Invoice #NS-4188 - payment due"
+              },
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "Northgate Suppliers Inc. Invoice #NS-4188."
+              }
+            ]
+          },
+          {
+            "id": "e072ed32-f55f-44ce-a5f1-b1cfeda88635",
+            "type": "amount",
+            "label": "$13,900.00",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "Amount due: $13,900.00."
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "e344ebcd-ad7e-4018-baca-71914b6ea8da",
+            "source_id": "b3c3b975-66fc-4f1f-9420-6c8836458537",
+            "target_id": "1a52b3ec-0b3a-4372-9d3f-55dba564d8d2",
+            "type": "sent_to",
+            "evidence": [
+              {
+                "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                "quote": "From: billing@northgate-suppliers.com\nTo: accounts-payable@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "f5010f45-e783-4209-af05-d5760f847e43",
+            "source_id": "de94d4e4-ff4a-4219-ba60-1c925d202b5e",
+            "target_id": "ca5b219a-4881-4f4f-b1fd-864c5d9411cf",
+            "type": "issued_by",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "Northgate Suppliers Inc. Invoice #NS-4188."
+              }
+            ]
+          },
+          {
+            "id": "6324e622-fec7-4175-a38e-9f0722c1d6f7",
+            "source_id": "de94d4e4-ff4a-4219-ba60-1c925d202b5e",
+            "target_id": "e072ed32-f55f-44ce-a5f1-b1cfeda88635",
+            "type": "has_amount",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "Amount due: $13,900.00."
+              }
+            ]
+          },
+          {
+            "id": "3950b16c-fb93-4cec-8ac4-552c7c2c295c",
+            "source_id": "de94d4e4-ff4a-4219-ba60-1c925d202b5e",
+            "target_id": "15e6c983-9107-48e7-9823-9161938ac1ca",
+            "type": "has_routing",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "routing 044000037"
+              }
+            ]
+          },
+          {
+            "id": "a737b2d6-8c35-465f-9f2a-79d2e9393bab",
+            "source_id": "de94d4e4-ff4a-4219-ba60-1c925d202b5e",
+            "target_id": "4ff444b6-b40f-4d40-ae47-90046219eb51",
+            "type": "has_account_suffix",
+            "evidence": [
+              {
+                "source_id": "5e167112-35d8-45ae-83df-c7863f74bc6d",
+                "quote": "account ending 6621"
+              }
+            ]
+          },
+          {
+            "id": "e666ee44-9cbe-4295-bd02-323d2b121d6f",
+            "source_id": "de94d4e4-ff4a-4219-ba60-1c925d202b5e",
+            "target_id": "2b16394e-2b4b-4a75-832e-c9e32429cf5b",
+            "type": "has_payment_terms",
+            "evidence": [
+              {
+                "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                "quote": "Payment terms are net 15 as usual."
+              }
+            ]
+          },
+          {
+            "id": "3526c64f-1bd1-48d9-875f-e00af9316f14",
+            "source_id": "b3c3b975-66fc-4f1f-9420-6c8836458537",
+            "target_id": "de94d4e4-ff4a-4219-ba60-1c925d202b5e",
+            "type": "contains_invoice",
+            "evidence": [
+              {
+                "source_id": "1ca60651-d656-457c-92e1-462f4a51a8f1",
+                "quote": "Subject: Invoice #NS-4188 - payment due"
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": true,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T11:07:01.271208+00:00"
+}

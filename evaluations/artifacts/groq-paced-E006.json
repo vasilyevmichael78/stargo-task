@@ -1,0 +1,364 @@
+{
+  "started_at": "2026-10-06T11:03:22.713341+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E006",
+      "elapsed_seconds": 6.05,
+      "expectations": {
+        "id": "E006",
+        "acceptable_levels": [
+          "medium",
+          "high"
+        ],
+        "required_facts": [],
+        "signals": [
+          "threat language"
+        ],
+        "prohibited_claims": [
+          "invented location or physical incident"
+        ]
+      },
+      "run": {
+        "id": "7ffdd7a5-2bdb-480d-99ce-0384eb8ed4ca",
+        "message_id": "E006",
+        "status": "completed",
+        "created_at": "2026-10-06T11:03:22.725470+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "k.dubois.ext@partnerlogistics.com",
+          "recipients": [
+            "s.pillai@arcline.com"
+          ],
+          "date": "2026-06-06T14:55:00Z",
+          "subject": "you'll regret pulling out of this contract",
+          "summary": "The sender threatens the recipient, claiming wasted time and warning of further contact.",
+          "facts": []
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "The email contains direct threatening language (\u201cI know where your office is\u2026 This isn\u2019t over\u2026 you won\u2019t like how\u201d), indicating potential harassment or intimidation that warrants further review.",
+          "tags": [
+            "threat",
+            "intimidation",
+            "harassment"
+          ]
+        },
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 1227,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.045980116,
+            "prompt_tokens": 886,
+            "prompt_time": 0.086961913,
+            "completion_tokens": 400,
+            "completion_time": 0.852775153,
+            "total_tokens": 1286,
+            "total_time": 0.939737066,
+            "completion_tokens_details": {
+              "reasoning_tokens": 317
+            }
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 4597,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.048628878,
+            "prompt_tokens": 1273,
+            "prompt_time": 0.031594434,
+            "completion_tokens": 1376,
+            "completion_time": 4.236110404,
+            "total_tokens": 2649,
+            "total_time": 4.267704838,
+            "prompt_tokens_details": {
+              "cached_tokens": 1024
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 645
+            }
+          }
+        },
+        "finished_at": "2026-10-06T11:03:28.557986+00:00"
+      },
+      "detail": {
+        "id": "E006",
+        "sender": "k.dubois.ext@partnerlogistics.com",
+        "recipients": [
+          "s.pillai@arcline.com"
+        ],
+        "subject": "you'll regret pulling out of this contract",
+        "date": "2026-06-06T14:55:00Z",
+        "body": "From: k.dubois.ext@partnerlogistics.com\nTo: s.pillai@arcline.com\nDate: 2026-06-06T14:55:00Z\nSubject: you'll regret pulling out of this contract\n\nYou people have wasted six months of my time and now you're just walking away? I know where your office is and I know people. This isn't over, you'll be hearing from me again and you won't like how.",
+        "sources": [
+          {
+            "id": "41578510-99f8-488d-b69a-30e9247989ad",
+            "name": "Email",
+            "text": "From: k.dubois.ext@partnerlogistics.com\nTo: s.pillai@arcline.com\nDate: 2026-06-06T14:55:00Z\nSubject: you'll regret pulling out of this contract\n\nYou people have wasted six months of my time and now you're just walking away? I know where your office is and I know people. This isn't over, you'll be hearing from me again and you won't like how."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "7ffdd7a5-2bdb-480d-99ce-0384eb8ed4ca",
+          "message_id": "E006",
+          "status": "completed",
+          "created_at": "2026-10-06T11:03:22.725470+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "k.dubois.ext@partnerlogistics.com",
+            "recipients": [
+              "s.pillai@arcline.com"
+            ],
+            "date": "2026-06-06T14:55:00Z",
+            "subject": "you'll regret pulling out of this contract",
+            "summary": "The sender threatens the recipient, claiming wasted time and warning of further contact.",
+            "facts": []
+          },
+          "risk": {
+            "level": "medium",
+            "rationale": "The email contains direct threatening language (\u201cI know where your office is\u2026 This isn\u2019t over\u2026 you won\u2019t like how\u201d), indicating potential harassment or intimidation that warrants further review.",
+            "tags": [
+              "threat",
+              "intimidation",
+              "harassment"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 1227,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.045980116,
+              "prompt_tokens": 886,
+              "prompt_time": 0.086961913,
+              "completion_tokens": 400,
+              "completion_time": 0.852775153,
+              "total_tokens": 1286,
+              "total_time": 0.939737066,
+              "completion_tokens_details": {
+                "reasoning_tokens": 317
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 4597,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.048628878,
+              "prompt_tokens": 1273,
+              "prompt_time": 0.031594434,
+              "completion_tokens": 1376,
+              "completion_time": 4.236110404,
+              "total_tokens": 2649,
+              "total_time": 4.267704838,
+              "prompt_tokens_details": {
+                "cached_tokens": 1024
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 645
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:03:28.557986+00:00"
+        },
+        "status": "completed",
+        "latest_run": {
+          "id": "7ffdd7a5-2bdb-480d-99ce-0384eb8ed4ca",
+          "message_id": "E006",
+          "status": "completed",
+          "created_at": "2026-10-06T11:03:22.725470+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "k.dubois.ext@partnerlogistics.com",
+            "recipients": [
+              "s.pillai@arcline.com"
+            ],
+            "date": "2026-06-06T14:55:00Z",
+            "subject": "you'll regret pulling out of this contract",
+            "summary": "The sender threatens the recipient, claiming wasted time and warning of further contact.",
+            "facts": []
+          },
+          "risk": {
+            "level": "medium",
+            "rationale": "The email contains direct threatening language (\u201cI know where your office is\u2026 This isn\u2019t over\u2026 you won\u2019t like how\u201d), indicating potential harassment or intimidation that warrants further review.",
+            "tags": [
+              "threat",
+              "intimidation",
+              "harassment"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 1227,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.045980116,
+              "prompt_tokens": 886,
+              "prompt_time": 0.086961913,
+              "completion_tokens": 400,
+              "completion_time": 0.852775153,
+              "total_tokens": 1286,
+              "total_time": 0.939737066,
+              "completion_tokens_details": {
+                "reasoning_tokens": 317
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 4597,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.048628878,
+              "prompt_tokens": 1273,
+              "prompt_time": 0.031594434,
+              "completion_tokens": 1376,
+              "completion_time": 4.236110404,
+              "total_tokens": 2649,
+              "total_time": 4.267704838,
+              "prompt_tokens_details": {
+                "cached_tokens": 1024
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 645
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:03:28.557986+00:00"
+        },
+        "extraction": {
+          "sender": "k.dubois.ext@partnerlogistics.com",
+          "recipients": [
+            "s.pillai@arcline.com"
+          ],
+          "date": "2026-06-06T14:55:00Z",
+          "subject": "you'll regret pulling out of this contract",
+          "summary": "The sender threatens the recipient, claiming wasted time and warning of further contact.",
+          "facts": []
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "The email contains direct threatening language (\u201cI know where your office is\u2026 This isn\u2019t over\u2026 you won\u2019t like how\u201d), indicating potential harassment or intimidation that warrants further review.",
+          "tags": [
+            "threat",
+            "intimidation",
+            "harassment"
+          ]
+        },
+        "entities": [
+          {
+            "id": "208ff1c0-c862-45dd-90e2-55f89a809430",
+            "type": "email",
+            "label": "s.pillai@arcline.com",
+            "evidence": [
+              {
+                "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                "quote": "To: s.pillai@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "2b109bcb-1969-40bd-bf9a-755a957c2b0b",
+            "type": "email",
+            "label": "k.dubois.ext@partnerlogistics.com",
+            "evidence": [
+              {
+                "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                "quote": "From: k.dubois.ext@partnerlogistics.com"
+              }
+            ]
+          },
+          {
+            "id": "737acc65-2b4c-4edb-87d3-9334dab73372",
+            "type": "organization",
+            "label": "arcline.com",
+            "evidence": [
+              {
+                "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                "quote": "s.pillai@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "cf4e98d1-0399-4fbf-a4e7-82a278b60c01",
+            "type": "organization",
+            "label": "partnerlogistics.com",
+            "evidence": [
+              {
+                "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                "quote": "k.dubois.ext@partnerlogistics.com"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "ba2c9802-1999-4bac-a6d7-6f6fa802ced1",
+            "source_id": "2b109bcb-1969-40bd-bf9a-755a957c2b0b",
+            "target_id": "208ff1c0-c862-45dd-90e2-55f89a809430",
+            "type": "threatens",
+            "evidence": [
+              {
+                "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                "quote": "You people have wasted six months of my time and now you're just walking away? I know where your office is and I know people. This isn't over, you'll be hearing from me again and you won't like how."
+              }
+            ]
+          },
+          {
+            "id": "f1fec644-a9c6-4f08-a94c-ca5f4fe6c3e9",
+            "source_id": "2b109bcb-1969-40bd-bf9a-755a957c2b0b",
+            "target_id": "cf4e98d1-0399-4fbf-a4e7-82a278b60c01",
+            "type": "associated_with",
+            "evidence": [
+              {
+                "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                "quote": "k.dubois.ext@partnerlogistics.com"
+              }
+            ]
+          },
+          {
+            "id": "67614543-bae0-4e1f-b7a2-0ea7cf8e64ff",
+            "source_id": "208ff1c0-c862-45dd-90e2-55f89a809430",
+            "target_id": "737acc65-2b4c-4edb-87d3-9334dab73372",
+            "type": "associated_with",
+            "evidence": [
+              {
+                "source_id": "41578510-99f8-488d-b69a-30e9247989ad",
+                "quote": "s.pillai@arcline.com"
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": true,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T11:03:28.773742+00:00"
+}

@@ -1,0 +1,395 @@
+{
+  "started_at": "2026-10-06T11:02:14.561551+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E005",
+      "elapsed_seconds": 8.06,
+      "expectations": {
+        "id": "E005",
+        "acceptable_levels": [
+          "high"
+        ],
+        "required_facts": [
+          "Halvorsen"
+        ],
+        "signals": [
+          "preannouncement share recommendation",
+          "delete request"
+        ],
+        "prohibited_claims": [
+          "confirmed executed trade"
+        ]
+      },
+      "run": {
+        "id": "47c349c5-40e7-483c-be5b-5eec59fd451e",
+        "message_id": "E005",
+        "status": "completed",
+        "created_at": "2026-10-06T11:02:14.573595+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "r.tanaka@arcline.com",
+          "recipients": [
+            "personal.marcus.k@gmail.com"
+          ],
+          "date": "2026-06-05T19:02:00Z",
+          "subject": "hey - heads up before Friday",
+          "summary": "The sender informs the recipient that the Halvorsen deal is essentially completed and will be announced Friday morning, suggesting the recipient consider buying shares before the market reacts.",
+          "facts": []
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "The email contains non\u2011public information about an upcoming deal and explicitly advises the recipient to buy shares before the market reacts, which may constitute insider trading tip. This warrants further review.",
+          "tags": [
+            "insider",
+            "market abuse",
+            "tip",
+            "confidential"
+          ]
+        },
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 1343,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.214070523,
+            "prompt_tokens": 887,
+            "prompt_time": 0.045239149,
+            "completion_tokens": 410,
+            "completion_time": 0.85109933,
+            "total_tokens": 1297,
+            "total_time": 0.896338479,
+            "completion_tokens_details": {
+              "reasoning_tokens": 315
+            }
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 5596,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.037801201,
+            "prompt_tokens": 1291,
+            "prompt_time": 0.056994051,
+            "completion_tokens": 2508,
+            "completion_time": 5.247240639,
+            "total_tokens": 3799,
+            "total_time": 5.30423469,
+            "completion_tokens_details": {
+              "reasoning_tokens": 1548
+            }
+          }
+        },
+        "finished_at": "2026-10-06T11:02:21.523863+00:00"
+      },
+      "detail": {
+        "id": "E005",
+        "sender": "r.tanaka@arcline.com",
+        "recipients": [
+          "personal.marcus.k@gmail.com"
+        ],
+        "subject": "hey - heads up before Friday",
+        "date": "2026-06-05T19:02:00Z",
+        "body": "From: r.tanaka@arcline.com\nTo: personal.marcus.k@gmail.com\nDate: 2026-06-05T19:02:00Z\nSubject: hey - heads up before Friday\n\nHey Marcus, can't say much but the Halvorsen deal is basically done, announcement is Friday morning. If you were ever going to pick up some shares, now would be the time, before the market catches on. Delete this after reading, obviously.",
+        "sources": [
+          {
+            "id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+            "name": "Email",
+            "text": "From: r.tanaka@arcline.com\nTo: personal.marcus.k@gmail.com\nDate: 2026-06-05T19:02:00Z\nSubject: hey - heads up before Friday\n\nHey Marcus, can't say much but the Halvorsen deal is basically done, announcement is Friday morning. If you were ever going to pick up some shares, now would be the time, before the market catches on. Delete this after reading, obviously."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "47c349c5-40e7-483c-be5b-5eec59fd451e",
+          "message_id": "E005",
+          "status": "completed",
+          "created_at": "2026-10-06T11:02:14.573595+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "r.tanaka@arcline.com",
+            "recipients": [
+              "personal.marcus.k@gmail.com"
+            ],
+            "date": "2026-06-05T19:02:00Z",
+            "subject": "hey - heads up before Friday",
+            "summary": "The sender informs the recipient that the Halvorsen deal is essentially completed and will be announced Friday morning, suggesting the recipient consider buying shares before the market reacts.",
+            "facts": []
+          },
+          "risk": {
+            "level": "medium",
+            "rationale": "The email contains non\u2011public information about an upcoming deal and explicitly advises the recipient to buy shares before the market reacts, which may constitute insider trading tip. This warrants further review.",
+            "tags": [
+              "insider",
+              "market abuse",
+              "tip",
+              "confidential"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 1343,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.214070523,
+              "prompt_tokens": 887,
+              "prompt_time": 0.045239149,
+              "completion_tokens": 410,
+              "completion_time": 0.85109933,
+              "total_tokens": 1297,
+              "total_time": 0.896338479,
+              "completion_tokens_details": {
+                "reasoning_tokens": 315
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 5596,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.037801201,
+              "prompt_tokens": 1291,
+              "prompt_time": 0.056994051,
+              "completion_tokens": 2508,
+              "completion_time": 5.247240639,
+              "total_tokens": 3799,
+              "total_time": 5.30423469,
+              "completion_tokens_details": {
+                "reasoning_tokens": 1548
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:02:21.523863+00:00"
+        },
+        "status": "completed",
+        "latest_run": {
+          "id": "47c349c5-40e7-483c-be5b-5eec59fd451e",
+          "message_id": "E005",
+          "status": "completed",
+          "created_at": "2026-10-06T11:02:14.573595+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "r.tanaka@arcline.com",
+            "recipients": [
+              "personal.marcus.k@gmail.com"
+            ],
+            "date": "2026-06-05T19:02:00Z",
+            "subject": "hey - heads up before Friday",
+            "summary": "The sender informs the recipient that the Halvorsen deal is essentially completed and will be announced Friday morning, suggesting the recipient consider buying shares before the market reacts.",
+            "facts": []
+          },
+          "risk": {
+            "level": "medium",
+            "rationale": "The email contains non\u2011public information about an upcoming deal and explicitly advises the recipient to buy shares before the market reacts, which may constitute insider trading tip. This warrants further review.",
+            "tags": [
+              "insider",
+              "market abuse",
+              "tip",
+              "confidential"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 1343,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.214070523,
+              "prompt_tokens": 887,
+              "prompt_time": 0.045239149,
+              "completion_tokens": 410,
+              "completion_time": 0.85109933,
+              "total_tokens": 1297,
+              "total_time": 0.896338479,
+              "completion_tokens_details": {
+                "reasoning_tokens": 315
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 5596,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.037801201,
+              "prompt_tokens": 1291,
+              "prompt_time": 0.056994051,
+              "completion_tokens": 2508,
+              "completion_time": 5.247240639,
+              "total_tokens": 3799,
+              "total_time": 5.30423469,
+              "completion_tokens_details": {
+                "reasoning_tokens": 1548
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:02:21.523863+00:00"
+        },
+        "extraction": {
+          "sender": "r.tanaka@arcline.com",
+          "recipients": [
+            "personal.marcus.k@gmail.com"
+          ],
+          "date": "2026-06-05T19:02:00Z",
+          "subject": "hey - heads up before Friday",
+          "summary": "The sender informs the recipient that the Halvorsen deal is essentially completed and will be announced Friday morning, suggesting the recipient consider buying shares before the market reacts.",
+          "facts": []
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "The email contains non\u2011public information about an upcoming deal and explicitly advises the recipient to buy shares before the market reacts, which may constitute insider trading tip. This warrants further review.",
+          "tags": [
+            "insider",
+            "market abuse",
+            "tip",
+            "confidential"
+          ]
+        },
+        "entities": [
+          {
+            "id": "0c2836a8-31de-4f30-aff3-7e02b03d68c1",
+            "type": "organization",
+            "label": "Arcline",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "r.tanaka@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "82f39745-ebb3-4b09-a91a-0614b04158fe",
+            "type": "person",
+            "label": "R. Tanaka",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "r.tanaka@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "a037ec3d-d685-4986-ad81-06147d12a93e",
+            "type": "email",
+            "label": "personal.marcus.k@gmail.com",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "personal.marcus.k@gmail.com"
+              }
+            ]
+          },
+          {
+            "id": "ac20605a-e2ff-4409-a050-b01fa30a23a2",
+            "type": "other",
+            "label": "Halvorsen deal",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "Halvorsen deal"
+              }
+            ]
+          },
+          {
+            "id": "b89f870c-9033-41ea-849b-29d14abf322b",
+            "type": "person",
+            "label": "Marcus",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "Hey Marcus"
+              }
+            ]
+          },
+          {
+            "id": "dce1b9d1-f85e-4439-8988-630e760841aa",
+            "type": "email",
+            "label": "r.tanaka@arcline.com",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "r.tanaka@arcline.com"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "57b0b11c-c126-4ab5-8428-c8a527033b16",
+            "source_id": "82f39745-ebb3-4b09-a91a-0614b04158fe",
+            "target_id": "0c2836a8-31de-4f30-aff3-7e02b03d68c1",
+            "type": "employee_of",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "r.tanaka@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "2d065f0a-761d-4d92-9fad-3be3c7b450a1",
+            "source_id": "dce1b9d1-f85e-4439-8988-630e760841aa",
+            "target_id": "a037ec3d-d685-4986-ad81-06147d12a93e",
+            "type": "sent_to",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "From: r.tanaka@arcline.com\nTo: personal.marcus.k@gmail.com"
+              }
+            ]
+          },
+          {
+            "id": "0fae357d-2214-4770-bef7-8160a0045d76",
+            "source_id": "82f39745-ebb3-4b09-a91a-0614b04158fe",
+            "target_id": "ac20605a-e2ff-4409-a050-b01fa30a23a2",
+            "type": "refers_to",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "Halvorsen deal"
+              }
+            ]
+          },
+          {
+            "id": "b1cbf4e3-85a1-4ba0-b9af-41948193409b",
+            "source_id": "82f39745-ebb3-4b09-a91a-0614b04158fe",
+            "target_id": "b89f870c-9033-41ea-849b-29d14abf322b",
+            "type": "advises_purchase",
+            "evidence": [
+              {
+                "source_id": "3aa7ea16-e479-4cbb-bb0c-2aba3124a636",
+                "quote": "If you were ever going to pick up some shares, now would be the time, before the market catches on."
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": false,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T11:02:22.636652+00:00"
+}

@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     agent_repair_system_prompt_path: str = "prompts/repair_system.txt"
     risk_context_path: str = "policies/risk_context.json"
     database_path: str = "data/mail_risk.sqlite3"
+    bootstrap_database_path: str = "fixtures/mail_risk_groq.sqlite3"
     seed_path: str = str(ROOT.parent / "mock_mailbox_data.json")
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
 

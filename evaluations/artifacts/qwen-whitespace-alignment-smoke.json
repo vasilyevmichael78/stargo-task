@@ -1,0 +1,79 @@
+{
+  "started_at": "2026-10-06T12:42:02.260414+00:00",
+  "scope": "Real application retry of the user-reported quote-formatting failure; no source text exported",
+  "analysis_run_id": "ffee30f3-14c1-4678-8cf6-dc67fea8bc9d",
+  "status": "completed",
+  "error": null,
+  "provider": "ollama",
+  "model": "qwen3.5:4b",
+  "generation_settings": {
+    "temperature": 0,
+    "ollama_num_ctx": 8192,
+    "ollama_think": false,
+    "timeout_seconds": 180.0,
+    "max_retries": 1
+  },
+  "orchestration_version": "4",
+  "policy_version": "2",
+  "prompt_hashes": [
+    "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+    "a225638785e35cce9f513e05016598f91130494b4ce255c545055974f3ea6edc",
+    "66069965ef41e4e42b733f24ad8e80141eadec003e67d3c72997a9c310e8c93d"
+  ],
+  "risk_context_hash": "9f2e238b853b2367713f2c6dd67546feb6ac363e90a5ad16fdc6dd76bcb11759",
+  "extraction_metadata": {
+    "duration_ms": 23867,
+    "attempts": 1,
+    "attempt_history": [
+      {
+        "attempt": 1,
+        "mode": "generate",
+        "outcome": "success",
+        "duration_ms": 23867,
+        "usage": {
+          "input_tokens": 523,
+          "output_tokens": 673
+        },
+        "evidence_alignments": [
+          {
+            "path": [
+              "facts",
+              3,
+              "evidence",
+              0,
+              "quote"
+            ],
+            "method": "unique_whitespace_span"
+          }
+        ]
+      }
+    ],
+    "usage": {
+      "input_tokens": 523,
+      "output_tokens": 673
+    }
+  },
+  "assessment_metadata": {
+    "duration_ms": 84422,
+    "attempts": 1,
+    "attempt_history": [
+      {
+        "attempt": 1,
+        "mode": "generate",
+        "outcome": "success",
+        "duration_ms": 84422,
+        "usage": {
+          "input_tokens": 2302,
+          "output_tokens": 1798
+        }
+      }
+    ],
+    "usage": {
+      "input_tokens": 2302,
+      "output_tokens": 1798
+    }
+  },
+  "risk_level": "high",
+  "finished_at": "2026-10-06T12:43:50.731252+00:00",
+  "elapsed_seconds": 108.45
+}

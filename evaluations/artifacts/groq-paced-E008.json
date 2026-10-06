@@ -1,0 +1,486 @@
+{
+  "started_at": "2026-10-06T11:05:41.036962+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E008",
+      "elapsed_seconds": 8.05,
+      "expectations": {
+        "id": "E008",
+        "acceptable_levels": [
+          "high"
+        ],
+        "required_facts": [
+          "arclline-portal"
+        ],
+        "signals": [
+          "suspicious reset domain",
+          "urgency"
+        ],
+        "prohibited_claims": [
+          "verified malicious server"
+        ]
+      },
+      "run": {
+        "id": "ff23d597-5541-41c6-b6db-db6c5a595245",
+        "message_id": "E008",
+        "status": "completed",
+        "created_at": "2026-10-06T11:05:41.047416+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "security-alert@arclline-portal.com",
+          "recipients": [
+            "s.pillai@arcline.com"
+          ],
+          "date": "2026-06-08T07:33:00Z",
+          "subject": "Action required: your password expires in 24 hours",
+          "summary": "The email warns that the recipient's Arcline account password will expire in 24 hours and urges immediate verification via a provided link, threatening account suspension if not acted upon.",
+          "facts": [
+            {
+              "kind": "password_expiration_claim",
+              "value": "Password will expire in 24 hours",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "Your Arcline account password will expire in 24 hours."
+                }
+              ]
+            },
+            {
+              "kind": "account_suspension_threat",
+              "value": "Account suspension if not acted upon",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "Failure to act will result in account suspension."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "high",
+          "rationale": "The email originates from a lookalike domain (arclline-portal.com), uses urgent language and a threat of account suspension to push the recipient to click a suspicious link (arclline-portal-secure.com) for password reset, which are classic phishing indicators targeting Arcline credentials.",
+          "tags": [
+            "phishing",
+            "credential_harvest",
+            "urgent",
+            "lookalike_domain"
+          ]
+        },
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 2111,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.005222424,
+            "prompt_tokens": 913,
+            "prompt_time": 0.021148213,
+            "completion_tokens": 819,
+            "completion_time": 1.765616957,
+            "total_tokens": 1732,
+            "total_time": 1.78676517,
+            "prompt_tokens_details": {
+              "cached_tokens": 512
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 579
+            }
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 5632,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.665659808,
+            "prompt_tokens": 1470,
+            "prompt_time": 0.05415144,
+            "completion_tokens": 1878,
+            "completion_time": 4.632585332,
+            "total_tokens": 3348,
+            "total_time": 4.686736772,
+            "prompt_tokens_details": {
+              "cached_tokens": 1024
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 884
+            }
+          }
+        },
+        "finished_at": "2026-10-06T11:05:48.798284+00:00"
+      },
+      "detail": {
+        "id": "E008",
+        "sender": "security-alert@arclline-portal.com",
+        "recipients": [
+          "s.pillai@arcline.com"
+        ],
+        "subject": "Action required: your password expires in 24 hours",
+        "date": "2026-06-08T07:33:00Z",
+        "body": "From: security-alert@arclline-portal.com\nTo: s.pillai@arcline.com\nDate: 2026-06-08T07:33:00Z\nSubject: Action required: your password expires in 24 hours\n\nYour Arcline account password will expire in 24 hours. To avoid losing access, please verify your identity and reset your password immediately using the secure link below: hxxp://arclline-portal-secure.com/reset?id=88213. Failure to act will result in account suspension.",
+        "sources": [
+          {
+            "id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+            "name": "Email",
+            "text": "From: security-alert@arclline-portal.com\nTo: s.pillai@arcline.com\nDate: 2026-06-08T07:33:00Z\nSubject: Action required: your password expires in 24 hours\n\nYour Arcline account password will expire in 24 hours. To avoid losing access, please verify your identity and reset your password immediately using the secure link below: hxxp://arclline-portal-secure.com/reset?id=88213. Failure to act will result in account suspension."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "ff23d597-5541-41c6-b6db-db6c5a595245",
+          "message_id": "E008",
+          "status": "completed",
+          "created_at": "2026-10-06T11:05:41.047416+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "security-alert@arclline-portal.com",
+            "recipients": [
+              "s.pillai@arcline.com"
+            ],
+            "date": "2026-06-08T07:33:00Z",
+            "subject": "Action required: your password expires in 24 hours",
+            "summary": "The email warns that the recipient's Arcline account password will expire in 24 hours and urges immediate verification via a provided link, threatening account suspension if not acted upon.",
+            "facts": [
+              {
+                "kind": "password_expiration_claim",
+                "value": "Password will expire in 24 hours",
+                "evidence": [
+                  {
+                    "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                    "quote": "Your Arcline account password will expire in 24 hours."
+                  }
+                ]
+              },
+              {
+                "kind": "account_suspension_threat",
+                "value": "Account suspension if not acted upon",
+                "evidence": [
+                  {
+                    "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                    "quote": "Failure to act will result in account suspension."
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "high",
+            "rationale": "The email originates from a lookalike domain (arclline-portal.com), uses urgent language and a threat of account suspension to push the recipient to click a suspicious link (arclline-portal-secure.com) for password reset, which are classic phishing indicators targeting Arcline credentials.",
+            "tags": [
+              "phishing",
+              "credential_harvest",
+              "urgent",
+              "lookalike_domain"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 2111,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.005222424,
+              "prompt_tokens": 913,
+              "prompt_time": 0.021148213,
+              "completion_tokens": 819,
+              "completion_time": 1.765616957,
+              "total_tokens": 1732,
+              "total_time": 1.78676517,
+              "prompt_tokens_details": {
+                "cached_tokens": 512
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 579
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 5632,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.665659808,
+              "prompt_tokens": 1470,
+              "prompt_time": 0.05415144,
+              "completion_tokens": 1878,
+              "completion_time": 4.632585332,
+              "total_tokens": 3348,
+              "total_time": 4.686736772,
+              "prompt_tokens_details": {
+                "cached_tokens": 1024
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 884
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:05:48.798284+00:00"
+        },
+        "status": "completed",
+        "latest_run": {
+          "id": "ff23d597-5541-41c6-b6db-db6c5a595245",
+          "message_id": "E008",
+          "status": "completed",
+          "created_at": "2026-10-06T11:05:41.047416+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "security-alert@arclline-portal.com",
+            "recipients": [
+              "s.pillai@arcline.com"
+            ],
+            "date": "2026-06-08T07:33:00Z",
+            "subject": "Action required: your password expires in 24 hours",
+            "summary": "The email warns that the recipient's Arcline account password will expire in 24 hours and urges immediate verification via a provided link, threatening account suspension if not acted upon.",
+            "facts": [
+              {
+                "kind": "password_expiration_claim",
+                "value": "Password will expire in 24 hours",
+                "evidence": [
+                  {
+                    "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                    "quote": "Your Arcline account password will expire in 24 hours."
+                  }
+                ]
+              },
+              {
+                "kind": "account_suspension_threat",
+                "value": "Account suspension if not acted upon",
+                "evidence": [
+                  {
+                    "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                    "quote": "Failure to act will result in account suspension."
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "high",
+            "rationale": "The email originates from a lookalike domain (arclline-portal.com), uses urgent language and a threat of account suspension to push the recipient to click a suspicious link (arclline-portal-secure.com) for password reset, which are classic phishing indicators targeting Arcline credentials.",
+            "tags": [
+              "phishing",
+              "credential_harvest",
+              "urgent",
+              "lookalike_domain"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 2111,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.005222424,
+              "prompt_tokens": 913,
+              "prompt_time": 0.021148213,
+              "completion_tokens": 819,
+              "completion_time": 1.765616957,
+              "total_tokens": 1732,
+              "total_time": 1.78676517,
+              "prompt_tokens_details": {
+                "cached_tokens": 512
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 579
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 5632,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.665659808,
+              "prompt_tokens": 1470,
+              "prompt_time": 0.05415144,
+              "completion_tokens": 1878,
+              "completion_time": 4.632585332,
+              "total_tokens": 3348,
+              "total_time": 4.686736772,
+              "prompt_tokens_details": {
+                "cached_tokens": 1024
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 884
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:05:48.798284+00:00"
+        },
+        "extraction": {
+          "sender": "security-alert@arclline-portal.com",
+          "recipients": [
+            "s.pillai@arcline.com"
+          ],
+          "date": "2026-06-08T07:33:00Z",
+          "subject": "Action required: your password expires in 24 hours",
+          "summary": "The email warns that the recipient's Arcline account password will expire in 24 hours and urges immediate verification via a provided link, threatening account suspension if not acted upon.",
+          "facts": [
+            {
+              "kind": "password_expiration_claim",
+              "value": "Password will expire in 24 hours",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "Your Arcline account password will expire in 24 hours."
+                }
+              ]
+            },
+            {
+              "kind": "account_suspension_threat",
+              "value": "Account suspension if not acted upon",
+              "evidence": [
+                {
+                  "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                  "quote": "Failure to act will result in account suspension."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "high",
+          "rationale": "The email originates from a lookalike domain (arclline-portal.com), uses urgent language and a threat of account suspension to push the recipient to click a suspicious link (arclline-portal-secure.com) for password reset, which are classic phishing indicators targeting Arcline credentials.",
+          "tags": [
+            "phishing",
+            "credential_harvest",
+            "urgent",
+            "lookalike_domain"
+          ]
+        },
+        "entities": [
+          {
+            "id": "208ff1c0-c862-45dd-90e2-55f89a809430",
+            "type": "email",
+            "label": "s.pillai@arcline.com",
+            "evidence": [
+              {
+                "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                "quote": "To: s.pillai@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "2de35f43-3b65-44f0-9271-04c286148808",
+            "type": "email",
+            "label": "security-alert@arclline-portal.com",
+            "evidence": [
+              {
+                "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                "quote": "From: security-alert@arclline-portal.com"
+              }
+            ]
+          },
+          {
+            "id": "3dbdf123-f88f-41cc-92af-84afa086c7d0",
+            "type": "organization",
+            "label": "Arcline",
+            "evidence": [
+              {
+                "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                "quote": "Your Arcline account password will expire in 24 hours."
+              }
+            ]
+          },
+          {
+            "id": "cacbec16-a715-4643-a259-7a2effb2f02a",
+            "type": "other",
+            "label": "arclline-portal.com",
+            "evidence": [
+              {
+                "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                "quote": "From: security-alert@arclline-portal.com"
+              }
+            ]
+          },
+          {
+            "id": "d2d503b7-6108-4af1-8467-f2c53091dcc9",
+            "type": "other",
+            "label": "arclline-portal-secure.com",
+            "evidence": [
+              {
+                "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                "quote": "hxxp://arclline-portal-secure.com/reset?id=88213"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "16ef8636-4737-427c-a189-40a46b3cd4f1",
+            "source_id": "2de35f43-3b65-44f0-9271-04c286148808",
+            "target_id": "cacbec16-a715-4643-a259-7a2effb2f02a",
+            "type": "uses_domain",
+            "evidence": [
+              {
+                "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                "quote": "From: security-alert@arclline-portal.com"
+              }
+            ]
+          },
+          {
+            "id": "5f8b4573-9447-4c88-a9ce-085f95d60c01",
+            "source_id": "208ff1c0-c862-45dd-90e2-55f89a809430",
+            "target_id": "3dbdf123-f88f-41cc-92af-84afa086c7d0",
+            "type": "belongs_to_organization",
+            "evidence": [
+              {
+                "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                "quote": "To: s.pillai@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "db379c3a-4d39-429c-8973-5ce1b42875bd",
+            "source_id": "2de35f43-3b65-44f0-9271-04c286148808",
+            "target_id": "d2d503b7-6108-4af1-8467-f2c53091dcc9",
+            "type": "contains_link",
+            "evidence": [
+              {
+                "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                "quote": "hxxp://arclline-portal-secure.com/reset?id=88213"
+              }
+            ]
+          },
+          {
+            "id": "be61b227-e615-4cd5-a1f6-652135356be6",
+            "source_id": "2de35f43-3b65-44f0-9271-04c286148808",
+            "target_id": "3dbdf123-f88f-41cc-92af-84afa086c7d0",
+            "type": "targets_organization",
+            "evidence": [
+              {
+                "source_id": "a7e41b5a-ff84-4b4c-b5cd-3f37aad7c2d6",
+                "quote": "Your Arcline account password will expire in 24 hours."
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": true,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T11:05:49.095257+00:00"
+}

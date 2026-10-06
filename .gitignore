@@ -28,6 +28,7 @@ test-results/
 # Runtime data and uploads
 *.sqlite
 *.sqlite3
+!/backend/fixtures/mail_risk_groq.sqlite3
 *.db
 *.sqlite-wal
 *.sqlite-shm

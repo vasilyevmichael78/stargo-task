@@ -19,6 +19,7 @@ def settings(tmp_path):
     return Settings(
         database_path=str(tmp_path / "test.sqlite3"),
         seed_path=str(tmp_path / "absent.json"),
+        bootstrap_database_path="",
         llm_max_retries=0,
     )
 

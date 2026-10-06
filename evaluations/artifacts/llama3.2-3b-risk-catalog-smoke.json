@@ -1,0 +1,462 @@
+{
+  "started_at": "2026-10-06T12:06:43.185057+00:00",
+  "scope": "Three-case development smoke; not model-only comparison or general accuracy evidence",
+  "cases": [
+    {
+      "id": "E001",
+      "run": {
+        "id": "2cc8ddb1-7c39-48f0-a33e-3bcae939603d",
+        "message_id": "E001",
+        "status": "failed",
+        "created_at": "2026-10-06T12:06:43.185515+00:00",
+        "error": {
+          "code": "timeout",
+          "message": "The model request timed out.",
+          "retryable": true
+        },
+        "extraction": {
+          "sender": "j.harrington-ceo@arclne-corp.com",
+          "recipients": [
+            "finance-ops@arcline.com"
+          ],
+          "date": "2026-06-02T08:14:00Z",
+          "subject": "URGENT - confidential wire needed before noon",
+          "summary": "Acquisition closing, wire $184,500 to new escrow partner before 12pm",
+          "facts": [
+            {
+              "kind": "Monetary Amount",
+              "value": "$184,500",
+              "evidence": [
+                {
+                  "source_id": "e54050b9-79cd-484e-a355-fe27c0ce7d21",
+                  "quote": "We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm."
+                }
+              ]
+            },
+            {
+              "kind": "Date",
+              "value": "2026-06-02",
+              "evidence": [
+                {
+                  "source_id": "e54050b9-79cd-484e-a355-fe27c0ce7d21",
+                  "quote": "Date: 2026-06-02T08:14:00Z"
+                }
+              ]
+            },
+            {
+              "kind": "Payment Account/Routing/Reference Identifier",
+              "value": "new escrow partner",
+              "evidence": [
+                {
+                  "source_id": "e54050b9-79cd-484e-a355-fe27c0ce7d21",
+                  "quote": "to our new escrow partner"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": null,
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "2",
+        "risk_context_hash": "9f2e238b853b2367713f2c6dd67546feb6ac363e90a5ad16fdc6dd76bcb11759",
+        "risk_context_revision_id": "b44c303c-cd26-4a55-b53f-41a072660ff4",
+        "orchestration_version": "3",
+        "generation_settings": {
+          "temperature": 0,
+          "ollama_num_ctx": 8192,
+          "ollama_think": false,
+          "timeout_seconds": 60.0,
+          "max_retries": 1
+        },
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "a225638785e35cce9f513e05016598f91130494b4ce255c545055974f3ea6edc",
+          "66069965ef41e4e42b733f24ad8e80141eadec003e67d3c72997a9c310e8c93d"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 11712,
+          "attempts": 1,
+          "attempt_history": [
+            {
+              "attempt": 1,
+              "mode": "generate",
+              "outcome": "success",
+              "duration_ms": 11712,
+              "usage": {
+                "input_tokens": 469,
+                "output_tokens": 365
+              }
+            }
+          ],
+          "usage": {
+            "input_tokens": 469,
+            "output_tokens": 365
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 121028,
+          "attempts": 2,
+          "attempt_history": [
+            {
+              "attempt": 1,
+              "mode": "generate",
+              "outcome": "failure",
+              "duration_ms": 60007,
+              "usage": {},
+              "error_code": "timeout"
+            },
+            {
+              "attempt": 2,
+              "mode": "generate",
+              "outcome": "failure",
+              "duration_ms": 60014,
+              "usage": {},
+              "error_code": "timeout"
+            }
+          ],
+          "usage": {},
+          "error_code": "timeout"
+        },
+        "finished_at": "2026-10-06T12:08:55.939096+00:00"
+      },
+      "expectations": {
+        "id": "E001",
+        "acceptable_levels": [
+          "high"
+        ],
+        "required_facts": [
+          "184,500"
+        ],
+        "signals": [
+          "urgency",
+          "secrecy",
+          "claimed CEO identity",
+          "lookalike domain"
+        ],
+        "prohibited_claims": [
+          "verified CEO",
+          "invented destination account"
+        ]
+      },
+      "elapsed_seconds": 132.76,
+      "level_screen": null,
+      "semantic_review": "pending"
+    },
+    {
+      "id": "E005",
+      "run": {
+        "id": "1af8f040-242c-4b82-8bbd-17b36117b02c",
+        "message_id": "E005",
+        "status": "completed",
+        "created_at": "2026-10-06T12:08:55.955829+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "r.tanaka@arcline.com",
+          "recipients": [
+            "personal.marcus.k@gmail.com"
+          ],
+          "date": "2026-06-05T19:02:00Z",
+          "subject": "hey - heads up before Friday",
+          "summary": "Halvorsen deal announcement is Friday morning",
+          "facts": [
+            {
+              "kind": "Claimed Identity",
+              "value": "r.tanaka@arcline.com",
+              "evidence": [
+                {
+                  "source_id": "46e16125-6590-48f6-a329-2565de3936c8",
+                  "quote": "From: r.tanaka@arcline.com"
+                }
+              ]
+            },
+            {
+              "kind": "Monetary Amount",
+              "value": "shares",
+              "evidence": [
+                {
+                  "source_id": "46e16125-6590-48f6-a329-2565de3936c8",
+                  "quote": "If you were ever going to pick up some shares"
+                }
+              ]
+            },
+            {
+              "kind": "Date",
+              "value": "Friday morning",
+              "evidence": [
+                {
+                  "source_id": "46e16125-6590-48f6-a329-2565de3936c8",
+                  "quote": "announcement is Friday morning"
+                }
+              ]
+            },
+            {
+              "kind": "Payment Account/Routing/Reference Identifier",
+              "value": "Halvorsen deal",
+              "evidence": [
+                {
+                  "source_id": "46e16125-6590-48f6-a329-2565de3936c8",
+                  "quote": "Halvorsen deal"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "The email contains a payment request, urgency, and secrecy signals, but the sender's claimed identity conflicts with the explicit sender/address evidence. The email also contains a request to delete the communication after reading, which may indicate concealment. However, the lack of explicit language threatening harm or retaliation and the absence of an unverified allegation mitigate some concerns.",
+          "tags": [
+            "payment_request",
+            "urgency",
+            "secrecy",
+            "identity_mismatch",
+            "concealment"
+          ]
+        },
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "2",
+        "risk_context_hash": "9f2e238b853b2367713f2c6dd67546feb6ac363e90a5ad16fdc6dd76bcb11759",
+        "risk_context_revision_id": "b44c303c-cd26-4a55-b53f-41a072660ff4",
+        "orchestration_version": "3",
+        "generation_settings": {
+          "temperature": 0,
+          "ollama_num_ctx": 8192,
+          "ollama_think": false,
+          "timeout_seconds": 60.0,
+          "max_retries": 1
+        },
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "a225638785e35cce9f513e05016598f91130494b4ce255c545055974f3ea6edc",
+          "66069965ef41e4e42b733f24ad8e80141eadec003e67d3c72997a9c310e8c93d"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 19336,
+          "attempts": 1,
+          "attempt_history": [
+            {
+              "attempt": 1,
+              "mode": "generate",
+              "outcome": "success",
+              "duration_ms": 19336,
+              "usage": {
+                "input_tokens": 424,
+                "output_tokens": 395
+              }
+            }
+          ],
+          "usage": {
+            "input_tokens": 424,
+            "output_tokens": 395
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 40938,
+          "attempts": 1,
+          "attempt_history": [
+            {
+              "attempt": 1,
+              "mode": "generate",
+              "outcome": "success",
+              "duration_ms": 40938,
+              "usage": {
+                "input_tokens": 2012,
+                "output_tokens": 635
+              }
+            }
+          ],
+          "usage": {
+            "input_tokens": 2012,
+            "output_tokens": 635
+          }
+        },
+        "finished_at": "2026-10-06T12:09:56.316359+00:00"
+      },
+      "expectations": {
+        "id": "E005",
+        "acceptable_levels": [
+          "high"
+        ],
+        "required_facts": [
+          "Halvorsen"
+        ],
+        "signals": [
+          "preannouncement share recommendation",
+          "delete request"
+        ],
+        "prohibited_claims": [
+          "confirmed executed trade"
+        ]
+      },
+      "elapsed_seconds": 60.37,
+      "level_screen": false,
+      "semantic_review": "pending"
+    },
+    {
+      "id": "E009",
+      "run": {
+        "id": "38f9276c-5257-4c07-945f-6bb906ba8e9d",
+        "message_id": "E009",
+        "status": "completed",
+        "created_at": "2026-10-06T12:09:56.334742+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "billing@northgate-suppliers.com",
+          "recipients": [
+            "accounts-payable@arcline.com"
+          ],
+          "date": "2026-05-04T11:00:00Z",
+          "subject": "Invoice #NS-4188 - payment due",
+          "summary": "Invoice for $13,900.00 with payment terms of net 15.",
+          "facts": [
+            {
+              "kind": "Payment Due",
+              "value": "Amount due: $13,900.00",
+              "evidence": [
+                {
+                  "source_id": "72bd2dd1-b8e6-447c-b5fa-00503b6e0cc8",
+                  "quote": "Amount due: $13,900.00"
+                }
+              ]
+            },
+            {
+              "kind": "Payment Terms",
+              "value": "Payment terms are net 15 as usual",
+              "evidence": [
+                {
+                  "source_id": "bab59d7a-dc4f-483e-8c95-8f337c2e2059",
+                  "quote": "Payment terms are net 15 as usual"
+                }
+              ]
+            },
+            {
+              "kind": "Payment Account",
+              "value": "Routing 044000037, account ending 6621",
+              "evidence": [
+                {
+                  "source_id": "72bd2dd1-b8e6-447c-b5fa-00503b6e0cc8",
+                  "quote": "Payment account: routing 044000037, account ending 6621"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "The email contains a payment request with urgency and secrecy, which could indicate a potential payment impersonation or exfiltration risk. However, the sender's email address and the content of the invoice do not provide conclusive evidence of wrongdoing. The risk level is medium due to the credible concern and the need for analyst review.",
+          "tags": [
+            "payment impersonation",
+            "exfiltration",
+            "urgency",
+            "secrecy"
+          ]
+        },
+        "provider": "ollama",
+        "model": "llama3.2:3b",
+        "schema_version": "1",
+        "policy_version": "2",
+        "risk_context_hash": "9f2e238b853b2367713f2c6dd67546feb6ac363e90a5ad16fdc6dd76bcb11759",
+        "risk_context_revision_id": "b44c303c-cd26-4a55-b53f-41a072660ff4",
+        "orchestration_version": "3",
+        "generation_settings": {
+          "temperature": 0,
+          "ollama_num_ctx": 8192,
+          "ollama_think": false,
+          "timeout_seconds": 60.0,
+          "max_retries": 1
+        },
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "a225638785e35cce9f513e05016598f91130494b4ce255c545055974f3ea6edc",
+          "66069965ef41e4e42b733f24ad8e80141eadec003e67d3c72997a9c310e8c93d"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 17794,
+          "attempts": 1,
+          "attempt_history": [
+            {
+              "attempt": 1,
+              "mode": "generate",
+              "outcome": "success",
+              "duration_ms": 17794,
+              "usage": {
+                "input_tokens": 494,
+                "output_tokens": 357
+              }
+            }
+          ],
+          "usage": {
+            "input_tokens": 494,
+            "output_tokens": 357
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 53700,
+          "attempts": 2,
+          "attempt_history": [
+            {
+              "attempt": 1,
+              "mode": "generate",
+              "outcome": "failure",
+              "duration_ms": 21452,
+              "usage": {
+                "input_tokens": 2057,
+                "output_tokens": 249
+              },
+              "error_code": "invalid_output",
+              "validation_errors": [
+                {
+                  "path": [
+                    "relationships",
+                    0,
+                    "target_id"
+                  ],
+                  "code": "unknown_entity"
+                }
+              ]
+            },
+            {
+              "attempt": 2,
+              "mode": "repair",
+              "outcome": "success",
+              "duration_ms": 32244,
+              "usage": {
+                "input_tokens": 2421,
+                "output_tokens": 474
+              }
+            }
+          ],
+          "usage": {
+            "input_tokens": 2421,
+            "output_tokens": 474
+          }
+        },
+        "finished_at": "2026-10-06T12:11:07.832900+00:00"
+      },
+      "expectations": {
+        "id": "E009",
+        "acceptable_levels": [
+          "none",
+          "low"
+        ],
+        "required_facts": [
+          "13,900",
+          "6621"
+        ],
+        "signals": [
+          "ordinary invoice"
+        ],
+        "prohibited_claims": [
+          "changed bank account without evidence"
+        ]
+      },
+      "elapsed_seconds": 71.52,
+      "level_screen": false,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T12:11:07.835808+00:00"
+}

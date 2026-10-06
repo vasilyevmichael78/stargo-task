@@ -4,7 +4,7 @@ A local full-stack email triage tool for the fictional Arcline compliance team. 
 
 ## Status
 
-The mandatory application flow is implemented: ten seed emails, pasted text and file ingestion, responsive inbox/detail views, extraction/risk panels, entities/relationships, provider adapters, SQLite history, retries, and tests. The bonus aggregate Canvas 2D knowledge graph is also implemented.
+The mandatory application flow is implemented: ten seed emails, pasted text and file ingestion, responsive inbox/detail views, extraction/risk panels, entities/relationships, provider adapters, SQLite history, retries, and tests. The bonus aggregate Canvas 2D knowledge graph is also implemented. A [committed SQLite demo snapshot](backend/fixtures/README.md) supplies real GPT-OSS results on first startup, with no startup inference.
 
 **No evaluated configuration is approved for unattended triage.** The latest [fifteen-case comparison](evaluations/EXPANDED_COMPARISON_2026-10-06.md) completed 13/15 with Groq GPT-OSS 120B, 13/15 with local Qwen 3.5 4B, and 6/15 with local Llama 3.2 3B. Groq is the recommended supervised-demo configuration based on latency and qualitative review; Ollama remains the no-key default. Semantic gaps remain in every candidate and independent human review is pending. Provider failures remain visible and are never treated as risk `none`. Earlier [Llama](evaluations/LLAMA_BASELINE_2026-10-06.md) and [Groq](evaluations/GROQ_BASELINE_2026-10-06.md) baselines retain their historical settings/results.
 
@@ -12,7 +12,7 @@ A [prompt-only v2 experiment](evaluations/PROMPT_EXPERIMENT_V2_2026-10-06.md) re
 
 ## Quick start
 
-For installation, provider/key selection, every terminal command, troubleshooting and shutdown, follow the [complete run guide](docs/RUNNING.md). **Local Ollama requires no API key.** Groq requires a private Groq key and does not require an Ollama installation.
+For installation, provider/key selection, every terminal command, troubleshooting and shutdown, follow the [complete run guide](docs/RUNNING.md). **Viewing precomputed results requires neither Ollama nor an API key** with the default provider configuration. Local Ollama inference requires no API key. Groq requires a private Groq key for new analyses and does not require an Ollama installation.
 
 Requirements: Python 3.11+, [uv](https://docs.astral.sh/uv/), Node.js 22.12+ and npm. Dependencies are locked in `backend/uv.lock` and `frontend/package-lock.json`.
 
@@ -37,7 +37,7 @@ Open the URL printed by Vite (normally `http://127.0.0.1:5173`). The Vite develo
 
 Use **one backend process**; do not run multiple Uvicorn workers. The in-process queue and startup interruption handling assume a single owner. Setup, installation from lockfiles, server startup, build, and tests were exercised locally. Sandbox restrictions in Codex required approval for dependency downloads and localhost binding; ordinary terminal operation does not require those tool overrides.
 
-Ten seed records are imported and submitted only when absent. Restarting does not duplicate them or automatically resubmit failures. After configuring a provider, use each email's retry action. New emails follow the same normalization and analysis pipeline.
+A missing runtime database is initialized from `backend/fixtures/mail_risk_groq.sqlite3`: ten original seeds plus five synthetic evaluation emails, thirteen completed GPT-OSS analyses and two visible failures. Existing databases are never overwritten. Missing seed records are imported idempotently **without automatic analysis**; startup never submits inference. After configuring a provider, use an email's retry action or add a new message. New ingestion still follows the same normalization and real analysis pipeline. Historical result provider/model are retained even when current configuration selects Ollama.
 
 ### Ollama (default)
 
@@ -89,9 +89,10 @@ See [backend/.env.example](backend/.env.example). Environment variables override
 | `AGENT_B_SYSTEM_PROMPT_PATH` | `prompts/risk_graph_system.txt` |
 | `AGENT_REPAIR_SYSTEM_PROMPT_PATH` | `prompts/repair_system.txt`; immutable repair-instruction snapshot per run |
 | `DATABASE_PATH` | `data/mail_risk.sqlite3` |
+| `BOOTSTRAP_DATABASE_PATH` | `fixtures/mail_risk_groq.sqlite3`; copy only if runtime DB is absent; empty disables copying |
 | `CORS_ORIGINS` | localhost/127.0.0.1 frontend origins on 5173 |
 
-System prompts are version-controlled files, not multiline environment values. Each run snapshots them and records SHA-256 hashes, provider/model, schema/policy versions, stage attempts, latency, and available usage. Prompt and risk-catalog snapshots are persisted locally but excluded from analysis/detail responses and routine logs. The catalog has its own explicit editing endpoint. `.env`, runtime data, and private evaluation reports are ignored by Git.
+System prompts are version-controlled files, not multiline environment values. Each run snapshots them and records SHA-256 hashes, provider/model, schema/policy versions, stage attempts, latency, and available usage. Prompt and risk-catalog snapshots are persisted locally but excluded from analysis/detail responses and routine logs. The catalog has its own explicit editing endpoint. `.env`, runtime data, and future/private evaluation reports are ignored by Git. The reviewed demo fixture and [23 archived raw JSON reports](evaluations/artifacts/README.md) are explicitly committed with source/credential checks and provenance.
 
 ## Editable risk catalog
 
@@ -164,7 +165,7 @@ Accepted submissions return `202` with `message_id` and `analysis_run_id`. Inval
 
 ## Verification and AI evaluation
 
-See the [complete test inventory](docs/TESTING.md) for every current backend/frontend test, real-inference commands and tracked evaluation reports. Test sources and sanitized Markdown reports are committed; raw source-bearing reports and databases remain ignored.
+See the [complete test inventory](docs/TESTING.md) for every current backend/frontend test, real-inference commands and tracked evaluation reports. Test sources, Markdown findings and reviewed raw JSON artifacts are committed. Runtime databases and future/private reports remain ignored; the demo fixture is the sole tracked SQLite exception.
 
 Backend, from `backend/`:
 
@@ -182,11 +183,11 @@ npm run build
 npm run format:check
 ```
 
-Verification result: **48 backend tests and 13 frontend tests passed**, with successful type checking/build and formatting checks. One upstream Starlette TestClient deprecation warning remains.
+Verification result: **51 backend tests and 13 frontend tests passed**, with successful type checking/build and formatting checks. The three added bootstrap tests verify no inference on first start/restart, existing data preservation and snapshot path guards. One upstream Starlette TestClient deprecation warning remains.
 
 The deterministic suite covers ingestion and valid text PDF/EML attachments, queue behavior, restart/idempotency, bounded retries/timeouts, partial results, provider mappings/errors, selected graph contribution, and UI ingestion/error handling. Browser smoke checks covered desktop/mobile, paste and TXT upload, original text, and unavailable-provider retry. Successful model output is covered with explicit test doubles, not fabricated application data.
 
-The [expanded comparison](evaluations/EXPANDED_COMPARISON_2026-10-06.md) covers fifteen JSON cases with Groq GPT-OSS, Ollama Llama and Qwen. All three included runs are finished; Mistral was cancelled by the user and excluded. New synthetic cases cover benign urgency, prompt injection, allegations, ambiguous identities and changed payment suffixes. Use the isolated comparison runner documented in the evaluation guide; full local reports are ignored because they contain source data.
+The [expanded comparison](evaluations/EXPANDED_COMPARISON_2026-10-06.md) covers fifteen JSON cases with Groq GPT-OSS, Ollama Llama and Qwen. All three included runs are finished; Mistral was cancelled by the user and excluded. New synthetic cases cover benign urgency, prompt injection, allegations, ambiguous identities and changed payment suffixes. Use the isolated comparison runner documented in the evaluation guide; future local outputs remain ignored, while the reviewed historical JSON copies are available in evaluations/artifacts/.
 
 See [evaluation protocol and collector](evaluations/README.md). Historical Llama and Groq evaluations are linked above. The Llama/catalog development smoke is linked above and is not a full baseline or held-out evaluation. Manually review facts, risk signals, evidence, and unsupported claims. The ten seed emails are a small regression set, not general accuracy evidence.
 

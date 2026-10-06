@@ -1,0 +1,532 @@
+{
+  "started_at": "2026-10-06T11:04:28.870372+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E007",
+      "elapsed_seconds": 12.06,
+      "expectations": {
+        "id": "E007",
+        "acceptable_levels": [
+          "none",
+          "low"
+        ],
+        "required_facts": [
+          "July 3-5"
+        ],
+        "signals": [
+          "routine holiday calendar"
+        ],
+        "prohibited_claims": [
+          "market abuse"
+        ]
+      },
+      "run": {
+        "id": "6bb7d7b9-bae3-4f89-b96b-383f7fbded0b",
+        "message_id": "E007",
+        "status": "completed",
+        "created_at": "2026-10-06T11:04:28.881968+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "hr@arcline.com",
+          "recipients": [
+            "all-staff@arcline.com"
+          ],
+          "date": "2026-06-07T10:00:00Z",
+          "subject": "Summer holiday schedule + office closure dates",
+          "summary": "The email informs staff of the summer holiday calendar and notes office closures on July\u202f3\u20115 for Independence Day and September\u202f7 for Labor Day.",
+          "facts": [
+            {
+              "kind": "office_closure",
+              "value": "July 3-5",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Office closures: July 3-5 (Independence Day)"
+                }
+              ]
+            },
+            {
+              "kind": "office_closure",
+              "value": "September 7",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Sept 7 (Labor Day)"
+                }
+              ]
+            },
+            {
+              "kind": "attachment",
+              "value": "holiday_calendar.pdf",
+              "evidence": [
+                {
+                  "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                  "quote": "attached is the summer holiday calendar"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "none",
+          "rationale": "The email is a routine HR announcement about summer holiday dates and office closures, with no suspicious requests, financial transactions, or security concerns.",
+          "tags": [
+            "routine",
+            "hr",
+            "holiday"
+          ]
+        },
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 6626,
+          "attempts": 2,
+          "usage": {
+            "queue_time": 0.914525464,
+            "prompt_tokens": 948,
+            "prompt_time": 0.059467617,
+            "completion_tokens": 841,
+            "completion_time": 1.783814958,
+            "total_tokens": 1789,
+            "total_time": 1.843282575,
+            "completion_tokens_details": {
+              "reasoning_tokens": 582
+            }
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 4476,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.473581673,
+            "prompt_tokens": 1526,
+            "prompt_time": 0.076943516,
+            "completion_tokens": 1635,
+            "completion_time": 3.46492664,
+            "total_tokens": 3161,
+            "total_time": 3.541870156,
+            "completion_tokens_details": {
+              "reasoning_tokens": 609
+            }
+          }
+        },
+        "finished_at": "2026-10-06T11:04:39.993234+00:00"
+      },
+      "detail": {
+        "id": "E007",
+        "sender": "hr@arcline.com",
+        "recipients": [
+          "all-staff@arcline.com"
+        ],
+        "subject": "Summer holiday schedule + office closure dates",
+        "date": "2026-06-07T10:00:00Z",
+        "body": "From: hr@arcline.com\nTo: all-staff@arcline.com\nDate: 2026-06-07T10:00:00Z\nSubject: Summer holiday schedule + office closure dates\n\nHi everyone, attached is the summer holiday calendar for the office. Note the building will be closed July 3-5. Enjoy the summer!",
+        "sources": [
+          {
+            "id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+            "name": "Email",
+            "text": "From: hr@arcline.com\nTo: all-staff@arcline.com\nDate: 2026-06-07T10:00:00Z\nSubject: Summer holiday schedule + office closure dates\n\nHi everyone, attached is the summer holiday calendar for the office. Note the building will be closed July 3-5. Enjoy the summer!"
+          },
+          {
+            "id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+            "name": "holiday_calendar.pdf",
+            "text": "Office closures: July 3-5 (Independence Day), Sept 7 (Labor Day). Standard PTO request process applies as usual."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "6bb7d7b9-bae3-4f89-b96b-383f7fbded0b",
+          "message_id": "E007",
+          "status": "completed",
+          "created_at": "2026-10-06T11:04:28.881968+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "hr@arcline.com",
+            "recipients": [
+              "all-staff@arcline.com"
+            ],
+            "date": "2026-06-07T10:00:00Z",
+            "subject": "Summer holiday schedule + office closure dates",
+            "summary": "The email informs staff of the summer holiday calendar and notes office closures on July\u202f3\u20115 for Independence Day and September\u202f7 for Labor Day.",
+            "facts": [
+              {
+                "kind": "office_closure",
+                "value": "July 3-5",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Office closures: July 3-5 (Independence Day)"
+                  }
+                ]
+              },
+              {
+                "kind": "office_closure",
+                "value": "September 7",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Sept 7 (Labor Day)"
+                  }
+                ]
+              },
+              {
+                "kind": "attachment",
+                "value": "holiday_calendar.pdf",
+                "evidence": [
+                  {
+                    "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                    "quote": "attached is the summer holiday calendar"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "none",
+            "rationale": "The email is a routine HR announcement about summer holiday dates and office closures, with no suspicious requests, financial transactions, or security concerns.",
+            "tags": [
+              "routine",
+              "hr",
+              "holiday"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 6626,
+            "attempts": 2,
+            "usage": {
+              "queue_time": 0.914525464,
+              "prompt_tokens": 948,
+              "prompt_time": 0.059467617,
+              "completion_tokens": 841,
+              "completion_time": 1.783814958,
+              "total_tokens": 1789,
+              "total_time": 1.843282575,
+              "completion_tokens_details": {
+                "reasoning_tokens": 582
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 4476,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.473581673,
+              "prompt_tokens": 1526,
+              "prompt_time": 0.076943516,
+              "completion_tokens": 1635,
+              "completion_time": 3.46492664,
+              "total_tokens": 3161,
+              "total_time": 3.541870156,
+              "completion_tokens_details": {
+                "reasoning_tokens": 609
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:04:39.993234+00:00"
+        },
+        "status": "completed",
+        "latest_run": {
+          "id": "6bb7d7b9-bae3-4f89-b96b-383f7fbded0b",
+          "message_id": "E007",
+          "status": "completed",
+          "created_at": "2026-10-06T11:04:28.881968+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "hr@arcline.com",
+            "recipients": [
+              "all-staff@arcline.com"
+            ],
+            "date": "2026-06-07T10:00:00Z",
+            "subject": "Summer holiday schedule + office closure dates",
+            "summary": "The email informs staff of the summer holiday calendar and notes office closures on July\u202f3\u20115 for Independence Day and September\u202f7 for Labor Day.",
+            "facts": [
+              {
+                "kind": "office_closure",
+                "value": "July 3-5",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Office closures: July 3-5 (Independence Day)"
+                  }
+                ]
+              },
+              {
+                "kind": "office_closure",
+                "value": "September 7",
+                "evidence": [
+                  {
+                    "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                    "quote": "Sept 7 (Labor Day)"
+                  }
+                ]
+              },
+              {
+                "kind": "attachment",
+                "value": "holiday_calendar.pdf",
+                "evidence": [
+                  {
+                    "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                    "quote": "attached is the summer holiday calendar"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "none",
+            "rationale": "The email is a routine HR announcement about summer holiday dates and office closures, with no suspicious requests, financial transactions, or security concerns.",
+            "tags": [
+              "routine",
+              "hr",
+              "holiday"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 6626,
+            "attempts": 2,
+            "usage": {
+              "queue_time": 0.914525464,
+              "prompt_tokens": 948,
+              "prompt_time": 0.059467617,
+              "completion_tokens": 841,
+              "completion_time": 1.783814958,
+              "total_tokens": 1789,
+              "total_time": 1.843282575,
+              "completion_tokens_details": {
+                "reasoning_tokens": 582
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 4476,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.473581673,
+              "prompt_tokens": 1526,
+              "prompt_time": 0.076943516,
+              "completion_tokens": 1635,
+              "completion_time": 3.46492664,
+              "total_tokens": 3161,
+              "total_time": 3.541870156,
+              "completion_tokens_details": {
+                "reasoning_tokens": 609
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:04:39.993234+00:00"
+        },
+        "extraction": {
+          "sender": "hr@arcline.com",
+          "recipients": [
+            "all-staff@arcline.com"
+          ],
+          "date": "2026-06-07T10:00:00Z",
+          "subject": "Summer holiday schedule + office closure dates",
+          "summary": "The email informs staff of the summer holiday calendar and notes office closures on July\u202f3\u20115 for Independence Day and September\u202f7 for Labor Day.",
+          "facts": [
+            {
+              "kind": "office_closure",
+              "value": "July 3-5",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Office closures: July 3-5 (Independence Day)"
+                }
+              ]
+            },
+            {
+              "kind": "office_closure",
+              "value": "September 7",
+              "evidence": [
+                {
+                  "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                  "quote": "Sept 7 (Labor Day)"
+                }
+              ]
+            },
+            {
+              "kind": "attachment",
+              "value": "holiday_calendar.pdf",
+              "evidence": [
+                {
+                  "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                  "quote": "attached is the summer holiday calendar"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "none",
+          "rationale": "The email is a routine HR announcement about summer holiday dates and office closures, with no suspicious requests, financial transactions, or security concerns.",
+          "tags": [
+            "routine",
+            "hr",
+            "holiday"
+          ]
+        },
+        "entities": [
+          {
+            "id": "07f5d2fb-dc47-428d-80f5-4668e6fcc30e",
+            "type": "other",
+            "label": "September 7",
+            "evidence": [
+              {
+                "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                "quote": "Sept 7 (Labor Day)"
+              }
+            ]
+          },
+          {
+            "id": "10c88944-e6a4-4112-8378-573e7711c1ec",
+            "type": "other",
+            "label": "holiday_calendar.pdf",
+            "evidence": [
+              {
+                "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                "quote": "attached is the summer holiday calendar"
+              }
+            ]
+          },
+          {
+            "id": "4fb5852f-80c4-402c-ae65-125259447c2f",
+            "type": "email",
+            "label": "all-staff@arcline.com",
+            "evidence": [
+              {
+                "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                "quote": "To: all-staff@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "76bce5fe-1780-4369-886c-ea9a46eef808",
+            "type": "email",
+            "label": "hr@arcline.com",
+            "evidence": [
+              {
+                "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                "quote": "From: hr@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "ac3a7925-749a-44ea-858c-08ece5347b6f",
+            "type": "other",
+            "label": "July 3-5",
+            "evidence": [
+              {
+                "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                "quote": "Office closures: July 3-5 (Independence Day)"
+              }
+            ]
+          },
+          {
+            "id": "d257dbb0-4d57-4a06-afc9-3dac9ced17d7",
+            "type": "organization",
+            "label": "Arcline",
+            "evidence": [
+              {
+                "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                "quote": "From: hr@arcline.com"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "bec1e6be-34bb-4a4f-a306-7feaa40349ac",
+            "source_id": "76bce5fe-1780-4369-886c-ea9a46eef808",
+            "target_id": "d257dbb0-4d57-4a06-afc9-3dac9ced17d7",
+            "type": "belongs_to",
+            "evidence": [
+              {
+                "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                "quote": "From: hr@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "31a137fa-b894-429f-9676-5969f5d99cf2",
+            "source_id": "4fb5852f-80c4-402c-ae65-125259447c2f",
+            "target_id": "d257dbb0-4d57-4a06-afc9-3dac9ced17d7",
+            "type": "belongs_to",
+            "evidence": [
+              {
+                "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                "quote": "To: all-staff@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "a43204dc-ac88-41ab-9bd2-3361240ac36f",
+            "source_id": "10c88944-e6a4-4112-8378-573e7711c1ec",
+            "target_id": "76bce5fe-1780-4369-886c-ea9a46eef808",
+            "type": "attached_to",
+            "evidence": [
+              {
+                "source_id": "64fd0b87-d1e9-493d-b6f1-e8c0e45ffaa1",
+                "quote": "attached is the summer holiday calendar"
+              }
+            ]
+          },
+          {
+            "id": "1ce7a9e8-3575-43a3-900b-bdcfb0e8d87d",
+            "source_id": "ac3a7925-749a-44ea-858c-08ece5347b6f",
+            "target_id": "10c88944-e6a4-4112-8378-573e7711c1ec",
+            "type": "mentioned_in",
+            "evidence": [
+              {
+                "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                "quote": "Office closures: July 3-5 (Independence Day)"
+              }
+            ]
+          },
+          {
+            "id": "be04dac2-740e-4898-b1ea-2844e64898bf",
+            "source_id": "07f5d2fb-dc47-428d-80f5-4668e6fcc30e",
+            "target_id": "10c88944-e6a4-4112-8378-573e7711c1ec",
+            "type": "mentioned_in",
+            "evidence": [
+              {
+                "source_id": "58f173b3-a3dd-44dd-972a-63b68bbe39ad",
+                "quote": "Sept 7 (Labor Day)"
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": true,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T11:04:40.941497+00:00"
+}

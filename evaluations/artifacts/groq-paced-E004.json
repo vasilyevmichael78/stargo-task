@@ -1,0 +1,447 @@
+{
+  "started_at": "2026-10-06T11:01:02.378606+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E004",
+      "elapsed_seconds": 12.08,
+      "expectations": {
+        "id": "E004",
+        "acceptable_levels": [
+          "medium",
+          "high"
+        ],
+        "required_facts": [
+          "47,300",
+          "9902",
+          "6621"
+        ],
+        "signals": [
+          "changed payment account",
+          "invoice amount change"
+        ],
+        "prohibited_claims": [
+          "full account number inferred from suffix",
+          "proven fraud"
+        ]
+      },
+      "run": {
+        "id": "3bd4798e-53cd-4545-b6d2-64a736c2dd7a",
+        "message_id": "E004",
+        "status": "failed",
+        "created_at": "2026-10-06T11:01:02.389392+00:00",
+        "error": {
+          "code": "rate_limit",
+          "message": "Provider rate limit reached. Wait and retry.",
+          "retryable": true
+        },
+        "extraction": {
+          "sender": "billing@northgate-suppliers.com",
+          "recipients": [
+            "accounts-payable@arcline.com"
+          ],
+          "date": "2026-06-04T11:20:00Z",
+          "subject": "Invoice #NS-4471 - please note updated payment details",
+          "summary": "The email from Northgate Suppliers informs Arcline that invoice #NS-4471 for $47,300 is due in 10 days and provides new banking details (routing 044000037, account ending 9902) for payment.",
+          "facts": [
+            {
+              "kind": "invoice_number",
+              "value": "NS-4471",
+              "evidence": [
+                {
+                  "source_id": "3c108396-bc89-4d82-9e25-4596c923023c",
+                  "quote": "Hello, please find attached invoice #NS-4471 for $47,300, due in 10 days."
+                },
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "Northgate Suppliers Inc. Invoice #NS-4471."
+                }
+              ]
+            },
+            {
+              "kind": "amount",
+              "value": "$47,300.00",
+              "evidence": [
+                {
+                  "source_id": "3c108396-bc89-4d82-9e25-4596c923023c",
+                  "quote": "Hello, please find attached invoice #NS-4471 for $47,300, due in 10 days."
+                },
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "Amount due: $47,300.00."
+                }
+              ]
+            },
+            {
+              "kind": "payment_due",
+              "value": "in 10 days",
+              "evidence": [
+                {
+                  "source_id": "3c108396-bc89-4d82-9e25-4596c923023c",
+                  "quote": "Hello, please find attached invoice #NS-4471 for $47,300, due in 10 days."
+                }
+              ]
+            },
+            {
+              "kind": "routing_number",
+              "value": "044000037",
+              "evidence": [
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "New payment account: routing 044000037, account ending 9902."
+                }
+              ]
+            },
+            {
+              "kind": "account_ending",
+              "value": "9902",
+              "evidence": [
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "New payment account: routing 044000037, account ending 9902."
+                }
+              ]
+            },
+            {
+              "kind": "previous_account_ending",
+              "value": "6621",
+              "evidence": [
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "Previous invoices (NS-4102, NS-4188) were $12,400 and $13,900 respectively to account ending 6621."
+                }
+              ]
+            },
+            {
+              "kind": "previous_invoice",
+              "value": "NS-4102: $12,400",
+              "evidence": [
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "Previous invoices (NS-4102, NS-4188) were $12,400 and $13,900 respectively to account ending 6621."
+                }
+              ]
+            },
+            {
+              "kind": "previous_invoice",
+              "value": "NS-4188: $13,900",
+              "evidence": [
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "Previous invoices (NS-4102, NS-4188) were $12,400 and $13,900 respectively to account ending 6621."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": null,
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 4057,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.037974362,
+            "prompt_tokens": 1029,
+            "prompt_time": 0.058805665,
+            "completion_tokens": 1782,
+            "completion_time": 3.725134811,
+            "total_tokens": 2811,
+            "total_time": 3.783940476,
+            "completion_tokens_details": {
+              "reasoning_tokens": 985
+            }
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 7385,
+          "attempts": 2,
+          "error_code": "rate_limit"
+        },
+        "finished_at": "2026-10-06T11:01:13.840467+00:00"
+      },
+      "detail": {
+        "id": "E004",
+        "sender": "billing@northgate-suppliers.com",
+        "recipients": [
+          "accounts-payable@arcline.com"
+        ],
+        "subject": "Invoice #NS-4471 - please note updated payment details",
+        "date": "2026-06-04T11:20:00Z",
+        "body": "From: billing@northgate-suppliers.com\nTo: accounts-payable@arcline.com\nDate: 2026-06-04T11:20:00Z\nSubject: Invoice #NS-4471 - please note updated payment details\n\nHello, please find attached invoice #NS-4471 for $47,300, due in 10 days. Note that we've recently changed banking providers - please use the new account details on the invoice going forward rather than the account on file. Let us know once payment is scheduled. Thank you.",
+        "sources": [
+          {
+            "id": "3c108396-bc89-4d82-9e25-4596c923023c",
+            "name": "Email",
+            "text": "From: billing@northgate-suppliers.com\nTo: accounts-payable@arcline.com\nDate: 2026-06-04T11:20:00Z\nSubject: Invoice #NS-4471 - please note updated payment details\n\nHello, please find attached invoice #NS-4471 for $47,300, due in 10 days. Note that we've recently changed banking providers - please use the new account details on the invoice going forward rather than the account on file. Let us know once payment is scheduled. Thank you."
+          },
+          {
+            "id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+            "name": "invoice_NS-4471.pdf",
+            "text": "Northgate Suppliers Inc. Invoice #NS-4471. Amount due: $47,300.00. Previous invoices (NS-4102, NS-4188) were $12,400 and $13,900 respectively to account ending 6621. New payment account: routing 044000037, account ending 9902. Please update your records."
+          }
+        ],
+        "warnings": [],
+        "selected_run": null,
+        "status": "failed",
+        "latest_run": {
+          "id": "3bd4798e-53cd-4545-b6d2-64a736c2dd7a",
+          "message_id": "E004",
+          "status": "failed",
+          "created_at": "2026-10-06T11:01:02.389392+00:00",
+          "error": {
+            "code": "rate_limit",
+            "message": "Provider rate limit reached. Wait and retry.",
+            "retryable": true
+          },
+          "extraction": {
+            "sender": "billing@northgate-suppliers.com",
+            "recipients": [
+              "accounts-payable@arcline.com"
+            ],
+            "date": "2026-06-04T11:20:00Z",
+            "subject": "Invoice #NS-4471 - please note updated payment details",
+            "summary": "The email from Northgate Suppliers informs Arcline that invoice #NS-4471 for $47,300 is due in 10 days and provides new banking details (routing 044000037, account ending 9902) for payment.",
+            "facts": [
+              {
+                "kind": "invoice_number",
+                "value": "NS-4471",
+                "evidence": [
+                  {
+                    "source_id": "3c108396-bc89-4d82-9e25-4596c923023c",
+                    "quote": "Hello, please find attached invoice #NS-4471 for $47,300, due in 10 days."
+                  },
+                  {
+                    "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                    "quote": "Northgate Suppliers Inc. Invoice #NS-4471."
+                  }
+                ]
+              },
+              {
+                "kind": "amount",
+                "value": "$47,300.00",
+                "evidence": [
+                  {
+                    "source_id": "3c108396-bc89-4d82-9e25-4596c923023c",
+                    "quote": "Hello, please find attached invoice #NS-4471 for $47,300, due in 10 days."
+                  },
+                  {
+                    "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                    "quote": "Amount due: $47,300.00."
+                  }
+                ]
+              },
+              {
+                "kind": "payment_due",
+                "value": "in 10 days",
+                "evidence": [
+                  {
+                    "source_id": "3c108396-bc89-4d82-9e25-4596c923023c",
+                    "quote": "Hello, please find attached invoice #NS-4471 for $47,300, due in 10 days."
+                  }
+                ]
+              },
+              {
+                "kind": "routing_number",
+                "value": "044000037",
+                "evidence": [
+                  {
+                    "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                    "quote": "New payment account: routing 044000037, account ending 9902."
+                  }
+                ]
+              },
+              {
+                "kind": "account_ending",
+                "value": "9902",
+                "evidence": [
+                  {
+                    "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                    "quote": "New payment account: routing 044000037, account ending 9902."
+                  }
+                ]
+              },
+              {
+                "kind": "previous_account_ending",
+                "value": "6621",
+                "evidence": [
+                  {
+                    "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                    "quote": "Previous invoices (NS-4102, NS-4188) were $12,400 and $13,900 respectively to account ending 6621."
+                  }
+                ]
+              },
+              {
+                "kind": "previous_invoice",
+                "value": "NS-4102: $12,400",
+                "evidence": [
+                  {
+                    "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                    "quote": "Previous invoices (NS-4102, NS-4188) were $12,400 and $13,900 respectively to account ending 6621."
+                  }
+                ]
+              },
+              {
+                "kind": "previous_invoice",
+                "value": "NS-4188: $13,900",
+                "evidence": [
+                  {
+                    "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                    "quote": "Previous invoices (NS-4102, NS-4188) were $12,400 and $13,900 respectively to account ending 6621."
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": null,
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 4057,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.037974362,
+              "prompt_tokens": 1029,
+              "prompt_time": 0.058805665,
+              "completion_tokens": 1782,
+              "completion_time": 3.725134811,
+              "total_tokens": 2811,
+              "total_time": 3.783940476,
+              "completion_tokens_details": {
+                "reasoning_tokens": 985
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 7385,
+            "attempts": 2,
+            "error_code": "rate_limit"
+          },
+          "finished_at": "2026-10-06T11:01:13.840467+00:00"
+        },
+        "extraction": {
+          "sender": "billing@northgate-suppliers.com",
+          "recipients": [
+            "accounts-payable@arcline.com"
+          ],
+          "date": "2026-06-04T11:20:00Z",
+          "subject": "Invoice #NS-4471 - please note updated payment details",
+          "summary": "The email from Northgate Suppliers informs Arcline that invoice #NS-4471 for $47,300 is due in 10 days and provides new banking details (routing 044000037, account ending 9902) for payment.",
+          "facts": [
+            {
+              "kind": "invoice_number",
+              "value": "NS-4471",
+              "evidence": [
+                {
+                  "source_id": "3c108396-bc89-4d82-9e25-4596c923023c",
+                  "quote": "Hello, please find attached invoice #NS-4471 for $47,300, due in 10 days."
+                },
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "Northgate Suppliers Inc. Invoice #NS-4471."
+                }
+              ]
+            },
+            {
+              "kind": "amount",
+              "value": "$47,300.00",
+              "evidence": [
+                {
+                  "source_id": "3c108396-bc89-4d82-9e25-4596c923023c",
+                  "quote": "Hello, please find attached invoice #NS-4471 for $47,300, due in 10 days."
+                },
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "Amount due: $47,300.00."
+                }
+              ]
+            },
+            {
+              "kind": "payment_due",
+              "value": "in 10 days",
+              "evidence": [
+                {
+                  "source_id": "3c108396-bc89-4d82-9e25-4596c923023c",
+                  "quote": "Hello, please find attached invoice #NS-4471 for $47,300, due in 10 days."
+                }
+              ]
+            },
+            {
+              "kind": "routing_number",
+              "value": "044000037",
+              "evidence": [
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "New payment account: routing 044000037, account ending 9902."
+                }
+              ]
+            },
+            {
+              "kind": "account_ending",
+              "value": "9902",
+              "evidence": [
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "New payment account: routing 044000037, account ending 9902."
+                }
+              ]
+            },
+            {
+              "kind": "previous_account_ending",
+              "value": "6621",
+              "evidence": [
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "Previous invoices (NS-4102, NS-4188) were $12,400 and $13,900 respectively to account ending 6621."
+                }
+              ]
+            },
+            {
+              "kind": "previous_invoice",
+              "value": "NS-4102: $12,400",
+              "evidence": [
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "Previous invoices (NS-4102, NS-4188) were $12,400 and $13,900 respectively to account ending 6621."
+                }
+              ]
+            },
+            {
+              "kind": "previous_invoice",
+              "value": "NS-4188: $13,900",
+              "evidence": [
+                {
+                  "source_id": "f634a64b-d9fa-4b7d-a6a7-32e1223e13d8",
+                  "quote": "Previous invoices (NS-4102, NS-4188) were $12,400 and $13,900 respectively to account ending 6621."
+                }
+              ]
+            }
+          ]
+        },
+        "risk": null,
+        "entities": [],
+        "relationships": []
+      },
+      "level_screen": null,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T11:01:14.469739+00:00"
+}

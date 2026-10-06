@@ -1,0 +1,605 @@
+{
+  "started_at": "2026-10-06T10:59:52.223275+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E003",
+      "elapsed_seconds": 10.06,
+      "expectations": {
+        "id": "E003",
+        "acceptable_levels": [
+          "high"
+        ],
+        "required_facts": [
+          "Meridian",
+          "Talbot",
+          "1.2M",
+          "800K"
+        ],
+        "signals": [
+          "confidential data forwarding",
+          "resignation"
+        ],
+        "prohibited_claims": [
+          "verified theft conviction"
+        ]
+      },
+      "run": {
+        "id": "6ac00c0f-6c0b-4054-a425-8d15a6547a91",
+        "message_id": "E003",
+        "status": "completed",
+        "created_at": "2026-10-06T10:59:52.234016+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "d.moreno@arcline.com",
+          "recipients": [
+            "dmoreno.private@fastmail.com"
+          ],
+          "date": "2026-06-03T22:41:00Z",
+          "subject": "fwd: Q3 roadmap + client contracts (for me)",
+          "summary": "The sender forwards an internal Q3 roadmap PDF that references a Meridian Corp renewal worth $1.2M ARR (at risk) and a Talbot Industries expansion opportunity of $800K with a decision due in July, and states an intention to resign next week.",
+          "facts": [
+            {
+              "kind": "contract_renewal_amount",
+              "value": "$1.2M ARR",
+              "evidence": [
+                {
+                  "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                  "quote": "Meridian Corp renewal: $1.2M ARR, at risk."
+                }
+              ]
+            },
+            {
+              "kind": "contract_opportunity_amount",
+              "value": "$800K",
+              "evidence": [
+                {
+                  "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                  "quote": "Talbot Industries expansion: $800K opportunity, decision due July."
+                }
+              ]
+            },
+            {
+              "kind": "decision_due_month",
+              "value": "July",
+              "evidence": [
+                {
+                  "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                  "quote": "decision due July"
+                }
+              ]
+            },
+            {
+              "kind": "resignation_intent",
+              "value": "sender intends to resign next week",
+              "evidence": [
+                {
+                  "source_id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+                  "quote": "Forwarding these before I officially resign next week"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "The sender forwards confidential internal contract details to a personal email address shortly before resigning, indicating possible insider data exfiltration. The email contains sensitive financial amounts and mentions taking copies of contracts, which warrants further review.",
+          "tags": [
+            "insider_threat",
+            "data_exfiltration",
+            "confidential",
+            "resignation",
+            "contract_info"
+          ]
+        },
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 2880,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.307643868,
+            "prompt_tokens": 977,
+            "prompt_time": 0.215271459,
+            "completion_tokens": 981,
+            "completion_time": 2.056113207,
+            "total_tokens": 1958,
+            "total_time": 2.271384666,
+            "completion_tokens_details": {
+              "reasoning_tokens": 615
+            }
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 6029,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.214804173,
+            "prompt_tokens": 1670,
+            "prompt_time": 0.079716521,
+            "completion_tokens": 2627,
+            "completion_time": 5.486139084,
+            "total_tokens": 4297,
+            "total_time": 5.565855605,
+            "completion_tokens_details": {
+              "reasoning_tokens": 1342
+            }
+          }
+        },
+        "finished_at": "2026-10-06T11:00:01.152204+00:00"
+      },
+      "detail": {
+        "id": "E003",
+        "sender": "d.moreno@arcline.com",
+        "recipients": [
+          "dmoreno.private@fastmail.com"
+        ],
+        "subject": "fwd: Q3 roadmap + client contracts (for me)",
+        "date": "2026-06-03T22:41:00Z",
+        "body": "From: d.moreno@arcline.com\nTo: dmoreno.private@fastmail.com\nDate: 2026-06-03T22:41:00Z\nSubject: fwd: Q3 roadmap + client contracts (for me)\n\nForwarding these before I officially resign next week. After how they handled my promotion review I don't feel bad taking copies of the Meridian and Talbot contracts with me. Don't reply to this from your work email.",
+        "sources": [
+          {
+            "id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+            "name": "Email",
+            "text": "From: d.moreno@arcline.com\nTo: dmoreno.private@fastmail.com\nDate: 2026-06-03T22:41:00Z\nSubject: fwd: Q3 roadmap + client contracts (for me)\n\nForwarding these before I officially resign next week. After how they handled my promotion review I don't feel bad taking copies of the Meridian and Talbot contracts with me. Don't reply to this from your work email."
+          },
+          {
+            "id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+            "name": "Q3_roadmap_internal.pdf",
+            "text": "Internal Q3 Roadmap - Confidential. Meridian Corp renewal: $1.2M ARR, at risk. Talbot Industries expansion: $800K opportunity, decision due July."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "6ac00c0f-6c0b-4054-a425-8d15a6547a91",
+          "message_id": "E003",
+          "status": "completed",
+          "created_at": "2026-10-06T10:59:52.234016+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "d.moreno@arcline.com",
+            "recipients": [
+              "dmoreno.private@fastmail.com"
+            ],
+            "date": "2026-06-03T22:41:00Z",
+            "subject": "fwd: Q3 roadmap + client contracts (for me)",
+            "summary": "The sender forwards an internal Q3 roadmap PDF that references a Meridian Corp renewal worth $1.2M ARR (at risk) and a Talbot Industries expansion opportunity of $800K with a decision due in July, and states an intention to resign next week.",
+            "facts": [
+              {
+                "kind": "contract_renewal_amount",
+                "value": "$1.2M ARR",
+                "evidence": [
+                  {
+                    "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                    "quote": "Meridian Corp renewal: $1.2M ARR, at risk."
+                  }
+                ]
+              },
+              {
+                "kind": "contract_opportunity_amount",
+                "value": "$800K",
+                "evidence": [
+                  {
+                    "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                    "quote": "Talbot Industries expansion: $800K opportunity, decision due July."
+                  }
+                ]
+              },
+              {
+                "kind": "decision_due_month",
+                "value": "July",
+                "evidence": [
+                  {
+                    "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                    "quote": "decision due July"
+                  }
+                ]
+              },
+              {
+                "kind": "resignation_intent",
+                "value": "sender intends to resign next week",
+                "evidence": [
+                  {
+                    "source_id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+                    "quote": "Forwarding these before I officially resign next week"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "medium",
+            "rationale": "The sender forwards confidential internal contract details to a personal email address shortly before resigning, indicating possible insider data exfiltration. The email contains sensitive financial amounts and mentions taking copies of contracts, which warrants further review.",
+            "tags": [
+              "insider_threat",
+              "data_exfiltration",
+              "confidential",
+              "resignation",
+              "contract_info"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 2880,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.307643868,
+              "prompt_tokens": 977,
+              "prompt_time": 0.215271459,
+              "completion_tokens": 981,
+              "completion_time": 2.056113207,
+              "total_tokens": 1958,
+              "total_time": 2.271384666,
+              "completion_tokens_details": {
+                "reasoning_tokens": 615
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 6029,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.214804173,
+              "prompt_tokens": 1670,
+              "prompt_time": 0.079716521,
+              "completion_tokens": 2627,
+              "completion_time": 5.486139084,
+              "total_tokens": 4297,
+              "total_time": 5.565855605,
+              "completion_tokens_details": {
+                "reasoning_tokens": 1342
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:00:01.152204+00:00"
+        },
+        "status": "completed",
+        "latest_run": {
+          "id": "6ac00c0f-6c0b-4054-a425-8d15a6547a91",
+          "message_id": "E003",
+          "status": "completed",
+          "created_at": "2026-10-06T10:59:52.234016+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "d.moreno@arcline.com",
+            "recipients": [
+              "dmoreno.private@fastmail.com"
+            ],
+            "date": "2026-06-03T22:41:00Z",
+            "subject": "fwd: Q3 roadmap + client contracts (for me)",
+            "summary": "The sender forwards an internal Q3 roadmap PDF that references a Meridian Corp renewal worth $1.2M ARR (at risk) and a Talbot Industries expansion opportunity of $800K with a decision due in July, and states an intention to resign next week.",
+            "facts": [
+              {
+                "kind": "contract_renewal_amount",
+                "value": "$1.2M ARR",
+                "evidence": [
+                  {
+                    "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                    "quote": "Meridian Corp renewal: $1.2M ARR, at risk."
+                  }
+                ]
+              },
+              {
+                "kind": "contract_opportunity_amount",
+                "value": "$800K",
+                "evidence": [
+                  {
+                    "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                    "quote": "Talbot Industries expansion: $800K opportunity, decision due July."
+                  }
+                ]
+              },
+              {
+                "kind": "decision_due_month",
+                "value": "July",
+                "evidence": [
+                  {
+                    "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                    "quote": "decision due July"
+                  }
+                ]
+              },
+              {
+                "kind": "resignation_intent",
+                "value": "sender intends to resign next week",
+                "evidence": [
+                  {
+                    "source_id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+                    "quote": "Forwarding these before I officially resign next week"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "medium",
+            "rationale": "The sender forwards confidential internal contract details to a personal email address shortly before resigning, indicating possible insider data exfiltration. The email contains sensitive financial amounts and mentions taking copies of contracts, which warrants further review.",
+            "tags": [
+              "insider_threat",
+              "data_exfiltration",
+              "confidential",
+              "resignation",
+              "contract_info"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 2880,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.307643868,
+              "prompt_tokens": 977,
+              "prompt_time": 0.215271459,
+              "completion_tokens": 981,
+              "completion_time": 2.056113207,
+              "total_tokens": 1958,
+              "total_time": 2.271384666,
+              "completion_tokens_details": {
+                "reasoning_tokens": 615
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 6029,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.214804173,
+              "prompt_tokens": 1670,
+              "prompt_time": 0.079716521,
+              "completion_tokens": 2627,
+              "completion_time": 5.486139084,
+              "total_tokens": 4297,
+              "total_time": 5.565855605,
+              "completion_tokens_details": {
+                "reasoning_tokens": 1342
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:00:01.152204+00:00"
+        },
+        "extraction": {
+          "sender": "d.moreno@arcline.com",
+          "recipients": [
+            "dmoreno.private@fastmail.com"
+          ],
+          "date": "2026-06-03T22:41:00Z",
+          "subject": "fwd: Q3 roadmap + client contracts (for me)",
+          "summary": "The sender forwards an internal Q3 roadmap PDF that references a Meridian Corp renewal worth $1.2M ARR (at risk) and a Talbot Industries expansion opportunity of $800K with a decision due in July, and states an intention to resign next week.",
+          "facts": [
+            {
+              "kind": "contract_renewal_amount",
+              "value": "$1.2M ARR",
+              "evidence": [
+                {
+                  "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                  "quote": "Meridian Corp renewal: $1.2M ARR, at risk."
+                }
+              ]
+            },
+            {
+              "kind": "contract_opportunity_amount",
+              "value": "$800K",
+              "evidence": [
+                {
+                  "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                  "quote": "Talbot Industries expansion: $800K opportunity, decision due July."
+                }
+              ]
+            },
+            {
+              "kind": "decision_due_month",
+              "value": "July",
+              "evidence": [
+                {
+                  "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                  "quote": "decision due July"
+                }
+              ]
+            },
+            {
+              "kind": "resignation_intent",
+              "value": "sender intends to resign next week",
+              "evidence": [
+                {
+                  "source_id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+                  "quote": "Forwarding these before I officially resign next week"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "The sender forwards confidential internal contract details to a personal email address shortly before resigning, indicating possible insider data exfiltration. The email contains sensitive financial amounts and mentions taking copies of contracts, which warrants further review.",
+          "tags": [
+            "insider_threat",
+            "data_exfiltration",
+            "confidential",
+            "resignation",
+            "contract_info"
+          ]
+        },
+        "entities": [
+          {
+            "id": "00825581-4153-4714-a927-550c74c30f07",
+            "type": "amount",
+            "label": "$1.2M ARR",
+            "evidence": [
+              {
+                "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                "quote": "Meridian Corp renewal: $1.2M ARR, at risk."
+              }
+            ]
+          },
+          {
+            "id": "07750473-3d15-419f-8d3f-f3ddd66aa7fb",
+            "type": "organization",
+            "label": "Talbot Industries",
+            "evidence": [
+              {
+                "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                "quote": "Talbot Industries expansion: $800K opportunity, decision due July."
+              }
+            ]
+          },
+          {
+            "id": "1025abb5-9b6c-482a-8d5f-139ccbae5d5a",
+            "type": "person",
+            "label": "D. Moreno",
+            "evidence": [
+              {
+                "source_id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+                "quote": "From: d.moreno@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "4d7cfd5b-e22f-4f3e-8100-0e86f4c407ee",
+            "type": "email",
+            "label": "d.moreno@arcline.com",
+            "evidence": [
+              {
+                "source_id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+                "quote": "From: d.moreno@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "66bcc84e-55da-4c3e-b31c-a8dee305075b",
+            "type": "organization",
+            "label": "Meridian Corp",
+            "evidence": [
+              {
+                "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                "quote": "Meridian Corp renewal: $1.2M ARR, at risk."
+              }
+            ]
+          },
+          {
+            "id": "93b69a8c-b09d-4f67-a9e5-54e2d8427de6",
+            "type": "organization",
+            "label": "Arcline",
+            "evidence": [
+              {
+                "source_id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+                "quote": "From: d.moreno@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "e0f5e420-eebb-42b3-a1ea-a9045f4b8228",
+            "type": "amount",
+            "label": "$800K",
+            "evidence": [
+              {
+                "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                "quote": "Talbot Industries expansion: $800K opportunity, decision due July."
+              }
+            ]
+          },
+          {
+            "id": "fa9c67ee-0be6-4426-b2b1-ad466f405723",
+            "type": "email",
+            "label": "dmoreno.private@fastmail.com",
+            "evidence": [
+              {
+                "source_id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+                "quote": "To: dmoreno.private@fastmail.com"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "ffba0175-3dcc-4b1a-8f90-38cee4b337f4",
+            "source_id": "4d7cfd5b-e22f-4f3e-8100-0e86f4c407ee",
+            "target_id": "1025abb5-9b6c-482a-8d5f-139ccbae5d5a",
+            "type": "sent_by",
+            "evidence": [
+              {
+                "source_id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+                "quote": "From: d.moreno@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "60007475-42ea-4388-8887-01d819d422d6",
+            "source_id": "1025abb5-9b6c-482a-8d5f-139ccbae5d5a",
+            "target_id": "93b69a8c-b09d-4f67-a9e5-54e2d8427de6",
+            "type": "employed_by",
+            "evidence": [
+              {
+                "source_id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+                "quote": "From: d.moreno@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "8f2c229f-7d27-4252-b228-cae1220e26fa",
+            "source_id": "66bcc84e-55da-4c3e-b31c-a8dee305075b",
+            "target_id": "00825581-4153-4714-a927-550c74c30f07",
+            "type": "has_amount",
+            "evidence": [
+              {
+                "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                "quote": "Meridian Corp renewal: $1.2M ARR, at risk."
+              }
+            ]
+          },
+          {
+            "id": "b3dbee45-d0d0-4acc-a7ad-ae7f7ccc4845",
+            "source_id": "07750473-3d15-419f-8d3f-f3ddd66aa7fb",
+            "target_id": "e0f5e420-eebb-42b3-a1ea-a9045f4b8228",
+            "type": "has_amount",
+            "evidence": [
+              {
+                "source_id": "bca7bff3-d469-4e97-b44c-7f6485e889b1",
+                "quote": "Talbot Industries expansion: $800K opportunity, decision due July."
+              }
+            ]
+          },
+          {
+            "id": "e9657390-3451-46f8-8797-0667685d5c4e",
+            "source_id": "1025abb5-9b6c-482a-8d5f-139ccbae5d5a",
+            "target_id": "4d7cfd5b-e22f-4f3e-8100-0e86f4c407ee",
+            "type": "expresses_resignation_intent",
+            "evidence": [
+              {
+                "source_id": "c8605355-ba6d-4f79-9b14-b62637b42e2e",
+                "quote": "Forwarding these before I officially resign next week."
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": false,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T11:00:02.297819+00:00"
+}

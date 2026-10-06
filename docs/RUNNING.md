@@ -4,10 +4,11 @@
 
 | Path | Install Ollama? | API key? | Where email content is processed |
 | --- | --- | --- | --- |
-| Default: Ollama / qwen3.5:4b | Yes; download the model | No | Your local Ollama server |
+| Browse committed GPT-OSS results | No | No with default Ollama configuration | No inference; local SQLite |
+| New analysis: Ollama / qwen3.5:4b | Yes; download the model | No | Your local Ollama server |
 | Optional: Groq / openai/gpt-oss-120b | No | Yes, a Groq key | Groq's hosted API |
 
-Both paths run the same backend and frontend. Groq is the evaluated supervised-demo recommendation; local Qwen supports no-key/offline inference after the initial downloads. No paid key is required. This integration is **Groq**, not xAI Grok. The frontend never receives a provider key. See [evaluation results](../evaluations/EXPANDED_COMPARISON_2026-10-06.md) for quality and quota limitations.
+All paths run the same backend and frontend. To inspect the precomputed demo immediately, skip sections 2A/2B and keep LLM_PROVIDER=ollama in the copied environment; missing Ollama does not prevent serving saved results. Configure inference only before adding/analyzing new emails. Groq is the evaluated supervised-demo recommendation; local Qwen supports no-key/offline inference after the initial downloads. No paid key is required. This integration is **Groq**, not xAI Grok. The frontend never receives a provider key. See [evaluation results](../evaluations/EXPANDED_COMPARISON_2026-10-06.md) for quality and quota limitations.
 
 ## 1. Install prerequisites and obtain the project
 
@@ -22,7 +23,7 @@ npm --version
 
 Commands below use a macOS/Linux shell. On Windows, use equivalent directory/copy commands in your terminal; the Python/npm commands are the same. Dependency installation and model download require internet access. Local inference does not require internet after setup. Hardware, free memory and disk capacity affect Ollama performance; the repository does not bundle model weights.
 
-## 2A. Prepare Ollama for the default local path
+## 2A. Prepare Ollama for new local analyses (optional for browsing)
 
 Download the installer for your OS from [Ollama downloads](https://ollama.com/download) and follow the [official local setup](https://docs.ollama.com/quickstart). Open the installed Ollama app. If its service is not already running, keep this command running in a separate terminal:
 
@@ -103,7 +104,7 @@ From backend/:
 uv run uvicorn mailrisk.api:app --host 127.0.0.1 --port 8000
 ```
 
-Keep this terminal open. Run one backend process and no extra Uvicorn workers. Optional development hot reload adds --reload; model/provider changes require a restart. SQLite is created under backend/data/; a new database imports and queues ten seed emails. Existing messages/results are retained and failures are not automatically rerun on startup.
+Keep this terminal open. Run one backend process and no extra Uvicorn workers. Optional development hot reload adds --reload; model/provider changes require a restart. A missing runtime SQLite database under backend/data/ is copied from the committed GPT-OSS fixture: ten original seed emails, five synthetic cases, thirteen completed analyses and two failures. Existing databases are preserved. Missing seeds are imported without analysis; startup never calls a model. New messages and explicit retry still run inference. BOOTSTRAP_DATABASE_PATH defaults to fixtures/mail_risk_groq.sqlite3; set it empty to start a new database with unassessed seeds instead. Never point DATABASE_PATH at the tracked fixture.
 
 From another terminal:
 
@@ -129,7 +130,7 @@ npm run build verifies TypeScript and produces a frontend build. npm run preview
 
 ## 6. Verify the complete flow
 
-1. Check that the inbox contains the seed emails and shows processing states, then results or visible errors. With an existing evaluation database, additional synthetic emails may also appear.
+1. Check that the default demo inbox immediately contains fifteen emails with saved results or visible failures. The graph should be available without waiting for a model. An existing runtime database retains its own data.
 2. Open a completed message: inspect original text, extracted facts, risk rationale, entities and relationships with source evidence.
 3. Add a pasted email or supported TXT/PDF/EML file. PDFs require readable text layers. It follows the same two-stage analysis pipeline.
 4. Open Knowledge graph: pan/zoom, select a node, inspect connections and navigate to its source email. Only selected successful analyses contribute.

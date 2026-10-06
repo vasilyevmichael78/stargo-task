@@ -2,7 +2,7 @@
 
 ## Scope and commands
 
-All automated test sources and sanitized evaluation Markdown reports listed here are already tracked in Git. This inventory documents coverage; it does not add new tests or claim raw ignored reports are missing submission deliverables. Most recent recorded results: **48 pytest cases and 13 frontend tests passed**. Parametrization expands backend function count into collected cases. See [PROCESS](../PROCESS.md) for execution dates, warnings and limitations.
+All automated test sources and sanitized evaluation Markdown reports listed here are already tracked in Git. This inventory documents coverage, including three bootstrap regressions added for the precomputed demo. Reviewed raw reports are now archived in Git; future/private runner outputs remain ignored. Most recent recorded results: **51 pytest cases and 13 frontend tests passed**. Parametrization expands backend function count into collected cases. See [PROCESS](../PROCESS.md) for execution dates, warnings and limitations.
 
 From the repository root, after installing dependencies:
 
@@ -67,6 +67,14 @@ Engineering tests use temporary SQLite, explicit provider doubles and HTTP/fetch
 | --- | --- |
 | `test_comparison_cancellation_records_interruption` | Cancelling real-service evaluation writes cancelled status and marks the unfinished SQLite run interrupted with no risk. |
 
+### [backend/tests/test_bootstrap.py](../backend/tests/test_bootstrap.py)
+
+| Test function | What it verifies |
+| --- | --- |
+| `test_precomputed_startup_and_restart_without_inference` | First startup/restart serves fifteen fixture messages, thirteen completed GPT-OSS results and a graph, with zero provider calls and unchanged fixture bytes. |
+| `test_existing_database_is_preserved_and_seed_import_does_not_analyze` | Existing user data survives; missing seeds import unassessed with no provider calls. |
+| `test_bootstrap_rejects_missing_fixture_and_writable_fixture_target` | Missing snapshot configuration fails actionably and using the fixture as writable runtime path is rejected. |
+
 ## Frontend test inventory
 
 ### [frontend/src/App.test.tsx](../frontend/src/App.test.tsx)
@@ -128,7 +136,7 @@ This creates a new analysis in the backend's database; the full default collecto
 | [Evidence alignment verification](../evaluations/EVIDENCE_ALIGNMENT_2026-10-06.md) | Formatting-only validator correction and real Qwen verification. |
 | [Expanded comparison](../evaluations/EXPANDED_COMPARISON_2026-10-06.md) | Latest fifteen-case Groq/Llama/Qwen results, hashes, failures and per-case review; Mistral cancelled/excluded. |
 
-Raw JSON reports, model snapshots/source text, evaluation SQLite and main database backups stay ignored under evaluations/reports/ and backend/data/. Commit test code, case specifications and sanitized Markdown findings; do not force-add those raw files. They are optional private reproduction artifacts, not an accuracy guarantee. No credentials belong in any report.
+The [raw artifact archive](../evaluations/artifacts/README.md) tracks 23 unchanged reviewed JSON reports, including failures and cancelled Mistral output, with hashes. Source text was matched to committed seed/synthetic cases and credentials checked. The [compacted GPT-OSS SQLite fixture](../backend/fixtures/README.md) is also tracked for startup without inference. Future/private outputs under evaluations/reports/, runtime SQLite and backups remain ignored. Refresh committed artifacts only after source/credential review; no credentials belong in reports.
 
 ## What is not verified by the automated suite
 

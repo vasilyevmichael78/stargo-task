@@ -1,0 +1,641 @@
+{
+  "started_at": "2026-10-06T10:57:35.937656+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E001",
+      "elapsed_seconds": 10.06,
+      "expectations": {
+        "id": "E001",
+        "acceptable_levels": [
+          "high"
+        ],
+        "required_facts": [
+          "184,500"
+        ],
+        "signals": [
+          "urgency",
+          "secrecy",
+          "claimed CEO identity",
+          "lookalike domain"
+        ],
+        "prohibited_claims": [
+          "verified CEO",
+          "invented destination account"
+        ]
+      },
+      "run": {
+        "id": "8b93a0cc-d0d0-4ffb-a013-c4c9bfa7d45c",
+        "message_id": "E001",
+        "status": "completed",
+        "created_at": "2026-10-06T10:57:35.948761+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "j.harrington-ceo@arclne-corp.com",
+          "recipients": [
+            "finance-ops@arcline.com"
+          ],
+          "date": "2026-06-02T08:14:00Z",
+          "subject": "URGENT - confidential wire needed before noon",
+          "summary": "The sender requests an urgent wire transfer of $184,500 to a new escrow partner for a time\u2011sensitive acquisition, stating the details will be provided later and asking that the request be kept confidential.",
+          "facts": [
+            {
+              "kind": "payment_amount",
+              "value": "$184,500",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "wire $184,500"
+                }
+              ]
+            },
+            {
+              "kind": "payment_request",
+              "value": "wire $184,500 to new escrow partner today before 12pm",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "wire $184,500 to our new escrow partner today before 12pm"
+                }
+              ]
+            },
+            {
+              "kind": "acquisition_claim",
+              "value": "closing a time-sensitive acquisition",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "We're closing a time-sensitive acquisition"
+                }
+              ]
+            },
+            {
+              "kind": "confidentiality_request",
+              "value": "treat this as confidential and don't loop in anyone else until it's done",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "please treat this as confidential and don't loop in anyone else until it's done"
+                }
+              ]
+            },
+            {
+              "kind": "account_details_future",
+              "value": "account details will be sent from personal phone in a follow\u2011up",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "I'll send the account details from my personal phone in a follow-up"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "high",
+          "rationale": "The email requests an urgent wire of $184,500 to a new escrow partner, asks for account details to be sent later, and demands confidentiality. The sender address uses a look\u2011alike domain (arclne-corp.com) different from the recipient\u2019s corporate domain, a common pattern in business\u2011email\u2011compromise. Combined urgency, secrecy, and changed payment details constitute a strong fraud signal requiring immediate review.",
+          "tags": [
+            "BEC",
+            "urgent_payment",
+            "lookalike_domain",
+            "confidential_request",
+            "account_details_pending"
+          ]
+        },
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 2599,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.21278374,
+            "prompt_tokens": 928,
+            "prompt_time": 0.045118933,
+            "completion_tokens": 1016,
+            "completion_time": 2.099350742,
+            "total_tokens": 1944,
+            "total_time": 2.144469675,
+            "completion_tokens_details": {
+              "reasoning_tokens": 573
+            }
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 6606,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.211843496,
+            "prompt_tokens": 1710,
+            "prompt_time": 0.082491862,
+            "completion_tokens": 2884,
+            "completion_time": 6.06305621,
+            "total_tokens": 4594,
+            "total_time": 6.145548072,
+            "completion_tokens_details": {
+              "reasoning_tokens": 1552
+            }
+          }
+        },
+        "finished_at": "2026-10-06T10:57:45.163488+00:00"
+      },
+      "detail": {
+        "id": "E001",
+        "sender": "j.harrington-ceo@arclne-corp.com",
+        "recipients": [
+          "finance-ops@arcline.com"
+        ],
+        "subject": "URGENT - confidential wire needed before noon",
+        "date": "2026-06-02T08:14:00Z",
+        "body": "From: j.harrington-ceo@arclne-corp.com\nTo: finance-ops@arcline.com\nDate: 2026-06-02T08:14:00Z\nSubject: URGENT - confidential wire needed before noon\n\nHi, I'm in back-to-back board meetings and can't talk. We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm. I'll send the account details from my personal phone in a follow-up - please treat this as confidential and don't loop in anyone else until it's done. This cannot wait. - James",
+        "sources": [
+          {
+            "id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+            "name": "Email",
+            "text": "From: j.harrington-ceo@arclne-corp.com\nTo: finance-ops@arcline.com\nDate: 2026-06-02T08:14:00Z\nSubject: URGENT - confidential wire needed before noon\n\nHi, I'm in back-to-back board meetings and can't talk. We're closing a time-sensitive acquisition and I need Finance to wire $184,500 to our new escrow partner today before 12pm. I'll send the account details from my personal phone in a follow-up - please treat this as confidential and don't loop in anyone else until it's done. This cannot wait. - James"
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "8b93a0cc-d0d0-4ffb-a013-c4c9bfa7d45c",
+          "message_id": "E001",
+          "status": "completed",
+          "created_at": "2026-10-06T10:57:35.948761+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "j.harrington-ceo@arclne-corp.com",
+            "recipients": [
+              "finance-ops@arcline.com"
+            ],
+            "date": "2026-06-02T08:14:00Z",
+            "subject": "URGENT - confidential wire needed before noon",
+            "summary": "The sender requests an urgent wire transfer of $184,500 to a new escrow partner for a time\u2011sensitive acquisition, stating the details will be provided later and asking that the request be kept confidential.",
+            "facts": [
+              {
+                "kind": "payment_amount",
+                "value": "$184,500",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "wire $184,500"
+                  }
+                ]
+              },
+              {
+                "kind": "payment_request",
+                "value": "wire $184,500 to new escrow partner today before 12pm",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "wire $184,500 to our new escrow partner today before 12pm"
+                  }
+                ]
+              },
+              {
+                "kind": "acquisition_claim",
+                "value": "closing a time-sensitive acquisition",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "We're closing a time-sensitive acquisition"
+                  }
+                ]
+              },
+              {
+                "kind": "confidentiality_request",
+                "value": "treat this as confidential and don't loop in anyone else until it's done",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "please treat this as confidential and don't loop in anyone else until it's done"
+                  }
+                ]
+              },
+              {
+                "kind": "account_details_future",
+                "value": "account details will be sent from personal phone in a follow\u2011up",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "I'll send the account details from my personal phone in a follow-up"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "high",
+            "rationale": "The email requests an urgent wire of $184,500 to a new escrow partner, asks for account details to be sent later, and demands confidentiality. The sender address uses a look\u2011alike domain (arclne-corp.com) different from the recipient\u2019s corporate domain, a common pattern in business\u2011email\u2011compromise. Combined urgency, secrecy, and changed payment details constitute a strong fraud signal requiring immediate review.",
+            "tags": [
+              "BEC",
+              "urgent_payment",
+              "lookalike_domain",
+              "confidential_request",
+              "account_details_pending"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 2599,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.21278374,
+              "prompt_tokens": 928,
+              "prompt_time": 0.045118933,
+              "completion_tokens": 1016,
+              "completion_time": 2.099350742,
+              "total_tokens": 1944,
+              "total_time": 2.144469675,
+              "completion_tokens_details": {
+                "reasoning_tokens": 573
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 6606,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.211843496,
+              "prompt_tokens": 1710,
+              "prompt_time": 0.082491862,
+              "completion_tokens": 2884,
+              "completion_time": 6.06305621,
+              "total_tokens": 4594,
+              "total_time": 6.145548072,
+              "completion_tokens_details": {
+                "reasoning_tokens": 1552
+              }
+            }
+          },
+          "finished_at": "2026-10-06T10:57:45.163488+00:00"
+        },
+        "status": "completed",
+        "latest_run": {
+          "id": "8b93a0cc-d0d0-4ffb-a013-c4c9bfa7d45c",
+          "message_id": "E001",
+          "status": "completed",
+          "created_at": "2026-10-06T10:57:35.948761+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "j.harrington-ceo@arclne-corp.com",
+            "recipients": [
+              "finance-ops@arcline.com"
+            ],
+            "date": "2026-06-02T08:14:00Z",
+            "subject": "URGENT - confidential wire needed before noon",
+            "summary": "The sender requests an urgent wire transfer of $184,500 to a new escrow partner for a time\u2011sensitive acquisition, stating the details will be provided later and asking that the request be kept confidential.",
+            "facts": [
+              {
+                "kind": "payment_amount",
+                "value": "$184,500",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "wire $184,500"
+                  }
+                ]
+              },
+              {
+                "kind": "payment_request",
+                "value": "wire $184,500 to new escrow partner today before 12pm",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "wire $184,500 to our new escrow partner today before 12pm"
+                  }
+                ]
+              },
+              {
+                "kind": "acquisition_claim",
+                "value": "closing a time-sensitive acquisition",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "We're closing a time-sensitive acquisition"
+                  }
+                ]
+              },
+              {
+                "kind": "confidentiality_request",
+                "value": "treat this as confidential and don't loop in anyone else until it's done",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "please treat this as confidential and don't loop in anyone else until it's done"
+                  }
+                ]
+              },
+              {
+                "kind": "account_details_future",
+                "value": "account details will be sent from personal phone in a follow\u2011up",
+                "evidence": [
+                  {
+                    "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                    "quote": "I'll send the account details from my personal phone in a follow-up"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "high",
+            "rationale": "The email requests an urgent wire of $184,500 to a new escrow partner, asks for account details to be sent later, and demands confidentiality. The sender address uses a look\u2011alike domain (arclne-corp.com) different from the recipient\u2019s corporate domain, a common pattern in business\u2011email\u2011compromise. Combined urgency, secrecy, and changed payment details constitute a strong fraud signal requiring immediate review.",
+            "tags": [
+              "BEC",
+              "urgent_payment",
+              "lookalike_domain",
+              "confidential_request",
+              "account_details_pending"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 2599,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.21278374,
+              "prompt_tokens": 928,
+              "prompt_time": 0.045118933,
+              "completion_tokens": 1016,
+              "completion_time": 2.099350742,
+              "total_tokens": 1944,
+              "total_time": 2.144469675,
+              "completion_tokens_details": {
+                "reasoning_tokens": 573
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 6606,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.211843496,
+              "prompt_tokens": 1710,
+              "prompt_time": 0.082491862,
+              "completion_tokens": 2884,
+              "completion_time": 6.06305621,
+              "total_tokens": 4594,
+              "total_time": 6.145548072,
+              "completion_tokens_details": {
+                "reasoning_tokens": 1552
+              }
+            }
+          },
+          "finished_at": "2026-10-06T10:57:45.163488+00:00"
+        },
+        "extraction": {
+          "sender": "j.harrington-ceo@arclne-corp.com",
+          "recipients": [
+            "finance-ops@arcline.com"
+          ],
+          "date": "2026-06-02T08:14:00Z",
+          "subject": "URGENT - confidential wire needed before noon",
+          "summary": "The sender requests an urgent wire transfer of $184,500 to a new escrow partner for a time\u2011sensitive acquisition, stating the details will be provided later and asking that the request be kept confidential.",
+          "facts": [
+            {
+              "kind": "payment_amount",
+              "value": "$184,500",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "wire $184,500"
+                }
+              ]
+            },
+            {
+              "kind": "payment_request",
+              "value": "wire $184,500 to new escrow partner today before 12pm",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "wire $184,500 to our new escrow partner today before 12pm"
+                }
+              ]
+            },
+            {
+              "kind": "acquisition_claim",
+              "value": "closing a time-sensitive acquisition",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "We're closing a time-sensitive acquisition"
+                }
+              ]
+            },
+            {
+              "kind": "confidentiality_request",
+              "value": "treat this as confidential and don't loop in anyone else until it's done",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "please treat this as confidential and don't loop in anyone else until it's done"
+                }
+              ]
+            },
+            {
+              "kind": "account_details_future",
+              "value": "account details will be sent from personal phone in a follow\u2011up",
+              "evidence": [
+                {
+                  "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                  "quote": "I'll send the account details from my personal phone in a follow-up"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "high",
+          "rationale": "The email requests an urgent wire of $184,500 to a new escrow partner, asks for account details to be sent later, and demands confidentiality. The sender address uses a look\u2011alike domain (arclne-corp.com) different from the recipient\u2019s corporate domain, a common pattern in business\u2011email\u2011compromise. Combined urgency, secrecy, and changed payment details constitute a strong fraud signal requiring immediate review.",
+          "tags": [
+            "BEC",
+            "urgent_payment",
+            "lookalike_domain",
+            "confidential_request",
+            "account_details_pending"
+          ]
+        },
+        "entities": [
+          {
+            "id": "1203cd60-6a38-47ac-b638-bef21afa37a4",
+            "type": "amount",
+            "label": "$184,500",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "wire $184,500"
+              }
+            ]
+          },
+          {
+            "id": "1d447df8-50a2-4a13-b19c-3e1cc4d26509",
+            "type": "organization",
+            "label": "New escrow partner",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "wire $184,500 to our new escrow partner"
+              }
+            ]
+          },
+          {
+            "id": "54494657-17b9-49ff-9941-190db0d840cf",
+            "type": "person",
+            "label": "James",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "- James"
+              }
+            ]
+          },
+          {
+            "id": "5bb2e971-de10-4ffb-a732-7c49ed154278",
+            "type": "account",
+            "label": "Account details (to be provided)",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "I'll send the account details from my personal phone in a follow-up"
+              }
+            ]
+          },
+          {
+            "id": "79079630-a428-4c37-a56b-7a5700780c24",
+            "type": "email",
+            "label": "j.harrington-ceo@arclne-corp.com",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "From: j.harrington-ceo@arclne-corp.com"
+              }
+            ]
+          },
+          {
+            "id": "89f3cdbf-212a-4a3b-9ee6-19f0f27d774d",
+            "type": "email",
+            "label": "finance-ops@arcline.com",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "To: finance-ops@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "957c0bcd-a2e6-4cf3-b0ee-990c3906c1ef",
+            "type": "other",
+            "label": "Confidential request",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "please treat this as confidential and don't loop in anyone else until it's done"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "594811ef-672d-4289-99af-5a7727901150",
+            "source_id": "79079630-a428-4c37-a56b-7a5700780c24",
+            "target_id": "54494657-17b9-49ff-9941-190db0d840cf",
+            "type": "sent_by",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "From: j.harrington-ceo@arclne-corp.com"
+              }
+            ]
+          },
+          {
+            "id": "abe8fe7b-3ab1-491e-a8cb-b967c1103e08",
+            "source_id": "79079630-a428-4c37-a56b-7a5700780c24",
+            "target_id": "89f3cdbf-212a-4a3b-9ee6-19f0f27d774d",
+            "type": "sent_to",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "To: finance-ops@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "cf265bfe-5ea4-4d4a-a88c-7b87b6c5aa89",
+            "source_id": "54494657-17b9-49ff-9941-190db0d840cf",
+            "target_id": "1203cd60-6a38-47ac-b638-bef21afa37a4",
+            "type": "requests_amount",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "wire $184,500"
+              }
+            ]
+          },
+          {
+            "id": "5c191830-364d-443b-b584-7dcd601a3431",
+            "source_id": "54494657-17b9-49ff-9941-190db0d840cf",
+            "target_id": "1d447df8-50a2-4a13-b19c-3e1cc4d26509",
+            "type": "requests_payment_to",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "wire $184,500 to our new escrow partner"
+              }
+            ]
+          },
+          {
+            "id": "bee10c87-59e7-45e4-b45e-951db62bf816",
+            "source_id": "54494657-17b9-49ff-9941-190db0d840cf",
+            "target_id": "5bb2e971-de10-4ffb-a732-7c49ed154278",
+            "type": "will_provide_account_details",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "I'll send the account details from my personal phone in a follow-up"
+              }
+            ]
+          },
+          {
+            "id": "09fc5523-9cdb-4ba3-8b05-8c045d0a0053",
+            "source_id": "54494657-17b9-49ff-9941-190db0d840cf",
+            "target_id": "957c0bcd-a2e6-4cf3-b0ee-990c3906c1ef",
+            "type": "asks_confidentiality",
+            "evidence": [
+              {
+                "source_id": "b825d78d-78c0-47e5-92d9-ffa6eb391c69",
+                "quote": "please treat this as confidential and don't loop in anyone else until it's done"
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": true,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T10:57:46.009071+00:00"
+}

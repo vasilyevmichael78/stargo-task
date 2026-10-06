@@ -1,0 +1,506 @@
+{
+  "started_at": "2026-10-06T11:08:01.365164+00:00",
+  "health": {
+    "status": "ok",
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "configuration_error": null
+  },
+  "cases": [
+    {
+      "id": "E010",
+      "elapsed_seconds": 8.05,
+      "expectations": {
+        "id": "E010",
+        "acceptable_levels": [
+          "medium",
+          "high"
+        ],
+        "required_facts": [
+          "Robert Ainsley",
+          "300K"
+        ],
+        "signals": [
+          "anonymous accounting allegation"
+        ],
+        "prohibited_claims": [
+          "proven CFO misconduct"
+        ]
+      },
+      "run": {
+        "id": "4260fe9b-7c8d-4abc-813e-e17f2ab4b9b6",
+        "message_id": "E010",
+        "status": "completed",
+        "created_at": "2026-10-06T11:08:01.377641+00:00",
+        "error": null,
+        "extraction": {
+          "sender": "anonymous.concern@protonmail.com",
+          "recipients": [
+            "compliance@arcline.com"
+          ],
+          "date": "2026-06-09T02:15:00Z",
+          "subject": "concerns about Q2 numbers",
+          "summary": "An anonymous finance team member alleges that CFO Robert Ainsley instructed two team members to reallocate roughly $300K of Q2 marketing spend to a different cost center shortly before a board review, without a clear business justification.",
+          "facts": [
+            {
+              "kind": "person",
+              "value": "Robert Ainsley",
+              "evidence": [
+                {
+                  "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                  "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center"
+                }
+              ]
+            },
+            {
+              "kind": "monetary_amount",
+              "value": "$300K",
+              "evidence": [
+                {
+                  "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                  "quote": "move about $300K of Q2 marketing spend"
+                }
+              ]
+            },
+            {
+              "kind": "allegation",
+              "value": "CFO asked two people to move about $300K of Q2 marketing spend into a different cost center before the board review with no clear business reason",
+              "evidence": [
+                {
+                  "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                  "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "An anonymous finance team member alleges that CFO Robert Ainsley directed a $300K reallocation of marketing spend to a different cost center shortly before a board review without clear justification. The claim involves a senior executive and a sizable amount, indicating potential financial misconduct that warrants further investigation.",
+          "tags": [
+            "financial_misallocation",
+            "anonymous_allegation",
+            "potential_fraud",
+            "internal_compliance"
+          ]
+        },
+        "provider": "groq",
+        "model": "openai/gpt-oss-120b",
+        "schema_version": "1",
+        "policy_version": "1",
+        "prompt_hashes": [
+          "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+          "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+        ],
+        "extraction_metadata": {
+          "duration_ms": 2420,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.213736857,
+            "prompt_tokens": 904,
+            "prompt_time": 0.0285726,
+            "completion_tokens": 703,
+            "completion_time": 1.9410377429999999,
+            "total_tokens": 1607,
+            "total_time": 1.969610343,
+            "prompt_tokens_details": {
+              "cached_tokens": 512
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 342
+            }
+          }
+        },
+        "assessment_metadata": {
+          "duration_ms": 3738,
+          "attempts": 1,
+          "usage": {
+            "queue_time": 0.210752275,
+            "prompt_tokens": 1594,
+            "prompt_time": 0.114004477,
+            "completion_tokens": 1462,
+            "completion_time": 3.166495298,
+            "total_tokens": 3056,
+            "total_time": 3.280499775,
+            "completion_tokens_details": {
+              "reasoning_tokens": 600
+            }
+          }
+        },
+        "finished_at": "2026-10-06T11:08:07.544384+00:00"
+      },
+      "detail": {
+        "id": "E010",
+        "sender": "anonymous.concern@protonmail.com",
+        "recipients": [
+          "compliance@arcline.com"
+        ],
+        "subject": "concerns about Q2 numbers",
+        "date": "2026-06-09T02:15:00Z",
+        "body": "From: anonymous.concern@protonmail.com\nTo: compliance@arcline.com\nDate: 2026-06-09T02:15:00Z\nSubject: concerns about Q2 numbers\n\nI work in the finance team and I don't want to give my name yet. I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given. I have screenshots if someone wants to follow up properly.",
+        "sources": [
+          {
+            "id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+            "name": "Email",
+            "text": "From: anonymous.concern@protonmail.com\nTo: compliance@arcline.com\nDate: 2026-06-09T02:15:00Z\nSubject: concerns about Q2 numbers\n\nI work in the finance team and I don't want to give my name yet. I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given. I have screenshots if someone wants to follow up properly."
+          }
+        ],
+        "warnings": [],
+        "selected_run": {
+          "id": "4260fe9b-7c8d-4abc-813e-e17f2ab4b9b6",
+          "message_id": "E010",
+          "status": "completed",
+          "created_at": "2026-10-06T11:08:01.377641+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "anonymous.concern@protonmail.com",
+            "recipients": [
+              "compliance@arcline.com"
+            ],
+            "date": "2026-06-09T02:15:00Z",
+            "subject": "concerns about Q2 numbers",
+            "summary": "An anonymous finance team member alleges that CFO Robert Ainsley instructed two team members to reallocate roughly $300K of Q2 marketing spend to a different cost center shortly before a board review, without a clear business justification.",
+            "facts": [
+              {
+                "kind": "person",
+                "value": "Robert Ainsley",
+                "evidence": [
+                  {
+                    "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                    "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center"
+                  }
+                ]
+              },
+              {
+                "kind": "monetary_amount",
+                "value": "$300K",
+                "evidence": [
+                  {
+                    "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                    "quote": "move about $300K of Q2 marketing spend"
+                  }
+                ]
+              },
+              {
+                "kind": "allegation",
+                "value": "CFO asked two people to move about $300K of Q2 marketing spend into a different cost center before the board review with no clear business reason",
+                "evidence": [
+                  {
+                    "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                    "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "medium",
+            "rationale": "An anonymous finance team member alleges that CFO Robert Ainsley directed a $300K reallocation of marketing spend to a different cost center shortly before a board review without clear justification. The claim involves a senior executive and a sizable amount, indicating potential financial misconduct that warrants further investigation.",
+            "tags": [
+              "financial_misallocation",
+              "anonymous_allegation",
+              "potential_fraud",
+              "internal_compliance"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 2420,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.213736857,
+              "prompt_tokens": 904,
+              "prompt_time": 0.0285726,
+              "completion_tokens": 703,
+              "completion_time": 1.9410377429999999,
+              "total_tokens": 1607,
+              "total_time": 1.969610343,
+              "prompt_tokens_details": {
+                "cached_tokens": 512
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 342
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 3738,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.210752275,
+              "prompt_tokens": 1594,
+              "prompt_time": 0.114004477,
+              "completion_tokens": 1462,
+              "completion_time": 3.166495298,
+              "total_tokens": 3056,
+              "total_time": 3.280499775,
+              "completion_tokens_details": {
+                "reasoning_tokens": 600
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:08:07.544384+00:00"
+        },
+        "status": "completed",
+        "latest_run": {
+          "id": "4260fe9b-7c8d-4abc-813e-e17f2ab4b9b6",
+          "message_id": "E010",
+          "status": "completed",
+          "created_at": "2026-10-06T11:08:01.377641+00:00",
+          "error": null,
+          "extraction": {
+            "sender": "anonymous.concern@protonmail.com",
+            "recipients": [
+              "compliance@arcline.com"
+            ],
+            "date": "2026-06-09T02:15:00Z",
+            "subject": "concerns about Q2 numbers",
+            "summary": "An anonymous finance team member alleges that CFO Robert Ainsley instructed two team members to reallocate roughly $300K of Q2 marketing spend to a different cost center shortly before a board review, without a clear business justification.",
+            "facts": [
+              {
+                "kind": "person",
+                "value": "Robert Ainsley",
+                "evidence": [
+                  {
+                    "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                    "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center"
+                  }
+                ]
+              },
+              {
+                "kind": "monetary_amount",
+                "value": "$300K",
+                "evidence": [
+                  {
+                    "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                    "quote": "move about $300K of Q2 marketing spend"
+                  }
+                ]
+              },
+              {
+                "kind": "allegation",
+                "value": "CFO asked two people to move about $300K of Q2 marketing spend into a different cost center before the board review with no clear business reason",
+                "evidence": [
+                  {
+                    "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                    "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given"
+                  }
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "level": "medium",
+            "rationale": "An anonymous finance team member alleges that CFO Robert Ainsley directed a $300K reallocation of marketing spend to a different cost center shortly before a board review without clear justification. The claim involves a senior executive and a sizable amount, indicating potential financial misconduct that warrants further investigation.",
+            "tags": [
+              "financial_misallocation",
+              "anonymous_allegation",
+              "potential_fraud",
+              "internal_compliance"
+            ]
+          },
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "schema_version": "1",
+          "policy_version": "1",
+          "prompt_hashes": [
+            "21c264ccda923e3993828399d62b3acf9173e60160d8f58c52df0eea2ae74821",
+            "c3b2e29a976e395b0d3267985aaf17545deb73de509be15230773186b78b7048"
+          ],
+          "extraction_metadata": {
+            "duration_ms": 2420,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.213736857,
+              "prompt_tokens": 904,
+              "prompt_time": 0.0285726,
+              "completion_tokens": 703,
+              "completion_time": 1.9410377429999999,
+              "total_tokens": 1607,
+              "total_time": 1.969610343,
+              "prompt_tokens_details": {
+                "cached_tokens": 512
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 342
+              }
+            }
+          },
+          "assessment_metadata": {
+            "duration_ms": 3738,
+            "attempts": 1,
+            "usage": {
+              "queue_time": 0.210752275,
+              "prompt_tokens": 1594,
+              "prompt_time": 0.114004477,
+              "completion_tokens": 1462,
+              "completion_time": 3.166495298,
+              "total_tokens": 3056,
+              "total_time": 3.280499775,
+              "completion_tokens_details": {
+                "reasoning_tokens": 600
+              }
+            }
+          },
+          "finished_at": "2026-10-06T11:08:07.544384+00:00"
+        },
+        "extraction": {
+          "sender": "anonymous.concern@protonmail.com",
+          "recipients": [
+            "compliance@arcline.com"
+          ],
+          "date": "2026-06-09T02:15:00Z",
+          "subject": "concerns about Q2 numbers",
+          "summary": "An anonymous finance team member alleges that CFO Robert Ainsley instructed two team members to reallocate roughly $300K of Q2 marketing spend to a different cost center shortly before a board review, without a clear business justification.",
+          "facts": [
+            {
+              "kind": "person",
+              "value": "Robert Ainsley",
+              "evidence": [
+                {
+                  "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                  "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center"
+                }
+              ]
+            },
+            {
+              "kind": "monetary_amount",
+              "value": "$300K",
+              "evidence": [
+                {
+                  "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                  "quote": "move about $300K of Q2 marketing spend"
+                }
+              ]
+            },
+            {
+              "kind": "allegation",
+              "value": "CFO asked two people to move about $300K of Q2 marketing spend into a different cost center before the board review with no clear business reason",
+              "evidence": [
+                {
+                  "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                  "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend into a different cost center right before the board review, with no clear business reason given"
+                }
+              ]
+            }
+          ]
+        },
+        "risk": {
+          "level": "medium",
+          "rationale": "An anonymous finance team member alleges that CFO Robert Ainsley directed a $300K reallocation of marketing spend to a different cost center shortly before a board review without clear justification. The claim involves a senior executive and a sizable amount, indicating potential financial misconduct that warrants further investigation.",
+          "tags": [
+            "financial_misallocation",
+            "anonymous_allegation",
+            "potential_fraud",
+            "internal_compliance"
+          ]
+        },
+        "entities": [
+          {
+            "id": "304501c5-2148-46f8-8918-7dd2d7a402ce",
+            "type": "person",
+            "label": "Robert Ainsley",
+            "evidence": [
+              {
+                "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                "quote": "I've seen the CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend"
+              }
+            ]
+          },
+          {
+            "id": "34389b80-8611-4a49-b565-31276a254df5",
+            "type": "email",
+            "label": "anonymous.concern@protonmail.com",
+            "evidence": [
+              {
+                "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                "quote": "From: anonymous.concern@protonmail.com"
+              }
+            ]
+          },
+          {
+            "id": "3aba6961-5b13-441e-b4c4-183ae26630fb",
+            "type": "email",
+            "label": "compliance@arcline.com",
+            "evidence": [
+              {
+                "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                "quote": "To: compliance@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "5d01f411-9f04-4a2c-89ff-2b6c2e130a1b",
+            "type": "amount",
+            "label": "$300K",
+            "evidence": [
+              {
+                "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                "quote": "move about $300K of Q2 marketing spend"
+              }
+            ]
+          },
+          {
+            "id": "8224b355-3b43-4cc0-a141-01d55583e4ce",
+            "type": "organization",
+            "label": "Arcline",
+            "evidence": [
+              {
+                "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                "quote": "To: compliance@arcline.com"
+              }
+            ]
+          }
+        ],
+        "relationships": [
+          {
+            "id": "5603582c-f953-4473-b1f0-dd7a534ebe7f",
+            "source_id": "34389b80-8611-4a49-b565-31276a254df5",
+            "target_id": "3aba6961-5b13-441e-b4c4-183ae26630fb",
+            "type": "sent_to",
+            "evidence": [
+              {
+                "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                "quote": "From: anonymous.concern@protonmail.com\nTo: compliance@arcline.com"
+              }
+            ]
+          },
+          {
+            "id": "c95ffee7-732f-4fd6-be5d-c074fe29202f",
+            "source_id": "304501c5-2148-46f8-8918-7dd2d7a402ce",
+            "target_id": "8224b355-3b43-4cc0-a141-01d55583e4ce",
+            "type": "employee_of",
+            "evidence": [
+              {
+                "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                "quote": "I've seen the CFO, Robert Ainsley"
+              }
+            ]
+          },
+          {
+            "id": "21197f94-a3d0-4056-a3d0-53f849a66d92",
+            "source_id": "304501c5-2148-46f8-8918-7dd2d7a402ce",
+            "target_id": "5d01f411-9f04-4a2c-89ff-2b6c2e130a1b",
+            "type": "instructed_move",
+            "evidence": [
+              {
+                "source_id": "ffc0c712-4c66-4526-8305-f6fb6d94a514",
+                "quote": "CFO, Robert Ainsley, ask two people on my team to move about $300K of Q2 marketing spend"
+              }
+            ]
+          }
+        ]
+      },
+      "level_screen": true,
+      "semantic_review": "pending"
+    }
+  ],
+  "finished_at": "2026-10-06T11:08:09.431127+00:00"
+}

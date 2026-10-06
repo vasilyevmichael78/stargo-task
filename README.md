@@ -201,3 +201,9 @@ With more time: introduce durable jobs with restart-safe claims/idempotency; ado
 [PROCESS.md](PROCESS.md) records real Codex delegation, corrections, checks, limitations, and elapsed session time. The 5–6 hour assignment budget is a planning target, not a claimed human effort measurement. Significant completed blocks are committed locally; no remote or publication is configured.
 
 [Original assignment](candidate_task_brief.md) · [Implementation baseline](docs/IMPLEMENTATION_PLAN.md) · [Agent instructions](AGENTS.md)
+
+## Assumptions and requirement review
+
+The application assumes one trusted local analyst and one backend process. Risk is advisory per-email triage; source identities and allegations are not verified. PDFs require text layers. The input character limit does not guarantee fit in the configured model context. SQLite retains source/history without application-level encryption or automated retention; external provider selection sends content outside the machine. CORS does not replace authentication.
+
+See the [source-backed implementation review](docs/IMPLEMENTATION_REVIEW.md) for assignment coverage, enforced guardrails versus semantic gaps, evaluation release criteria, observability gaps and a prioritized scaling path. Metrics, tracing, durable jobs, token-aware admission and independently validated AI quality are proposed work, not implemented capabilities. The expanded comparison report remains provisional until all configured runs finish.

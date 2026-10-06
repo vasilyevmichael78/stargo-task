@@ -234,3 +234,17 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Corrections:** initial brief/storage filename guesses were wrong and corrected after file discovery. One CSS append used a root-relative path from frontend and was repeated with the correct path. First UI test exposed concatenated accessible labels; explicit entity labels fixed it. A formatter command launched from the repository root was interrupted and rerun using the installed frontend tooling. No dependencies were added or changed.
 - **Limitations:** synchronous full-graph layout targets the assignment dataset; large-graph filtering/queries and Web Worker layout remain future work. Camera/layout are not persisted; pinch zoom is not implemented. No new real inference or AI-quality evaluation was performed because prompts, models and analysis behavior were unchanged. Graph links reflect selected model analyses, not independently verified relationships.
 - **Outcome:** assignment bonus implemented and documented. Prior reliability commit: 759e7c0. No subagents, remote changes, pushes or history rewriting.
+
+### Assignment conformity and operational design review
+
+- **Started:** 2026-10-06 14:16:18 UTC (journal block start; source inspection preceded this entry).
+- **Request:** assess the implementation against the take-home requirements and improve documentation of assumptions, trade-offs, scalability, guardrails, evaluation and observability.
+- **Acceptance:** source-backed requirement mapping, explicit implemented/proposed distinctions, prioritized gaps, relevant checks, and scoped documentation changes without changing runtime behavior.
+- **Decisions:** preserve existing uncommitted expanded-evaluation work and running provider experiments. No subagents, new inference, prompt changes, database edits or provider switches. This review cannot certify unfinished Mistral/Qwen comparisons.
+- **Status:** in progress.
+
+- **Completed:** 2026-10-06 14:18:44 UTC; 2 minutes 26 seconds since journal block start, excluding preceding inspection and subsequent commit preparation. Not measured human effort.
+- **Outcome:** added docs/IMPLEMENTATION_REVIEW.md with requirement mapping, explicit assumptions, implemented versus proposed guardrails, queue/context/query bottlenecks, evaluation release gates, monitoring gaps and submission priorities; appended a short README entry. Application, prompts, settings and evaluations unchanged by this block.
+- **Checks:** 47 backend tests passed (one existing Starlette TestClient deprecation warning); Ruff lint/format passed. 13 frontend tests passed; TypeScript/Vite build and Prettier checks passed. git diff --check passed; local documentation links inspected.
+- **Environment corrections:** first uv command was blocked from its default cache; retried successfully with a temporary cache and locked/offline mode. npm was absent from initial PATH; discovered installed mise Node 24.21.0 and reran npm scripts successfully. Checks needed no dependency installs or sandbox escalation; Git index writes required the sandbox override.
+- **Limitations:** no new inference, independent human semantic review, live provider availability check, load/restore test or fresh browser/accessibility audit. Existing expanded comparison remains provisional; no remote operations. Only review additions will be committed, preserving pre-existing evaluation changes.

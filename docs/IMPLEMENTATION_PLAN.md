@@ -57,6 +57,8 @@ Agent B returns run-local entity IDs. The backend validates references, conserva
 
 Graph queries use only selected successful runs. Keep each relationship's evidence separately even when the UI combines equivalent edges and displays a source count. Persist the graph in SQLite; layout coordinates, selection, pan/zoom, and rendered nodes are frontend state. No graph database is needed for the MVP.
 
+**Bonus implemented after the mandatory flow (2026-10-06):** native Canvas 2D aggregate visualization, deterministic bounded component layout, directed edges, node selection/neighborhood highlighting, pan/zoom/fit/node dragging, email scope, accessible searchable entity explorer and provenance inspector with source-email navigation. Shared entities retain all selected message/run mentions, including isolated nodes. Camera and coordinates are ephemeral. This is sized for the assignment dataset; larger deployments need server-side graph filtering and background layout computation. See PROCESS for actual verification and elapsed time, separate from the initial reserve target.
+
 ## AI workflow and configuration
 
 Use an explicit bounded workflow:

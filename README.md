@@ -4,7 +4,7 @@ A local full-stack email triage tool for the fictional Arcline compliance team. 
 
 ## Status
 
-The mandatory application flow is implemented: ten seed emails, pasted text and file ingestion, responsive inbox/detail views, extraction/risk panels, entities/relationships, provider adapters, SQLite history, retries, and tests. An aggregate graph API exists; an interactive graph UI is not implemented.
+The mandatory application flow is implemented: ten seed emails, pasted text and file ingestion, responsive inbox/detail views, extraction/risk panels, entities/relationships, provider adapters, SQLite history, retries, and tests. The bonus aggregate Canvas 2D knowledge graph is also implemented.
 
 **No evaluated configuration is approved for unattended triage.** A real ten-email `llama3.2:3b` baseline completed five runs; only two completed risk levels matched the accepted ranges. Codex review found unsupported claims and entity/relationship errors; independent human review remains pending. See [the evaluation report](evaluations/LLAMA_BASELINE_2026-10-06.md). A subsequent [Groq GPT-OSS comparison](evaluations/GROQ_BASELINE_2026-10-06.md) completed 9/10 cases with external quota pacing and matched accepted risk in 7/9 completed cases; semantic gaps remain. Provider failures remain visible and are never treated as risk `none`.
 
@@ -123,7 +123,11 @@ Evidence stores a source ID and exact quote, validated against persisted normali
 
 A message can have several analysis runs. One successful run is selected for its current assessment and graph contribution. A failed newer run preserves the selected result and any completed extraction from the failed run. The UI displays selected extraction alongside selected risk when a previous success exists, avoiding mixed provenance. Detailed run history is persisted, but there is no dedicated history browser yet.
 
-Graph data is persisted in SQLite; `/graph` aggregates only selected successful runs, retaining relationship message/run provenance. Interactive layout/pan/zoom would be browser state. No graph database is used.
+Graph data is persisted in SQLite; `/graph` aggregates only selected successful runs, retaining relationship message/run provenance and all selected mentions of shared entities. No graph database is used.
+
+Open **Knowledge graph** beside Inbox to view all extracted entities and directed relationships, including isolated entities. Drag the background to pan, scroll or use buttons to zoom, drag nodes to arrange, and use Fit graph to restore framing. Selecting a node highlights its neighborhood and shows incoming/outgoing relationships, exact citations, run IDs and buttons to open source emails. Focus selected entity centers a node at a readable scale. Filter by source email; search the entity explorer by label/type without hiding the rest of the canvas. The explorer supports keyboard selection; canvas arrows pan, +/− zoom, 0 fits and Escape clears selection.
+
+The native canvas renderer adds no graph dependency. A deterministic, bounded layout separates disconnected components; colors encode entity types. Labels are suppressed at very small scales and avoid overlaps, with full labels available in the explorer/inspector. Layout, selection, drag positions and camera are ephemeral browser state. Proximity is not evidence of a relationship, and this visualization adds no cross-email risk reasoning. Only exact complete email identifiers merge; similar names remain separate. The full projection and synchronous layout target the take-home dataset; large graphs need server-side filtering/pagination, neighborhood queries and potentially layout in a Web Worker. Touch dragging and zoom buttons are supported; pinch zoom is not implemented.
 
 ## Failure handling and scope
 
@@ -190,7 +194,7 @@ Structured analysis logs include message/run IDs, stage, attempt, outcome, provi
 | In-process queue | Small operational surface | Single process, no durable execution |
 | Conservative entity matching | Avoids unsupported identity merges | Duplicate entities may remain |
 
-With more time: introduce durable jobs with restart-safe claims/idempotency; adopt PostgreSQL when deployment/contention justifies it; manage inference capacity independently of worker count; add filtered graph queries and interactive graph UI; expand held-out evaluation and model comparison; add analyst corrections/audit/history; implement external-access auth, isolation, and retention. Add queue/stage percentiles, error rates, tracing, and actionable alerts as operational needs emerge. OCR and cross-email investigations follow explicit product requirements. Microservices and graph databases require measured resource, ownership, or query justification.
+With more time: introduce durable jobs with restart-safe claims/idempotency; adopt PostgreSQL when deployment/contention justifies it; manage inference capacity independently of worker count; add server-side filtered graph/neighborhood queries and large-graph layout offloading; expand held-out evaluation and model comparison; add analyst corrections/audit/history; implement external-access auth, isolation, and retention. Add queue/stage percentiles, error rates, tracing, and actionable alerts as operational needs emerge. OCR and cross-email investigations follow explicit product requirements. Microservices and graph databases require measured resource, ownership, or query justification.
 
 ## Process and time
 

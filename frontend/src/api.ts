@@ -85,3 +85,25 @@ export async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 export const isActive = (status?: string) =>
   ["queued", "extracting", "assessing"].includes(status ?? "");
+
+export type GraphMention = {
+  message_id: string;
+  analysis_run_id: string;
+  evidence: Evidence[];
+};
+export type GraphEntity = {
+  id: string;
+  type: string;
+  label: string;
+  mentions: GraphMention[];
+};
+export type GraphRelationship = GraphMention & {
+  id: string;
+  source_id: string;
+  target_id: string;
+  type: string;
+};
+export type KnowledgeGraph = {
+  entities: GraphEntity[];
+  relationships: GraphRelationship[];
+};

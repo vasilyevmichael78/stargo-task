@@ -348,7 +348,18 @@ class SQLiteStore:
         entities, relations = {}, []
         for row in selected:
             contribution = self.contribution(row["selected_run"])
-            entities.update({item["id"]: item for item in contribution["entities"]})
+            for item in contribution["entities"]:
+                entity = entities.setdefault(
+                    item["id"], {**item, "evidence": [], "mentions": []}
+                )
+                entity["evidence"].extend(item["evidence"])
+                entity["mentions"].append(
+                    {
+                        "message_id": row["id"],
+                        "analysis_run_id": row["selected_run"],
+                        "evidence": item["evidence"],
+                    }
+                )
             relations.extend(
                 {
                     **item,

@@ -1,0 +1,478 @@
+.panel {
+  border: 1px solid #dfe5ef;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  gap: 16px;
+}
+.eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: #8190a7;
+}
+.heading h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font:
+    700 22px Manrope,
+    system-ui;
+  margin: 9px 0;
+}
+.heading p,
+.description {
+  font-size: 12px;
+  color: #7c8aa0;
+  line-height: 1.7;
+}
+.button,
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #dce3ee;
+  border-radius: 6px;
+  background: #fff;
+  color: #5d708f;
+  padding: 9px 12px;
+  font-size: 11px;
+}
+.iconButton {
+  padding: 5px;
+  border: 0;
+}
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 13px 24px;
+  border-top: 1px solid #edf0f5;
+  border-bottom: 1px solid #edf0f5;
+  font-size: 11px;
+  color: #7a89a0;
+}
+.stats {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.stats strong {
+  color: #354b6e;
+}
+.stats > span {
+  color: #c6cfdd;
+  margin: 0 5px;
+}
+.toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+}
+.toolbar select {
+  padding: 8px;
+  border: 1px solid #e1e7f0;
+  border-radius: 5px;
+  background: #fafbfe;
+  color: #536986;
+  max-width: 240px;
+  min-width: 0;
+  font-size: 11px;
+}
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+}
+.network {
+  min-width: 0;
+  background: #121d30;
+}
+.canvasWrap {
+  height: 620px;
+  position: relative;
+  background: radial-gradient(ellipse at 45% 35%, #1c2e4a 0%, #121d30 75%);
+}
+.canvasWrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: grab;
+  outline-offset: -3px;
+}
+.canvasWrap canvas:active {
+  cursor: grabbing;
+}
+.canvasWrap canvas:focus-visible {
+  outline: 2px solid #92b9ff;
+}
+.canvasTitle {
+  position: absolute;
+  top: 23px;
+  left: 23px;
+  pointer-events: none;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: #9dafcb;
+  font: 600 9px system-ui;
+  letter-spacing: 1.4px;
+}
+.canvasTitle small {
+  font-size: 9px;
+  color: #7084a5;
+  letter-spacing: 0;
+  margin-left: 6px;
+}
+.liveDot {
+  background: #73d6c4;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  box-shadow: 0 0 9px #73d6c455;
+}
+.zoom {
+  position: absolute;
+  right: 18px;
+  bottom: 20px;
+  background: #23324d;
+  border: 1px solid #405472;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  color: #c4d2e8;
+  box-shadow: 0 4px 18px #0003;
+  overflow: hidden;
+}
+.zoom button {
+  background: transparent;
+  border: 0;
+  padding: 10px;
+  color: inherit;
+  display: flex;
+}
+.zoom button:hover {
+  background: #354b6c;
+}
+.zoom span {
+  font: 10px monospace;
+  width: 36px;
+  text-align: center;
+}
+.zoom button:last-child {
+  border-left: 1px solid #405472;
+}
+.canvasHelp {
+  position: absolute;
+  bottom: 21px;
+  left: 20px;
+  color: #8295b2;
+  font-size: 9px;
+  line-height: 1.8;
+  pointer-events: none;
+}
+.legend {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  border-top: 1px solid #2d3d58;
+  padding: 17px 23px;
+  color: #93a6c5;
+  font-size: 10px;
+}
+.legend span {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  text-transform: capitalize;
+}
+.legend i,
+.entityList i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.inspector {
+  padding: 21px;
+  min-width: 0;
+  max-height: 685px;
+  overflow-y: auto;
+  border-left: 1px solid #e5ebf3;
+}
+.inspectorHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.type {
+  display: inline-block;
+  background: #17263d;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.inspector h3 {
+  font:
+    700 19px/1.5 Manrope,
+    system-ui;
+  overflow-wrap: anywhere;
+}
+.inspector h4 {
+  font-size: 11px;
+  font-weight: 600;
+  color: #60718c;
+  margin: 23px 0 12px;
+}
+.inspector h4 span {
+  color: #97a4b8;
+  font-weight: 400;
+  margin-left: 7px;
+}
+.intro {
+  padding: 18px 3px 10px;
+}
+.intro svg {
+  color: #6888bb;
+  margin-bottom: 18px;
+}
+.intro p {
+  color: #7c8da7;
+  font-size: 12px;
+  line-height: 1.85;
+  margin-top: 12px;
+}
+.intro > span {
+  display: block;
+  font-size: 10px;
+  line-height: 1.7;
+  color: #9aa6b8;
+  margin-top: 16px;
+}
+.connection {
+  border: 1px solid #e5ebf3;
+  border-radius: 7px;
+  padding: 12px;
+  margin: 10px 0;
+}
+.endpoints {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  color: #8fa0b7;
+}
+.endpoints button {
+  border: 0;
+  background: none;
+  color: #466ba5;
+  font-size: 11px;
+  padding: 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.relationType {
+  display: block;
+  font-size: 9px;
+  color: #899ab3;
+  margin-top: 8px;
+}
+.connection blockquote {
+  margin: 11px 0;
+  padding-left: 9px;
+  border-left: 2px solid #dbe5f5;
+  color: #7a8aa1;
+  font-size: 10px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.connection small {
+  display: block;
+  color: #98a5b7;
+  font-size: 8px;
+  overflow-wrap: anywhere;
+}
+.sourceButton {
+  border: 0;
+  background: none;
+  color: #42669f;
+  padding: 3px 0;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 10px;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.sourceButton svg {
+  flex-shrink: 0;
+}
+.run {
+  margin-top: 7px;
+}
+.search {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  border: 1px solid #e3e9f2;
+  border-radius: 6px;
+  padding: 9px;
+  color: #8da0b9;
+}
+.search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-size: 11px;
+  color: #4b6080;
+}
+.entityList {
+  max-height: 265px;
+  overflow: auto;
+  margin-top: 9px;
+}
+.entityList button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  border: 0;
+  border-bottom: 1px solid #eef1f6;
+  width: 100%;
+  background: #fff;
+  text-align: left;
+  padding: 10px 7px;
+  color: #536783;
+  font-size: 11px;
+}
+.entityList button:hover,
+.entityList button[aria-pressed="true"] {
+  background: #f0f5fc;
+}
+.entityList button > span:first-of-type {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.entityList small {
+  display: block;
+  font-size: 9px;
+  color: #9aa8ba;
+  margin-top: 3px;
+}
+.entityList button > span:last-child {
+  color: #9aabc1;
+  font-size: 10px;
+}
+.footer {
+  border-top: 1px solid #e7ecf4;
+  padding: 14px 24px;
+  color: #93a0b3;
+  font-size: 9px;
+  line-height: 1.8;
+}
+.empty {
+  padding: 70px 24px;
+  text-align: center;
+  color: #7c91b0;
+}
+.empty h3 {
+  margin: 20px 0 10px;
+  font-size: 18px;
+}
+.empty p {
+  max-width: 400px;
+  margin: auto;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.error {
+  margin: 14px 24px;
+  padding: 12px;
+  border-radius: 6px;
+  background: #fff1ef;
+  color: #a34238;
+  font-size: 12px;
+}
+.status {
+  padding: 12px 24px;
+  color: #7184a2;
+  font-size: 12px;
+}
+@media (max-width: 1050px) {
+  .body {
+    grid-template-columns: minmax(0, 1fr) 260px;
+  }
+  .canvasHelp {
+    bottom: 66px;
+  }
+}
+@media (max-width: 760px) {
+  .heading {
+    padding: 20px 16px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .heading h2 {
+    font-size: 20px;
+  }
+  .heading p {
+    font-size: 11px;
+  }
+  .toolbar {
+    padding: 13px 16px;
+  }
+  .stats {
+    font-size: 10px;
+    gap: 5px;
+  }
+  .stats > span {
+    margin: 0 2px;
+  }
+  .body {
+    display: block;
+  }
+  .canvasWrap {
+    height: 460px;
+  }
+  .canvasTitle {
+    left: 16px;
+    font-size: 8px;
+    gap: 6px;
+  }
+  .canvasTitle small {
+    font-size: 8px;
+  }
+  .inspector {
+    max-height: none;
+    border-left: 0;
+    padding: 20px 16px;
+  }
+  .canvasHelp {
+    left: 16px;
+    font-size: 8px;
+  }
+  .legend {
+    padding: 15px 16px;
+    gap: 12px;
+  }
+  .footer {
+    padding: 14px 16px;
+  }
+}

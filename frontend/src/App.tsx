@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import { Inbox, Loader2, Mail, Plus, ShieldCheck } from "lucide-react";
+import { Inbox, Loader2, Mail, Network, Plus, ShieldCheck } from "lucide-react";
 import { Detail, Email, isActive, request } from "./api";
 import styles from "./App.module.css";
 import IngestDialog from "./IngestDialog";
 import EmailInbox from "./EmailInbox";
 import EmailDetails from "./EmailDetails";
 import RiskContextDialog from "./RiskContextDialog";
+import KnowledgeGraph from "./KnowledgeGraph";
 
 export default function App() {
+  const [view, setView] = useState<"inbox" | "graph">("inbox");
   const [emails, setEmails] = useState<Email[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [detail, setDetail] = useState<Detail | null>(null);
@@ -154,6 +156,20 @@ export default function App() {
             </button>
           </section>
           <div className={styles.policyToolbar}>
+            <nav className={styles.viewNav} aria-label="Workspace views">
+              <button
+                aria-pressed={view === "inbox"}
+                onClick={() => setView("inbox")}
+              >
+                <Inbox size={15} /> Inbox
+              </button>
+              <button
+                aria-pressed={view === "graph"}
+                onClick={() => setView("graph")}
+              >
+                <Network size={15} /> Knowledge graph
+              </button>
+            </nav>
             <button
               className={styles.secondary}
               onClick={() => setRiskDialog(true)}
@@ -183,42 +199,52 @@ export default function App() {
                 : "Provider status unavailable"}
             </span>
           </div>
-          <div
-            className={`${styles.content} ${selected ? styles.hasSelection : ""}`}
-          >
-            <EmailInbox
+          {view === "graph" ? (
+            <KnowledgeGraph
               emails={emails}
-              visible={visible}
-              selected={selected}
-              query={query}
-              filter={filter}
-              error={error}
-              loading={loading}
-              setQuery={setQuery}
-              setFilter={setFilter}
-              setSelected={setSelected}
-              onRefresh={() => {
-                void loadInbox();
-                if (selected) void loadDetail(selected);
+              onOpenEmail={(id) => {
+                setSelected(id);
+                setView("inbox");
               }}
             />
-            <EmailDetails
-              selected={selected}
-              detail={detail}
-              detailError={
-                detailError ||
-                (submissionNotice?.id === selected
-                  ? submissionNotice.message
-                  : "")
-              }
-              detailLoading={detailLoading}
-              retrying={retrying}
-              tab={tab}
-              setTab={setTab}
-              onBack={() => setSelected(null)}
-              retry={retry}
-            />
-          </div>
+          ) : (
+            <div
+              className={`${styles.content} ${selected ? styles.hasSelection : ""}`}
+            >
+              <EmailInbox
+                emails={emails}
+                visible={visible}
+                selected={selected}
+                query={query}
+                filter={filter}
+                error={error}
+                loading={loading}
+                setQuery={setQuery}
+                setFilter={setFilter}
+                setSelected={setSelected}
+                onRefresh={() => {
+                  void loadInbox();
+                  if (selected) void loadDetail(selected);
+                }}
+              />
+              <EmailDetails
+                selected={selected}
+                detail={detail}
+                detailError={
+                  detailError ||
+                  (submissionNotice?.id === selected
+                    ? submissionNotice.message
+                    : "")
+                }
+                detailLoading={detailLoading}
+                retrying={retrying}
+                tab={tab}
+                setTab={setTab}
+                onBack={() => setSelected(null)}
+                retry={retry}
+              />
+            </div>
+          )}
           <footer className={styles.pageFooter}>
             <span>ARCLINE / MAIL RISK INTELLIGENCE</span>
             <span>Analyst workspace · Evidence-linked review</span>
@@ -232,6 +258,7 @@ export default function App() {
           onCreated={(id, notice) => {
             setSubmissionNotice(notice ? { id, message: notice } : null);
             setDialog(false);
+            setView("inbox");
             setSelected(id);
             void loadInbox();
           }}

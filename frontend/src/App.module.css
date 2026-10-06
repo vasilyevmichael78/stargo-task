@@ -986,3 +986,41 @@
 .policyDialog .muted {
   overflow-wrap: anywhere;
 }
+.viewNav {
+  margin-right: auto;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid #dfe5ef;
+  border-radius: 8px;
+  background: #eaf0f8;
+}
+.viewNav button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  border-radius: 5px;
+  padding: 8px 12px;
+  color: #7e8da5;
+  font-size: 11px;
+}
+.viewNav button[aria-pressed="true"] {
+  background: #fff;
+  color: #345da7;
+  box-shadow: 0 1px 5px #253b6412;
+}
+.policyToolbar {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+@media (max-width: 760px) {
+  .viewNav {
+    width: 100%;
+  }
+  .viewNav button {
+    flex: 1;
+  }
+}

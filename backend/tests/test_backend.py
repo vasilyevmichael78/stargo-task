@@ -252,6 +252,11 @@ def test_selected_graph_and_conservative_identity(settings):
     assert len(graph["relationships"]) == 1
     assert len(graph["entities"]) == 2
     assert graph["relationships"][0]["analysis_run_id"] == second
+    assert all(
+        e["mentions"]
+        == [{"message_id": mid, "analysis_run_id": second, "evidence": evidence}]
+        for e in graph["entities"]
+    )
     assert (
         next(e["id"] for e in graph["entities"] if e["type"] == "person")
         != first_person
@@ -893,3 +898,46 @@ def test_alignment_applies_to_entity_and_relationship_evidence():
     )
     assert len(alignments) == 2
     validate_evidence(result, [{"id": "s", "text": "Hello\nworld"}])
+
+
+def test_graph_preserves_shared_entity_mentions_and_selected_run_evidence(settings):
+    store = SQLiteStore(settings.path(settings.database_path))
+    service = AnalysisService(store, FakeProvider(), settings)
+    mids, runs = [], []
+    for text in ("First message", "Second message"):
+        mid, _ = store.ingest(normalize(text))
+        mids.append(mid)
+        run = service.submit(mid)
+        runs.append(run)
+        evidence = [
+            {"source_id": store.message(mid)["sources"][0]["id"], "quote": text}
+        ]
+        store.complete(
+            run,
+            {
+                "risk": {"level": "low", "rationale": "Review", "tags": []},
+                "entities": [
+                    {
+                        "id": "email",
+                        "type": "email",
+                        "label": "same@example.com",
+                        "evidence": evidence,
+                    }
+                ],
+                "relationships": [],
+            },
+        )
+    graph = store.graph()
+    assert len(graph["entities"]) == 1
+    assert graph["relationships"] == []  # Isolated nodes still have source provenance.
+    mentions = graph["entities"][0]["mentions"]
+    assert {m["message_id"] for m in mentions} == set(mids)
+    assert {m["analysis_run_id"] for m in mentions} == set(runs)
+    assert {m["evidence"][0]["quote"] for m in mentions} == {
+        "First message",
+        "Second message",
+    }
+    assert len(graph["entities"][0]["evidence"]) == 2
+    retry = service.submit(mids[0])
+    store.update_run(retry, status="failed")
+    assert store.graph() == graph

@@ -262,7 +262,15 @@ With more time: introduce durable jobs with restart-safe claims/idempotency; ado
 
 ## Process and time
 
-[PROCESS.md](PROCESS.md) records real Codex delegation, corrections, checks, limitations, and elapsed session time. The 5–6 hour assignment budget is a planning target, not a claimed human effort measurement. Significant completed blocks are committed locally; no remote or publication is configured.
+[PROCESS.md](PROCESS.md) records real Codex delegation, corrections, checks, limitations, and elapsed session time. The 5–6 hour assignment budget was a planning target. Work extended beyond that target, including additional evaluation and model experiments; focused human effort was not measured, so the project does not claim completion within 5–6 focused hours. Recorded wall-clock intervals include inference waiting and cannot establish a precise breakdown of human effort. The repository is published at [vasilyevmichael78/stargo-task](https://github.com/vasilyevmichael78/stargo-task).
+
+### Submission boundary and why further improvements are deferred
+
+The mandatory application flow and graph bonus are implemented, failure paths are explicit, and engineering checks plus real model evaluations are documented. This is the stopping point for the take-home implementation. Final submission work should focus on reproducible setup, repository access and a concise demonstration; a blocking startup or required-flow defect would justify a targeted fix.
+
+The evaluation findings remain material: unsupported claims, missed signals and incorrect graph semantics prevent unattended triage. Evidence-bearing signals, a separately evaluated risk policy, richer entity/relationship contracts and an independently reviewed held-out set are worthwhile next iterations. They are documented proposals, not completed improvements or guarantees of better precision/recall.
+
+Changing schemas, splitting Agent B or revising risk rules now would require new engineering checks and actual inference evaluation, and could introduce regressions into a working submission. Given the elapsed scope, further feature or infrastructure expansion is deferred. The engineering judgment demonstrated here is to deliver the requested workflow, expose its measured limitations and identify the next bounded experiments, while reporting the exceeded time target honestly.
 
 [Original assignment](candidate_task_brief.md) · [Implementation baseline](docs/IMPLEMENTATION_PLAN.md) · [Agent instructions](AGENTS.md)
 

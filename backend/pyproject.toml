@@ -1,0 +1,20 @@
+[project]
+name = "mail-risk-backend"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["fastapi>=0.115", "uvicorn>=0.30", "httpx>=0.27", "pydantic-settings>=2.5", "python-multipart>=0.0.12", "pypdf>=5"]
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.16.10",
+]
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "B"]

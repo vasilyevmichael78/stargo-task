@@ -59,3 +59,14 @@ Codex prepared and revised the plan interactively. Earlier planning occurred in 
 - **Checks:** `python3 evaluations/run.py --help`, `python3 -m py_compile evaluations/run.py`, seed/case ID equality, and `git diff --check` passed. No actual model calls were made; local inference is unavailable.
 - **Outcome:** evaluation tooling baseline complete; live quality evaluation pending installation/configuration. Keyword/risk-level screens are not treated as semantic correctness.
 - **Commit:** `test: add seed evaluation protocol and real-run collector`.
+
+### Backend pipeline, persistence, and system prompts
+
+- **Delegation outcome:** backend agent implemented domain contracts, file normalization, SQLite, provider adapters, prompt files, bounded queue, API, and an initial 15-test suite. Root reviewed the changes and added integration coverage.
+- **Corrections:** submission routes were changed to async to keep asyncio queue operations on its owning loop; SQLite connections now close explicitly; provider-specific payloads/parsing were separated into adapters; entity evidence is persisted; prompt snapshots are withheld from HTTP responses; entity matching requires a complete email-shaped identifier rather than any label containing @.
+- **Root additions:** Ruff tooling/formatting, failure-stage timing metadata, API worker completion, actual seed restart idempotency, valid text-layer PDF, EML attachments/skipped attachment warning, and configuration validation tests.
+- **Validation:** uv sync --locked, Ruff check/format check, and 19 pytest cases passed. One upstream Starlette TestClient deprecation warning remains; it does not fail tests. Runtime API starts and health responds with Ollama configuration despite the provider being unavailable.
+- **Prompt evaluation:** the two versioned system prompts are initial unvalidated candidates. No successful model inference has occurred; the installed model is absent. Deterministic tests verify contracts/failure behavior, not prompt quality.
+- **Design simplification:** SQLite stores normalized message/source data and extraction/assessment/provenance as JSON payloads alongside relational entities, mentions, and relationships, rather than separate tables for every value object. Retry starts both stages afresh; previous partial extraction remains available in history. These are deliberate MVP deviations, documented in README.
+- **Outcome:** backend logical block implemented and deterministic gates passed; live provider quality remains unverified.
+- **Commit:** `feat: implement persisted email analysis pipeline and providers`.
